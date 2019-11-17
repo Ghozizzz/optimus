@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-param" content="_csrf-frontend">
+    <meta name="csrf-token" content="DWC9O4x-piP7GTJ2GKB5F74m4trccNOGTR54Fef87KpABe9NvknzE692VhFf5yhgiVypqL1AmucbfT8hoa2b_g==">
+    <title>Optimus Car Trade</title>
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+<link href="assets/css/jquery-ui.css" rel="stylesheet">
+<link href="assets/css/site.css" rel="stylesheet">
+<link href="assets/css/fontawesome-all.css" rel="stylesheet"></head>
+<body>
+
+<div class="wrap">
+	    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="#"><img src="assets/css/logo.png" alt="Optimus"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <!--li class="nav-item active">
+              <a class="nav-link" href="#"><img src="images/menu-home.png" width="56" height="56"> <span class="sr-only">(current)</span>
+              </a>
+            </li-->
+            <li class="nav-item">
+              <a class="nav-icon home active" href="http://funedge.co.id/optimus/index.php?r=site%2Findex"><span>Home</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon about " href="http://funedge.co.id/optimus/index.php?r=site%2Fabout"><span>About Us</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon gallery " href="http://funedge.co.id/optimus/index.php?r=gallery"><span>Gallery</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon review" href="#"><span>Review</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon toc" href="#"><span>Term and Condition</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-icon contact " href="http://funedge.co.id/optimus/index.php?r=site%2Fcontact"><span>Contact Us</span></a>
+            </li>
+			            <li class="nav-item">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#popSelectLogin">login</button>
+				<!-- a class="nav-icon member " href="/optimus/index.php?r=site%2Fmember"><span>Account</span></a -->
+            </li>
+			          </ul>
+        </div>
+      </div>
+    </nav>
+        <!-- Navigation  -fixed-top-->
+
+    <div class="container">
+                            <!-- Page Content -->
+    <div class="container">
+        <div class="home-header" style="background-image: url('images/_homebg.png');">
+       </div> 
+        <div class="home-selector">
+  <form action="/optimus/index.php?r=site%2Findex" method="get" id="queryForm">
+	<input name="r" value="gallery/index" type="hidden">
+	<div class="row">
+      <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-6">
+        <label for="type">Search Keyword</label>
+        <input class="form-control" name="cars[keyword]" type="text">
+      </div>
+      <div class="col-md-3">
+        <label for="make">Make</label>
+        <!-- input class="form-control" name="cars[make]" type="text" value="" -->
+				<select id="car_make" class="form-control" name="cars[make]">
+		<option value="" selected="selected">Select Make</option>
+				<option value="Seat">Seat</option>
+				<option value="Renault">Renault</option>
+				<option value="Peugeot">Peugeot</option>
+				<option value="Dacia">Dacia</option>
+				<option value="Citroen">Citroen</option>
+				<option value="Opel">Opel</option>
+				<option value="Alfa Romeo">Alfa Romeo</option>
+				<option value="Skoda">Skoda</option>
+				<option value="Chevrolet">Chevrolet</option>
+				<option value="Porsche">Porsche</option>
+				<option value="Honda">Honda</option>
+				<option value="Subaru">Subaru</option>
+				<option value="Mazda">Mazda</option>
+				<option value="Mitsubishi">Mitsubishi</option>
+				<option value="Lexus">Lexus</option>
+				<option value="Toyota">Toyota</option>
+				<option value="BMW">BMW</option>
+				<option value="Volkswagen">Volkswagen</option>
+				<option value="Suzuki">Suzuki</option>
+				<option value="Mercedes-Benz">Mercedes-Benz</option>
+				<option value="Saab">Saab</option>
+				<option value="Audi">Audi</option>
+				<option value="Kia">Kia</option>
+				<option value="Land Rover">Land Rover</option>
+				<option value="Dodge">Dodge</option>
+				<option value="Chrysler">Chrysler</option>
+				<option value="Ford">Ford</option>
+				<option value="Hummer">Hummer</option>
+				<option value="Hyundai">Hyundai</option>
+				<option value="Infiniti">Infiniti</option>
+				<option value="Jaguar">Jaguar</option>
+				<option value="Jeep">Jeep</option>
+				<option value="Nissan">Nissan</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Daewoo">Daewoo</option>
+				<option value="Fiat">Fiat</option>
+				<option value="MINI">MINI</option>
+				<option value="Rover">Rover</option>
+				<option value="Smart">Smart</option>
+					
+		</select>		
+      </div>
+      <div class="col-md-3">
+        <label for="model">Model</label>
+        <!-- input class="form-control" name="cars[model]" type="text" value="" -->
+				<select id="car_model" class="form-control" name="cars[model]" disabled="disabled">
+		<option value="" selected="selected">Select Model</option>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+					
+		</select>		
+      </div>
+      <div class="col-md-4">
+        <label for="type">Type</label>
+        <!-- input class="form-control" name="cars[type]" type="text" value="" -->
+				<select class="form-control" name="cars[type]">
+		<option value="" selected="selected">Select Type</option>
+				<option value="Hatchback">Hatchback</option>
+					
+		</select>		
+		
+      </div>
+      <div class="col-6 col-md-2">
+        <label for="type">Year</label>
+        <!--input class="form-control" name="cars[year1]" type="text" value=""-->
+		
+		<select class="form-control" name="cars[year1]">
+		<option value="" selected="selected">min</option>
+				<option value="1998">1998</option>
+				<option value="1999">1999</option>
+				<option value="2000">2000</option>
+				<option value="2001">2001</option>
+				<option value="2002">2002</option>
+				<option value="2003">2003</option>
+				<option value="2004">2004</option>
+				<option value="2005">2005</option>
+				<option value="2006">2006</option>
+				<option value="2007">2007</option>
+				<option value="2008">2008</option>
+				<option value="2009">2009</option>
+				<option value="2010">2010</option>
+				<option value="2011">2011</option>
+				<option value="2012">2012</option>
+				<option value="2013">2013</option>
+				<option value="2014">2014</option>
+				<option value="2015">2015</option>
+				<option value="2016">2016</option>
+				<option value="2017">2017</option>
+				<option value="2018">2018</option>
+					
+		</select>		
+ 
+     </div>
+      <div class="col-6 col-md-2">
+        <label for="type">&nbsp;</label>
+        <!--input class="form-control" name="cars[year2]" type="text" value=""-->
+		
+		<select class="form-control" name="cars[year2]">
+		<option value="" selected="selected">max</option>
+				<option value="1998">1998</option>
+				<option value="1999">1999</option>
+				<option value="2000">2000</option>
+				<option value="2001">2001</option>
+				<option value="2002">2002</option>
+				<option value="2003">2003</option>
+				<option value="2004">2004</option>
+				<option value="2005">2005</option>
+				<option value="2006">2006</option>
+				<option value="2007">2007</option>
+				<option value="2008">2008</option>
+				<option value="2009">2009</option>
+				<option value="2010">2010</option>
+				<option value="2011">2011</option>
+				<option value="2012">2012</option>
+				<option value="2013">2013</option>
+				<option value="2014">2014</option>
+				<option value="2015">2015</option>
+				<option value="2016">2016</option>
+				<option value="2017">2017</option>
+				<option value="2018">2018</option>
+					
+		</select>		
+		
+      </div>	  
+      <div class="col-6 col-md-2">
+        <label for="type">Engine</label>
+        <input class="form-control" name="cars[engine1]" type="text">
+      </div>
+      <div class="col-6 col-md-2">
+        <label for="type">&nbsp;</label>
+        <input class="form-control" name="cars[engine2]" type="text">
+      </div>	    
+    </div>
+
+      </div>
+      <div class="col-md-3">
+    <div class="row">
+      <div class="col-12">
+        <label for="type">Price</label>
+<div id="slider-range" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><div class="ui-slider-range ui-corner-all ui-widget-header" style="left: 0%; width: 0%;"></div><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span></div>
+<div id="price_amount">&nbsp;</div>
+        <input class="form-control" id="cars_price1" name="cars[price1]" value="" type="hidden">
+        <input class="form-control" id="cars_price2" name="cars[price2]" value="" type="hidden">
+      </div>
+	
+      <div class="col-12">
+	  &nbsp;
+      </div>
+      <div class="col-lg-12">
+		<div class="checkbox">
+		<label><input name="cars[state]" value="new" type="checkbox">New</label>
+		</div>
+		<!--
+        <label for="type">New/Used</label>
+        <input class="form-control" name="cars[state]" type="text" value="">
+		-->
+      </div>
+      <div class="col-lg-12">
+		<div class="checkbox">
+		<label><input name="cars[promotion]" value="promo" type="checkbox">Promotion</label>
+		</div>
+		<!--
+        <label for="type">Promotion</label>
+        <input class="form-control" name="cars[promotion]" type="text" value="">
+		-->
+      </div> 
+    </div>
+
+      </div>
+	</div>
+	<div class="text-center">
+	  <button type="submit" class="btn btn-primary">SEARCH</button>
+	</div>	
+  </form>
+
+        </div>
+
+      <div class="row">
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      </div>
+      <div class="row">
+
+        <div class="col-md-3">
+	<!--div id="carsidesearch">
+		<h3>Make</h3>
+		<div class="make">
+			<ul class="menu nav nav-pills flex-column">
+				<li><div>-All-</div></li>
+			</ul>			
+		</div>
+		<h3>Type</h3>
+		<div class="type">
+			<ul class="menu">
+				<li><div>-All-</div></li>
+			</ul>
+		</div>
+		<h3>Category</h3>
+		<div class="category">
+		    <ul class="menu">
+				<li><div>-All-</div></li>
+			</ul>
+        </div>
+		<h3>FOB Price</h3>
+		<div class="price">
+			<ul class="menu">
+				<li><div>-All-</div></li>
+			</ul>
+		</div>
+	</div-->
+
+<div class="carsidesearch-group">
+	<i class="fas fa-search fa-lg"></i><span class="title">SEARCH BY<span>
+</span></span></div>
+<div class="accordion" id="carsidesearch">
+  <div class="carsidesearch-group">
+        <div class="carsidesearch-btn collapsed" data-toggle="collapse" data-target="#carsidesearch1">
+          Make
+        </div>
+    <div id="carsidesearch1" class="collapse" data-parent="#carsidesearch">
+		<div class="make">
+			<ul class="menu nav flex-column"><!-- html to include -->
+		  <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Chevrolet (1)</a>
+			<div class="dropdown-menu">
+			<a class="dropdown-item" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bmake%5D=Chevrolet">All Chevrolet (1)</a>			<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bmake%5D=Chevrolet&amp;cars%5Bmodel%5D=Aveo">Aveo (1)</a>		
+			</div>
+		  </li>
+</ul>			
+		</div>
+    </div>
+  </div>
+  <div class="carsidesearch-group">
+        <div class="carsidesearch-btn collapsed" data-toggle="collapse" data-target="#carsidesearch2">
+          Type
+        </div>
+    <div id="carsidesearch2" class="collapse" data-parent="#carsidesearch">
+		<div class="type">
+			<ul class="menu nav nav-pills flex-column"><!-- html to include -->
+		  <li><div><span class="item"></span><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Btype%5D=Hatchback">Hatchback (1)</a></div>
+		  </li>
+</ul>			
+		</div>
+    </div>
+  </div>
+  <div class="carsidesearch-group">
+        <div class="carsidesearch-btn collapsed" data-toggle="collapse" data-target="#carsidesearch3">
+          Category
+        </div>
+    <div id="carsidesearch3" class="collapse" data-parent="#carsidesearch">
+		<div class="category">
+			<ul class="menu nav nav-pills flex-column"><!-- html to include -->
+		  <li><div><span class="item"></span><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Btransmission%5D=mt">Manual (1)</a></div>
+		  </li>
+		  <li><div><span class="item"></span><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bfuel%5D=diesel">Diesel (0)</a></div>
+		  </li>
+		  <li><div><span class="item"></span><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bdrive%5D=4wd">4wd (1)</a></div>
+		  </li>
+</ul>			
+		</div>
+    </div>
+  </div>
+  <div class="carsidesearch-group">
+        <div class="carsidesearch-btn collapsed" data-toggle="collapse" data-target="#carsidesearch4">
+          FOB Price
+        </div>
+    <div id="carsidesearch4" class="collapse" data-parent="#carsidesearch">
+		<div class="price">
+			<ul class="menu nav nav-pills flex-column"><!-- html to include -->
+		  <li class="nav-item dropdown"><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bprice1%5D=0&amp;cars%5Bprice2%5D=500">Under 500</a>		  </li>
+		  <li class="nav-item dropdown"><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bprice1%5D=500&amp;cars%5Bprice2%5D=1000">500 - 1000</a>		  </li>
+		  <li class="nav-item dropdown"><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bprice1%5D=1000&amp;cars%5Bprice2%5D=2000">1000 - 2000</a>		  </li>
+		  <li class="nav-item dropdown"><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bprice1%5D=2000&amp;cars%5Bprice2%5D=3000">2000 - 3000</a>		  </li>
+		  <li class="nav-item dropdown"><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bprice1%5D=3000&amp;cars%5Bprice2%5D=4000">1000 - 2000</a>		  </li>
+		  <li class="nav-item dropdown"><a class="nav-link" href="http://funedge.co.id/optimus/index.php?r=gallery%2Findex&amp;cars%5Bprice1%5D=4000&amp;cars%5Bprice2%5D=0">Above 4000</a>		  </li>
+</ul>			
+		</div>
+    </div>
+  </div>
+</div>
+	
+<!--	
+  <ul class="nav nav-pills flex-column">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#">Dropdown</a>
+		<div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Link 1</a>
+        <a class="dropdown-item" href="#">Link 2</a>
+        <a class="dropdown-item" href="#">Link 3</a>
+		</div>
+    </li>
+  </ul>
+-->																															
+																						
+						
+
+		<!--
+          <h2 class="my-4">Search by</h2>
+          <div class="list-group">
+            <a href="#" class="list-group-item">Category 1</a>
+            <a href="#" class="list-group-item">Category 2</a>
+            <a href="#" class="list-group-item">Category 3</a>
+          </div>
+		-->
+        </div>
+        <!-- /.col-lg-3 -->
+
+        <div class="col-md-9">
+
+
+          <h2 style="color:red;text-align:center">Recently View</h2>
+          <div class="row" id="home-recent"><!-- html to include -->
+			<div class="item col-lg-2 col-md-6 mb-4" data-key="1">
+              <div class="card h-100">
+                <img class="card-img-top" src="assets/css/_redcar.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title"><a href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">Chevrolet - Aveo</a></h4>
+                  <div>type: Hatchback</div>
+                  <p class="card-text">Chevrolet Aveo 2010</p>
+                </div>
+                <div class="card-footer">
+                  <a class="btn btn-primary" href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">View</a><span class="card-like"><a href="http://funedge.co.id/optimus/index.php?r=member%2Flike&amp;id=1" onclick="return popError('You have to login as a buyer to do this')">♥</a></span>
+                </div>
+              </div>
+			</div>
+</div>
+		  
+<ul class="nav justify-content-center" id="cartabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="cartabs1-tab" data-toggle="pill" href="#cartabs1" role="tab">Top Recommend</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="cartabs2-tab" data-toggle="pill" href="#cartabs2" role="tab">Top Sales</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="cartabs3-tab" data-toggle="pill" href="#cartabs3" role="tab">Hot Car</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="cartabs3-tab" data-toggle="pill" href="#cartabs4" role="tab">Best Deal</a>
+  </li>
+</ul>
+  <div class="row">&nbsp;</div>
+
+<div class="tab-content" id="cartabsContent">
+  <div class="tab-pane fade show active" id="cartabs1" role="tabpanel"><!-- html to include -->
+<div class="row">
+			<div class="item col-lg-2 col-md-6 mb-4" data-key="1">
+              <div class="card h-100">
+                <img class="card-img-top" src="assets/css/_redcar.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title"><a href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">Chevrolet - Aveo</a></h4>
+                  <div>type: Hatchback</div>
+                  <p class="card-text">Chevrolet Aveo 2010</p>
+                </div>
+                <div class="card-footer">
+                  <a class="btn btn-primary" href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">View</a><span class="card-like"><a href="http://funedge.co.id/optimus/index.php?r=member%2Flike&amp;id=1" onclick="return popError('You have to login as a buyer to do this')">♥</a></span>
+                </div>
+              </div>
+			</div>
+</div>
+</div>
+  <div class="tab-pane fade" id="cartabs2" role="tabpanel"><!-- html to include -->
+<div class="row">
+			<div class="item col-lg-2 col-md-6 mb-4" data-key="1">
+              <div class="card h-100">
+                <img class="card-img-top" src="assets/css/_redcar.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title"><a href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">Chevrolet - Aveo</a></h4>
+                  <div>type: Hatchback</div>
+                  <p class="card-text">Chevrolet Aveo 2010</p>
+                </div>
+                <div class="card-footer">
+                  <a class="btn btn-primary" href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">View</a><span class="card-like"><a href="http://funedge.co.id/optimus/index.php?r=member%2Flike&amp;id=1" onclick="return popError('You have to login as a buyer to do this')">♥</a></span>
+                </div>
+              </div>
+			</div>
+</div>
+</div>
+  <div class="tab-pane fade" id="cartabs3" role="tabpanel"><!-- html to include -->
+<div class="row">
+			<div class="item col-lg-2 col-md-6 mb-4" data-key="1">
+              <div class="card h-100">
+                <img class="card-img-top" src="assets/css/_redcar.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title"><a href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">Chevrolet - Aveo</a></h4>
+                  <div>type: Hatchback</div>
+                  <p class="card-text">Chevrolet Aveo 2010</p>
+                </div>
+                <div class="card-footer">
+                  <a class="btn btn-primary" href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">View</a><span class="card-like"><a href="http://funedge.co.id/optimus/index.php?r=member%2Flike&amp;id=1" onclick="return popError('You have to login as a buyer to do this')">♥</a></span>
+                </div>
+              </div>
+			</div>
+</div>
+</div>
+  <div class="tab-pane fade" id="cartabs4" role="tabpanel"><!-- html to include -->
+<div class="row">
+			<div class="item col-lg-2 col-md-6 mb-4" data-key="1">
+              <div class="card h-100">
+                <img class="card-img-top" src="assets/css/_redcar.png" alt="">
+                <div class="card-body">
+                  <h4 class="card-title"><a href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">Chevrolet - Aveo</a></h4>
+                  <div>type: Hatchback</div>
+                  <p class="card-text">Chevrolet Aveo 2010</p>
+                </div>
+                <div class="card-footer">
+                  <a class="btn btn-primary" href="http://funedge.co.id/optimus/index.php?r=gallery%2Fview&amp;id=1">View</a><span class="card-like"><a href="http://funedge.co.id/optimus/index.php?r=member%2Flike&amp;id=1" onclick="return popError('You have to login as a buyer to do this')">♥</a></span>
+                </div>
+              </div>
+			</div>
+</div>
+</div>
+	</div>
+</div>
+  
+
+	<!--div id="cartabs">
+		  <ul>
+			<li><a href="#cartabs-1">Top Recommend</a></li>
+			<li><a href="#cartabs-2">Top Sales</a></li>
+			<li><a href="#cartabs-3">Hot Car</a></li>
+			<li><a href="#cartabs-4">Best Deal</a></li>
+		  </ul>
+		  
+
+  
+		  <div class="_tab-box">
+		  <div id="cartabs-1" class="row">
+				
+				loading...
+		
+		  </div>
+		  <div id="cartabs-2">
+				
+				loading...
+		
+		  </div>
+		  <div id="cartabs-3">
+				
+				loading...
+		
+		  </div>
+		  <div id="cartabs-4">
+				
+				loading...
+		
+		  </div>
+		  </div>
+	</div-->
+
+<!--          
+              <div style="text-align:center"><form style="margin-top: 1em;">
+	<div id="cartoolbar" role="toolbar" class="ui-controlgroup ui-controlgroup-horizontal ui-helper-clearfix">
+		<input type="radio" id="radio1" name="radio" class="ui-checkboxradio ui-helper-hidden-accessible" checked="checked"><label for="radio1" class="ui-button ui-widget ui-checkboxradio-radio-label ui-controlgroup-item ui-checkboxradio-label ui-corner-left">Top Recommend</label>
+		<input type="radio" id="radio2" name="radio" class="ui-checkboxradio ui-helper-hidden-accessible"><label for="radio2" class="ui-button ui-widget ui-checkboxradio-radio-label ui-checkboxradio-label ui-controlgroup-item">Top Sales</label>
+		<input type="radio" id="radio3" name="radio" class="ui-checkboxradio ui-helper-hidden-accessible"><label for="radio3" class="ui-button ui-widget ui-checkboxradio-radio-label ui-checkboxradio-label ui-controlgroup-item">Hot Car</label>
+		<input type="radio" id="radio4" name="radio" class="ui-checkboxradio ui-helper-hidden-accessible"><label for="radio4" class="ui-button ui-widget ui-checkboxradio-radio-label ui-controlgroup-item ui-checkboxradio-label ui-corner-right">Best Deal</label>
+	</div>
+</form></div>
+          <div class="row" id="home-recommend">
+
+				loading...
+
+          </div>         
+-->
+
+          
+          <!-- /.row -->
+
+        </div>
+        <!-- /.col-lg-9 -->
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+
+
+    </div>
+
+
+ 
+	<!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+              <div class="contact-list-group">
+            	CONTACT US
+                <a href="#" class="contact-list-group-item"><i class="fa fa-phone"></i>001-xxxx</a>
+                <a href="#" class="contact-list-group-item"><i class="fa fa-envelope"></i>emai@email.com</a>
+                <a href="#" class="contact-list-group-item"><i class="fab fa-facebook-square"></i>fb_page</a>
+                <a href="#" class="contact-list-group-item"><i class="fab fa-twitter"></i>twitter_page</a>
+                <a href="#" class="contact-list-group-item"><i class="fab fa-instagram"></i>instagram_page</a>
+              </div>           
+            </div>
+			<div class="col-lg-4">   
+            </div>
+			<div class="col-lg-4">
+              <div class="link-list-group">
+                <a href="#" class="link-list-group-item">TERM AND CONDITION</a>
+                <a href="#" class="link-list-group-item">GREAT VALUE</a>
+                <a href="#" class="link-list-group-item">MONEY BACK GUARANTEE</a>
+                <a href="#" class="link-list-group-item">SHOP WITH CONFIDENT</a>
+                <a href="#" class="link-list-group-item">FAQ</a>
+              </div>       
+            </div>
+        </div>
+        <p class="m-0 text-center text-white">Alamat: Lorem Ipsum</p>
+      </div>
+
+<!-- Modal -->
+<div class="modal fade" id="popError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+		<div></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div class="text-center">
+			<div class="alert alert-danger">
+				
+			</div>			
+		</div>
+      </div>
+      <!-- div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div -->
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="popInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+		<div></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div class="text-center">
+			<div class="alert">
+				
+			</div>			
+		</div>
+      </div>
+      <!-- div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div -->
+    </div>
+  </div>
+</div>
+	  
+<!-- Modal -->
+<div class="modal fade" id="popSelectLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+		<div class="logo-pop"><img src="assets/css/logo.png" alt="Optimus"></div>
+        <!-- h5 class="modal-title" id="exampleModalLabel">Modal title</h5 -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div class="text-center">
+			<h5 class="red">SIGN UP or LOGIN</h5>
+		  <button type="button" class="btn btn-primary" onclick="selectLogin('buyer')">Buyer</button>
+		  <button type="button" class="btn btn-primary" onclick="selectLogin('seller')">Seler</button>
+		</div>
+      </div>
+      <!-- div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div -->
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="popLogin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+		<div class="logo-pop"><img src="assets/css/logo.png" alt="Optimus"></div>
+        <!-- h5 class="modal-title" id="exampleModalLabel">Modal title</h5 -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<div id="logintabs" class="ui-tabs ui-corner-all ui-widget ui-widget-content">
+		  <ul role="tablist" class="ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header">
+			<li role="tab" tabindex="0" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab ui-tabs-active ui-state-active" aria-controls="logintabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#logintabs-1" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-1">Login</a></li>
+			<li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-state-default ui-tab" aria-controls="logintabs-2" aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#logintabs-2" role="presentation" tabindex="-1" class="ui-tabs-anchor" id="ui-id-2">Sign up</a></li>
+		  </ul>
+		  <div class="tab-box">
+		  <div id="logintabs-1" aria-labelledby="ui-id-1" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" aria-hidden="false">
+			<form action="" method="post" id="loginForm">
+			<div class="alert alert-danger" style="display:none">
+			</div>
+			<input name="_csrf-frontend" value="DWC9O4x-piP7GTJ2GKB5F74m4trccNOGTR54Fef87KpABe9NvknzE692VhFf5yhgiVypqL1AmucbfT8hoa2b_g==" type="hidden">
+			  <div class="container">
+			  
+				 <div class="form-group">
+				<label for="username"><b>User Name</b></label>
+				<input placeholder="Enter User Name" class="form-control" name="username" xrequired="" type="text">
+				</div>
+			  
+				 <div class="form-group">
+				<label for="password"><b>Password</b></label>
+				<input placeholder="Enter Password" class="form-control" name="password" xrequired="" type="password">
+				</div>
+				
+				<div class="text-center">
+				  <button type="submit" class="btn btn-primary">Login</button>
+				</div>
+			  </div>
+			</form>
+		  </div>
+		  <div id="logintabs-2" aria-labelledby="ui-id-2" role="tabpanel" class="ui-tabs-panel ui-corner-bottom ui-widget-content" style="display: none;" aria-hidden="true">
+			<form action="" method="post" id="signupForm">
+			<div class="alert alert-danger" style="display:none">
+			</div>
+			<input name="_csrf-frontend" value="DWC9O4x-piP7GTJ2GKB5F74m4trccNOGTR54Fef87KpABe9NvknzE692VhFf5yhgiVypqL1AmucbfT8hoa2b_g==" type="hidden">
+			  <div class="container">
+			  
+				 <div class="form-group">
+				<label for="email"><b>Email</b></label>
+				<input placeholder="Enter Email" class="form-control" name="email" xrequired="" type="text">
+				</div>				
+			  
+				 <div class="form-group">
+				<label for="username"><b>User Name</b></label>
+				<input placeholder="Enter User Name" class="form-control" name="username" xrequired="" type="text">
+				</div>
+			  
+				 <div class="form-group">
+				<label for="password"><b>Password</b></label>
+				<input placeholder="Enter Password" class="form-control" name="password" xrequired="" type="password">
+				</div>
+			  
+				 <div class="form-group">
+				<label for="psw-repeat"><b>Repeat Password</b></label>
+				<input placeholder="Repeat Password" class="form-control" name="password-repeat" xrequired="" type="password">
+				</div>
+							  
+				 <div class="form-group">
+				 <label for="phone"><b>Phone Number</b></label>
+				<input placeholder="Enter Phone Number (Optional)" class="form-control" name="phone" type="text">
+				</div>				
+			  
+				 <div class="form-group">
+				 <label for="code"><img src="assets/css/index.jpg" alt=""></label>
+				<input placeholder="Input Code" name="code" type="text">
+				</div>
+
+				<div class="text-center">
+				  <button type="submit" class="btn btn-primary">Sign Up</button>
+				</div>
+			  </div>
+			</form>
+		  </div>
+		  </div>
+		</div>
+      </div>
+      <!-- div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div -->
+    </div>
+  </div>
+</div>
+	  
+      <!-- /.container -->
+    </footer>
+
+  
+
+<script src="assets/css/jquery_002.js"></script>
+<script src="assets/css/bootstrap.js"></script>
+<script src="assets/css/jquery-ui.js"></script>
+<script src="assets/css/jquery.js"></script>
+
+<script>
+$("#departure_city").chained("#departure_country");
+$("#discharge_city").chained("#discharge_country");
+$("#car_model").chained("#car_make");
+
+function popError(error) {
+  $("#popError .alert").html(error);
+  $('#popError').modal('show');
+  return false;
+}
+
+function selectLogin(select) {
+  urlLogin='';
+  urlSignup='';
+  if(select=='buyer') {
+	  urlLogin='/optimus/index.php?r=buyer%2Flogin';
+	  urlSignup='/optimus/index.php?r=buyer%2Fsignup';
+  }
+  else if(select=='seller') {
+	  urlLogin='/optimus/index.php?r=seller%2Flogin';
+	  urlSignup='/optimus/index.php?r=seller%2Fsignup';
+  }
+  $("#loginForm").prop('action',urlLogin);
+  $("#signupForm").prop('action',urlSignup);
+  
+  $('#popSelectLogin').modal('hide');
+  $('#popSelectLogin').on('hidden.bs.modal', function() {
+		$('#popLogin').modal('show');
+    });
+}
+
+$("#signupForm").submit(function( event ) {
+  event.preventDefault();
+ 
+  var	$form = $( this ),
+		post = $form.serialize(),
+		url = $form.attr("action");
+ 
+  var posting = $.post( url, post);
+ 
+  $form.find(".alert-danger").hide();
+  posting.done(function( data ) {
+	 if(data=='') location.reload();
+	 $form.find(".alert-danger").html(data) ;
+	 $form.find(".alert-danger").show();
+  });
+});
+
+$("#loginForm").submit(function( event ) {
+  event.preventDefault();
+ 
+  var	$form = $( this ),
+		post = $form.serialize(),
+		url = $form.attr("action");
+ 
+  var posting = $.post( url, post);
+  
+  $form.find(".alert-danger").hide();
+  posting.done(function( data ) {
+	 if(data=='') location.reload();
+	 $form.find(".alert-danger").html(data) ;
+	 $form.find(".alert-danger").show();
+  });
+});
+
+$( "#cartoolbar" ).buttonset();
+
+if($( "#carsidesearch" ).length > 0) {
+	/*
+	$( "#carsidesearch" ).accordion({
+      heightStyle: "content",
+	  collapsible: true, 
+	  active: false
+    });
+	*/
+    $.get("index.php?r=gallery/makemodel", function(result){
+        /*
+		$( "#carsidesearch .make ul.menu" ).html(result);
+		$( "#carsidesearch .make ul.menu" ).menu();	
+		*/
+		$("#carsidesearch div.make > ul").html(result);
+    });
+    $.get("index.php?r=gallery/type", function(result){
+		$("#carsidesearch div.type > ul").html(result);
+    });
+    $.get("index.php?r=gallery/category", function(result){
+		$("#carsidesearch div.category > ul").html(result);
+    });
+    $.get("index.php?r=gallery/price", function(result){
+		$("#carsidesearch div.price > ul").html(result);
+    });
+}
+
+if($( "#home-recent" ).length > 0) {
+    $.get("index.php?r=gallery/recent", function(result){
+        $( "#home-recent" ).html(result);
+    });	
+}
+
+if($( "#gallery-result" ).length > 0) {
+    $.post("tools/carlist.php" + window.location.search + "&size=24", {check: 'sent'}, function(result){
+        $( "#gallery-result" ).html(result);
+    });
+}
+
+if($( "#detailtabs" ).length > 0) {
+	$( "#detailtabs" ).tabs();
+}
+
+if($( "#logintabs" ).length > 0) {
+	$( "#logintabs" ).tabs();
+}
+
+
+if($( "#cartabs" ).length > 0) {
+    $.get("index.php?r=gallery/recommend", function(result){
+        $( "#cartabs1" ).html(result);
+        $( "#cartabs2" ).html(result);
+        $( "#cartabs3" ).html(result);
+        $( "#cartabs4" ).html(result);
+    });	
+}
+
+
+$( function() {
+	$( "#slider-range" ).slider({
+	  range: true,
+	  min: 0,
+	  max: 90000,
+	  //values: [ 1000, 300000 ],
+	  slide: function( event, ui ) {
+  		$( "#cars_price1" ).val(ui.values[ 0 ]);
+  		$( "#cars_price2" ).val(ui.values[ 1 ]);
+		$( "#price_amount" ).html( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+	  }
+	});
+	$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+	  " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+} );
+
+
+</script>
+
+<style>
+/*!
+ * Start Bootstrap - Shop Homepage (https://startbootstrap.com/template-overviews/shop-homepage)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-shop-homepage/blob/master/LICENSE)
+ */
+
+body {
+  padding-top: 2px !important;
+}
+
+.row{
+	margin:0;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #cc0000;
+    border-color: #721c24;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #1b1e21;
+    border-color: #721c24;
+}
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #721c24;
+    border-color: #cc0000;
+}
+
+
+.card {
+    border: 0px solid rgba(0, 0, 0, 0.125);
+}
+.card-title {
+    font-size: 16px;
+}
+.card-title a {
+    color: #666666;
+}
+.card-body {
+    padding: 0.25rem;
+}
+.card-footer {
+    padding: 0.75rem 0.25rem;
+}
+
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
+    padding-right: 6px !important;
+    padding-left: 6px !important;
+}
+nav.navbar .container {
+    background-image: url(images/navbar-bg-line.png);
+    background-repeat: repeat-x;
+    background-position: bottom;
+    padding-bottom: 5px;
+}
+.contact-list-group, .link-list-group {
+	color: whitesmoke;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+a.contact-list-group-item{
+    position: relative;
+    display: block;
+    color: whitesmoke;
+}
+a.contact-list-group-item .fa, a.contact-list-group-item .fab {
+    width: 20px;
+}
+a.link-list-group-item{
+    position: relative;
+    display: block;
+    padding: 0;
+    color: whitesmoke;
+}
+p.card-text {
+	font-size: 10px;
+}
+
+.nav-icon {
+    background-position: top center;
+    background-repeat: no-repeat;
+    position: relative;
+	display: block;
+    height: 62px;
+    width: 94px;
+    filter: grayscale(100%) brightness(120%);	
+}
+.nav-icon:hover {
+   filter: sepia(100%) hue-rotate(-50deg) saturate(900%);
+}
+.nav-icon.active {
+   filter: grayscale(0%);
+}
+.nav-icon.home {
+    background-image: url(images/icon-home.png);
+}
+.nav-icon.about {
+    background-image: url(images/icon-people.png);
+}
+.nav-icon.gallery {
+    background-image: url(images/icon-gallery.png);
+}
+.nav-icon.review {
+    background-image: url(images/icon-stars.png);
+}
+.nav-icon.toc {
+    background-image: url(images/icon-note.png);
+}
+.nav-icon.contact {
+    background-image: url(images/icon-phone.png);
+}
+.nav-icon.member {
+    background-image: url(images/icon-person.png);
+}
+.nav-icon span {
+    font-size: 10px;
+	color: red;
+    font-weight: bold;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 9px;
+}
+
+.home-selector {
+    margin: auto;
+    max-width: 760px;
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border: 3px solid grey;
+    width: 100%;
+}
+@media (min-width: 960px) { 
+.home-selector {
+    top: -78px;
+    margin-bottom: -108px;
+}
+}
+
+.card-like {
+    float: right;
+    font-size: 28px;
+    color: gray;
+}
+.card-like a {
+    color: inherit;
+}
+.card-like a:hover {
+    text-decoration: none;
+    color: maroon;
+}
+
+.bg-image-full {
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+#cartoolbar label span {
+    display:none;
+}
+#cartoolbar label.ui-state-active {
+    background-image: url(images/btn-pointer.png);
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    border-color: white;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+#carsidesearch li.nav-item.dropdown.show {
+    background-color: #E5E5E5;
+}
+#carsidesearch .nav-link:hover, #carsidesearch .dropdown-item:hover {
+    background-color: #E5E5E5;
+}
+#carsidesearch .nav-link, #carsidesearch .dropdown-item {
+	color: #666666;
+    padding-left: 2rem;
+}
+.carsidesearch-group {
+    border-bottom: 3px solid red;
+}
+
+.carsidesearch-btn.collapsed {
+    background-color: white;
+	color: red;
+}
+.carsidesearch-btn.collapsed:after {
+    content: "\f0da";
+    float: right;
+	font-family: 'Font Awesome 5 Free';
+}
+.carsidesearch-btn {
+    padding: 0.5em 0.5em 0.5em 2em;
+    color: white;
+	background-color: red;
+    font-weight: bold;
+	cursor: pointer;
+}
+.carsidesearch-group i {
+    padding: 5px;
+}
+.carsidesearch-group .title {
+	color: red;
+    font-weight: bold;
+}
+
+
+/*
+#carsidesearch .btn.btn-block.collapsed {
+    background-color: grey;
+}
+
+#carsidesearch .btn.btn-block {
+    background-color: red;
+	cursor: pointer;
+}
+
+#carsidesearch ul.menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+#carsidesearch .ui-accordion-content {
+    padding: 0;
+}
+
+#carsidesearch .ui-menu {
+    width: 100%;
+}
+*/
+
+div#detailtabs {
+    border: none;
+}
+div#detailtabs.ui-tabs ul.ui-tabs-nav {
+    background-color: transparent;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none;
+}
+div#detailtabs.ui-tabs .ui-tabs-nav li {
+    list-style: none;
+    margin-left: 0;
+    margin-right: 0;
+    width: 25%;
+}
+div#detailtabs.ui-tabs ul.ui-tabs-nav .ui-tabs-anchor {
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+}
+div#detailtabs.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
+    background-image: url(images/btn-pointer.png);
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+div#detailtabs .tab-box {
+    border: 1px red solid;
+}
+
+
+ul#cartabs li.nav-item{
+	border: none;
+}
+ul#cartabs li.nav-item .nav-link{
+    /*
+	border-right: 1px solid #c5c5c5;
+	border-top: 1px solid #c5c5c5;
+	border-bottom: 1px solid #c5c5c5;
+	*/
+	border: 1px solid #c5c5c5;
+	margin-left: -1px;
+	border-radius: 0;
+	padding:8px 10px;
+    color: #666666;      
+}
+ul#cartabs li.nav-item:first-child .nav-link{
+	border-left: 1px solid #c5c5c5;
+}
+ul#cartabs li.nav-item .nav-link.active{
+    /*
+	border-left: 1px solid #cc0000;
+	border-top: 1px solid #cc0000;
+	border-right: 1px solid #cc0000;
+	*/
+	border: 1px solid #cc0000;
+	margin-left: -1px;
+	background-color: #cc0000;
+	border-radius: 0;
+    background-image: url(images/btn-pointer.png);
+    background-size: 12px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    border-bottom: none;
+    padding-bottom: 9px;
+    color: white !important;   
+}
+
+div#logintabs {
+    border: none;
+}
+div#logintabs.ui-tabs ul.ui-tabs-nav {
+    background-color: transparent;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none;
+}
+div#logintabs.ui-tabs .ui-tabs-nav li {
+    list-style: none;
+    margin-left: 0;
+    margin-right: 0;
+    width: 50%;
+}
+div#logintabs.ui-tabs ul.ui-tabs-nav .ui-tabs-anchor {
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 100%;
+    overflow: hidden;
+}
+div#logintabs.ui-tabs ul.ui-tabs-nav li.ui-tabs-active {
+    background-image: url(images/btn-pointer.png);
+    background-size: 14px;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+div#logintabs .tab-box {
+    border-top: 1px #dddddd solid;
+}
+
+.modal-header .logo-pop {
+    margin: auto;
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+.modal .modal-content {
+    border: 2px red solid;
+}
+
+
+
+.mini-box {
+    background-color: #f6f6f6;
+    height: 90%;
+    border-radius: 10px;
+    padding: 10px 10px 25px 10px;
+}
+.navbar-nav {
+	display:block;
+}
+.navbar-nav li.nav-item {
+	height: 56px;
+    display: inline-block;
+}
+.ui-widget-content a {
+    display: block;	
+}
+.card-img-top {
+    border: 1px solid #C5C5C5;
+}
+
+.home-header {
+    padding-bottom: 29%;
+    width: 90%;
+    margin: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+</style>
+
+
+
+</body></html>

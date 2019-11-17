@@ -1,0 +1,456 @@
+.left-menu{
+  margin-top: 50px;
+}
+
+.left-menu-div{
+  background-color:#e7e8ea;
+}
+.negotiation-tab .active{
+  background: #BFBFBF;
+}
+.negotiation-list{
+  display:block; width:150px;text-align: center;
+}
+.negotiation-list a{
+  color:#000;
+}
+.right-menu-div{
+  background-color:#fff;
+}
+
+.margin-top10{
+  margin-top: 10px;
+}
+
+.recommend-content{
+  margin-top:50px;
+}
+.full-container{
+  width: 100%;
+}
+.clickable:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+#tbl-history table, #total_negotiation_div table {
+  border: solid 1px #000;
+  border-radius: 5px;
+}
+#tbl-history table td, #tbl-history table th, #total_negotiation_div table td,#total_negotiation_div table th{
+  padding: 10px;
+  border: solid 1px #000;
+}
+@media (max-width: 576px) {
+  .hidden-xs {
+    display: none;
+  }
+}
+
+
+.historytabs{
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+.historytabs ul{
+  text-align: center;
+}
+.historytabs ul li{
+  width:50%;
+  padding: 10px;
+  text-align: center;
+  border: 1px red solid;
+}
+.historytabs .tab-content{
+  border: 1px red solid;
+  width:100%;
+  padding-top:5px;
+  padding-bottom:5px;
+  padding-left:2px;
+  padding-right:2px;
+}
+
+.historytabs ul li a{
+  color: #000;
+  width: 100%;
+  display : block;
+}
+
+.historytabs ul li a.active{
+  background: #990000;
+  color: #fff;
+}
+
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.left-menu-bar li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color on hover */
+.left-menu-bar li a:hover {
+    background-color: #f1f1f1;
+    color: #000;
+    text-decoration: none
+}
+
+.recommendation-container{
+  background: #EFF3F6;
+  min-height: 150px;
+}
+
+.filter-div{
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 30px;
+  font-weight: bold;
+}
+
+.modal-dialog{
+  max-width:1200px !important;
+  width:90%;
+}
+.nopadding{
+  padding: 0px !important;
+}
+.dark-div{
+  background: #555555;
+  color:#fff;
+}
+.row-border{
+  border:1px #ddd solid;
+}
+.group-div{
+  border:1px solid;
+}
+
+.height5{
+  height:5px !important;
+}
+.fullwidth{
+  width:100%;
+}
+.accessories td{
+  width:20%;
+  padding:5px;
+  border:1px solid #000;
+  text-align: center;
+  height:60px;
+  cursor: pointer;
+}
+.height50{
+  height:50px !important;
+}
+.wraper{
+  margin-top:50px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.admin-title{
+  color:#FF0000;
+}
+
+.admin-content{
+  color:#000;
+}
+
+.admin-content>.row{
+  padding:5px;
+}
+
+.chatbox{
+  height:500px;
+  overflow-y: auto;  
+}
+
+.chat-input-div form{
+  width:100%;
+}
+
+.chat-btn-div{
+  vertical-align:middle;
+  position:relative;
+  margin:auto;
+  text-align: center
+}
+
+.send-chat-btn{
+  width:100px;
+}
+.negotiation-term{
+  border: #DFDFDF 1px solid;
+  padding: 10px;
+}
+.height10{
+  height: 10px;
+}
+
+.user-chat-div{
+  background-color: #FFDDDD; 
+  padding:10px;
+  border-radius: 5px;
+}
+.sales-chat-div{
+  background-color: #DDDDFF;
+  padding:10px;
+  border-radius: 5px;
+}
+
+.title{
+  color:red;
+  font-size: 25px;
+}
+
+.background1{
+  background-color: #e7e8ea;
+}
+
+.header_table{
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.color-red{
+  color:red;
+}
+
+.proformainvoice-header{
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: solid 1px #DFDFDF;
+}
+
+.proformainvoice-content{
+  padding: 10px;
+}
+
+.input-style{
+  border: solid 2px #e7e7e7 !important;
+}
+.checkout-btn{
+  width:80%;
+  border-radius: 25px;
+}
+.inv-sub-span{
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+  color: #000;
+  white-space: nowrap;
+  width:100%;
+  display:block;
+}
+.padding5{
+  padding:5px;
+}
+.height30{
+  height:30px;
+}
+.car-box{
+  border:1px solid #DFDFDF;
+  text-align: center;
+  background-color: #ececec;
+  padding: 10px;
+}
+.car-box img{
+  padding:10px;
+}
+
+.car-cf-price{
+  background-color: #f2a4a4;
+}
+
+.header-pay-div{
+ border-bottom: dotted 1px;
+}
+
+.track-btn{
+  width:100%;
+  border-radius: 10px !important;
+}
+
+.result-tracking{
+  height:50px;
+}
+
+.child-menu{
+  padding-left: 15px;
+}
+
+#sidebar {
+    color: #900;
+    transition: all 0.3s;
+}
+
+#sidebar a{
+    color: #900;
+}
+
+#sidebar.active {
+    margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 5px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: #DFDFDF;
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+.notif{
+  border:solid 1px #990000;
+  color:#fff;
+  border-radius: 50%;
+  font-size: 10px;
+  background-color: #990000;
+  padding:3px;
+  font-weight:bold;
+}
+
+.unread-negotiation{
+  background-color: #F99 !important;
+}
+.select2-container{
+  width: 100% !important;
+}
+.select2-container--default .select2-selection--single{
+  border: solid #cdcdcd 2px;
+  border-radius:0px;
+  -moz-border-radius: 0px;
+  height: 40px;
+}
+textarea .disabled{
+  
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: red; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000; 
+}
+.datetimepicker .table-condensed tr td{
+  border:solid 1px #DFDFDF;
+  text-align: center;
+  width: 30px;
+}
+.datetimepicker .table-condensed tr td:hover{
+  cursor: pointer;
+}
+
+.modal-sm{
+  width :300px;
+}
+
+.datetimepicker .table-condensed tr td.old,
+.datetimepicker .table-condensed tr td.new {
+  color: #AFAFAF !important;
+  background: #EEEEEE;
+  cursor: not-allowed;
+}
+
+.datetimepicker .table-condensed tr td.active{
+  font-weight:bold;
+  background:#990000;
+  color:#fff;
+  border-radius: 5px;
+}
+
+.datetimepicker .table-condensed .switch{
+  text-align: center;
+}
+.datetimepicker .table-condensed .month{
+  border:1px solid;
+  text-align: center;
+  padding:5px;
+}
+
+.datetimepicker .table-condensed .month:hover{
+  background:#DFDFDF;
+}
+
+.datetimepicker .table-condensed .month.active{
+  font-weight:bold;
+  background:#990000;
+  color:#fff;
+}
+.datetimepicker .table-condensed .year{
+  border:1px solid;
+  text-align: center;
+  padding:5px;
+}
+
+.datetimepicker .table-condensed .year:hover{
+  background:#DFDFDF;
+}
+
+.datetimepicker .table-condensed .year.active{
+  font-weight:bold;
+  background:#990000;
+  color:#fff;
+}
+
+.datetimepicker .table-condensed tr th.next{
+  text-align: right;
+}

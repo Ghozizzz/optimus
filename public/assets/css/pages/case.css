@@ -1,0 +1,193 @@
+.case{
+        margin-top:100px;
+        padding-bottom: 30px;
+    }
+    
+    .site-header{
+        background: #b1df73 none repeat scroll 0 0;
+    }
+    
+    #main-div {
+    width: 35%;
+    height: 0;
+    position: relative;
+    padding-bottom: 35%;
+    /*border: solid 1px black;*/
+    margin: auto;
+}
+.box {
+    height:100%;
+    width:100%;
+    position: absolute;
+}
+.diamond1 {
+    border : solid 4px;
+    border-color : rgb(131,201,101);
+    -webkit-transform: translate(-25%, 30%) rotate(45deg);
+    width: 50%;
+    height: 50%;
+    cursor: pointer;
+}
+.diamond1 .text{
+    -webkit-transform: rotate(-45deg);
+    margin-top: 40%;
+}
+
+a .diamond1 .text{
+    color: rgb(163,184,133);
+    font-family:robotolight;
+}
+a .diamond2 .text{
+    color: rgb(163,184,133);
+    font-family:robotolight;
+}
+a .diamond3 .text{
+    color: rgb(163,184,133);
+    font-family:robotolight;
+}
+
+.diamond2 {
+    border : solid 4px;
+    border-color : rgb(131,201,101);
+    -webkit-transform: translate(50%, 110%) rotate(45deg);
+    width: 50%;
+    height: 50%;
+    cursor: pointer;
+}
+.diamond2 .text{
+    -webkit-transform: rotate(-45deg);
+    margin-top: 40%;
+}
+.diamond3 {
+    border : solid 4px;
+    border-color : rgb(131,201,101);
+    -webkit-transform: translate(125%, 30%) rotate(45deg);
+    width: 50%;
+    height: 50%;
+    cursor: pointer;
+}
+.diamond3 .text{
+    -webkit-transform: rotate(-45deg);
+    margin-top: 40%;
+}
+
+#page-div{
+    position:relative;padding-top:100px; text-align:center; margin:auto; font-weight: bold; font-size: 14;
+}
+
+#page-div p{color:#8F8; font-weight: bold}
+
+.green-box {
+    background-color: #fff;
+    border: 4px solid #8f8;
+    padding: 30px;
+    z-index: 10;
+}
+
+.green-box .case-headline{
+    font-weight:bold;
+    padding:10px;
+}
+.green-box .case-headline h3{
+    font-weight:bold;
+    font-size:16px;
+}
+
+.green-box .client{
+    margin-top:20px;
+    padding:10px;
+}
+
+.green-box .client h3{
+    font-weight:bold;
+    font-size:16px;
+    padding-bottom: 10px;
+}
+
+.green-box .challenge{
+    margin-top:20px;
+    padding:10px;
+}
+
+.green-box .challenge h3{
+    font-weight:bold;
+    font-size:16px;
+    padding-bottom: 10px;
+}
+.picture {
+        padding:50px;
+    }
+    
+@media (max-width: 767px){
+    .picture {
+        padding:10px;
+    }
+}
+
+
+
+#tree1{
+    position: fixed;
+    bottom : -20px;
+    left : -430px;
+}
+
+#tree2{
+    position: fixed;
+    bottom : -30px;
+    right : -350px;
+}
+
+
+@media all and (max-width:700px ) {
+    #tree1{
+        width:150%;
+    }
+
+    #tree2{
+        width:130%;
+    }
+    
+    .diamond1 {
+        border : solid 4px;
+        border-color : rgb(131,201,101);
+        -webkit-transform: translate(0%, 30%) rotate(45deg);
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    .diamond1 .text{
+        -webkit-transform: rotate(-45deg);
+        margin-top: 30%;
+    }
+    
+    .diamond2 {
+        border : solid 4px;
+        border-color : rgb(131,201,101);
+        -webkit-transform: translate(0%, 180%) rotate(45deg);
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    .diamond2 .text{
+        -webkit-transform: rotate(-45deg);
+        margin-top: 30%;
+    }
+    .diamond3 {
+        border : solid 4px;
+        border-color : rgb(131,201,101);
+        -webkit-transform: translate(0%, 330%) rotate(45deg);
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    .diamond3 .text{
+        -webkit-transform: rotate(-45deg);
+        margin-top: 30%;
+    }
+    
+    #page-div{
+        padding-top : 500px;
+    }
+
+    }

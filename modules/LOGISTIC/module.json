@@ -1,0 +1,15 @@
+{
+    "name": "LOGISTIC",
+    "alias": "logistic",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\LOGISTIC\\Providers\\LOGISTICServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}

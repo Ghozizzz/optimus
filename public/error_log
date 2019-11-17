@@ -1,0 +1,22 @@
+[22-Sep-2018 10:15:05 UTC] PHP Fatal error:  Call to undefined function App\Http\Controllers\attr_get() in /home/funed713/public_html/optimus_new/app/Http/Controllers/API.php on line 20
+[22-Sep-2018 10:15:46 UTC] PHP Fatal error:  Call to undefined function App\Http\Controllers\attr_get() in /home/funed713/public_html/optimus_new/app/Http/Controllers/API.php on line 20
+[22-Sep-2018 10:21:18 UTC] PHP Fatal error:  Class 'App\Http\Controllers\APP' not found in /home/funed713/public_html/optimus_new/app/Http/Controllers/API.php on line 19
+[22-Sep-2018 10:22:43 UTC] PHP Fatal error:  Class 'App\Http\Controllers\Mail' not found in /home/funed713/public_html/optimus_new/app/Http/Controllers/API.php on line 21
+[22-Sep-2018 10:45:00 UTC] PHP Fatal error:  Class 'App\Http\Controllers\Mail' not found in /home/funed713/public_html/optimus_new/app/Http/Controllers/API.php on line 21
+[22-Sep-2018 10:46:56 UTC] PHP Fatal error:  Class 'App\Http\Controllers\Mail' not found in /home/funed713/public_html/optimus_new/app/Http/Controllers/API.php on line 21
+[24-Sep-2018 09:58:24 UTC] PHP Fatal error:  Class 'Modules\Dealers\Http\Controllers\API' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 39
+[24-Sep-2018 10:00:26 UTC] PHP Fatal error:  Class 'Modules\Dealers\Http\Controllers\API' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 39
+[24-Sep-2018 10:02:17 UTC] PHP Fatal error:  Class 'modules\DEALERS\Models\dealersModel' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 14
+[24-Sep-2018 10:02:53 UTC] PHP Fatal error:  Class 'modules\DEALERS\Models\dealersModel' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 14
+[24-Sep-2018 10:03:36 UTC] PHP Fatal error:  Class 'modules\DEALERS\Models\dealersModel' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 14
+[24-Sep-2018 10:03:39 UTC] PHP Fatal error:  Class 'modules\DEALERS\Models\dealersModel' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 14
+[24-Sep-2018 10:04:23 UTC] PHP Fatal error:  Class 'Modules\Dealers\Http\Controllers\API' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 39
+[24-Sep-2018 10:05:07 UTC] PHP Fatal error:  Class 'API' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 40
+[24-Sep-2018 10:05:48 UTC] PHP Fatal error:  Class 'Modules\DEALERS\Models\dealersModel' not found in /home/funed713/public_html/optimus_new/modules/DEALERS/Http/Controllers/DEALERSController.php on line 15
+[29-Sep-2018 16:57:31 UTC] PHP Parse error:  syntax error, unexpected ':', expecting '(' in /home/funed713/public_html/optimus_new/storage/framework/views/d13054d8032ceccb3815e62b581d7c2f66a15e2e.php on line 293
+[29-Sep-2018 16:59:35 UTC] PHP Parse error:  syntax error, unexpected ':', expecting '(' in /home/funed713/public_html/optimus_new/storage/framework/views/d13054d8032ceccb3815e62b581d7c2f66a15e2e.php on line 293
+[29-Sep-2018 18:22:12 UTC] PHP Fatal error:  Call to undefined method Modules\Admin\Models\adminModel::user() in /home/funed713/public_html/optimus_new/modules/Admin/Http/Controllers/AdminController.php on line 552
+[13-Jan-2019 19:42:14 UTC] PHP Fatal error:  Class 'Intervention\Image\Exception\ImageException' not found in /home/funed713/public_html/optimus_new/vendor/intervention/image/src/Intervention/Image/Exception/NotReadableException.php on line 5
+[13-Jan-2019 19:42:14 UTC] PHP Fatal error:  Class 'Intervention\Image\Exception\ImageException' not found in /home/funed713/public_html/optimus_new/vendor/intervention/image/src/Intervention/Image/Exception/NotReadableException.php on line 5
+[13-Jan-2019 19:43:04 UTC] PHP Fatal error:  Class 'Intervention\Image\Exception\ImageException' not found in /home/funed713/public_html/optimus_new/vendor/intervention/image/src/Intervention/Image/Exception/NotReadableException.php on line 5
+[13-Jan-2019 19:43:04 UTC] PHP Fatal error:  Class 'Intervention\Image\Exception\ImageException' not found in /home/funed713/public_html/optimus_new/vendor/intervention/image/src/Intervention/Image/Exception/NotReadableException.php on line 5
