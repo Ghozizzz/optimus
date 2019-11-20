@@ -11,8 +11,7 @@
         "milon/barcode": "^5.2",
         "phpmailer/phpmailer": "^6.0",
         "guzzlehttp/guzzle": "^6.2",
-        "elibyy/tcpdf-laravel": "5.2.*",
-        "intervention/image": "^2.5"
+        "elibyy/tcpdf-laravel": "5.2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
