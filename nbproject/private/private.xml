@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/layouts/menu.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/layouts/footer.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/customer/left_menu.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/customer/invoice.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/customer/new_negotiation.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/customer/wishlist.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/app/Models/Front_model.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/customer/receive_item.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/public/assets/js/main.js</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/customer/negotiation_menu.blade.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/app/Http/routes.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/app/Http/Controllers/DashboardController.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/app/Http/Controllers/HomeController.php</file>
+            <file>file:/C:/xampp/htdocs/optimus/resources/views/layouts/master.blade.php</file>
+        </group>
+    </open-files>
+</project-private>
