@@ -1508,16 +1508,21 @@ function updateData() {
   data.append('editYoutube', $('#editYoutube').val());
   data.append('editSellingPoint', $('#editSellingPoint').val());
   data.append('editAccessories', JSON.stringify(accessories));
+
+  y = 0;
   var picture = [];
   for (x in fileList) {
-    picture[x] = {
-      'picture': fileList[x]['serverFileName']
+    if(fileList[x]['serverFileName']!=null){
+      picture[y] = {
+        'picture': fileList[x]['serverFileName']
+      }
+      y++;
     }
   }
 
   uploaded_picture = [];
-  $(".photo-grid-item").each(function (x) {
-    uploaded_picture[x] = {
+  $(".photo-grid-item").each(function (y) {
+    uploaded_picture[y] = {
       'picture': $(this).data('img')
     };
   });
