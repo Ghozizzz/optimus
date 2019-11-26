@@ -955,9 +955,10 @@ $(document).ready(function() {
                 } else {
                   cropped = false;
                   this.on("success", function(file, serverFileName) {
-                    // console.log(cropped);
-                    fileList[photo_counter] = {"serverFileName" : serverFileName.filename, "fileName" : file.name, "fileId" : photo_counter };
-                    console.log(photo_counter);
+                    if(serverFileName!=null){
+                      fileList[photo_counter] = {"serverFileName" : serverFileName.filename, "fileName" : file.name, "fileId" : photo_counter };
+                      console.log(photo_counter);
+                    }
                   });
 
                   this.on("removedfile", function(file) {
@@ -968,7 +969,7 @@ $(document).ready(function() {
                         delete fileList[x];
                       }
                     }
-                    console.log('rmvFile='+ rmvFile);
+                    // console.log('rmvFile='+ rmvFile);
                     if(rmvFile!=''){
                       $.ajax({
                         type: 'POST',
@@ -1008,6 +1009,7 @@ $(document).ready(function() {
           photo_counter++;
           console.log('success ='+photo_counter);
           $("#photoCounter").text("(" + photo_counter + ")");
+          console.log(fileList);
         }
   });
 
@@ -1358,11 +1360,17 @@ function newData() {
     return false;
   }
 
+  y = 0;
   for (x in fileList) {
-    picture[x] = {
-      'picture': fileList[x]['serverFileName']
+    if(fileList[x]['serverFileName']!=null){
+      picture[y] = {
+        'picture': fileList[x]['serverFileName']
+      }
+      y++;
     }
   }
+  // console.log(picture);
+  // console.log(JSON.stringify(picture));
   data.append('newPicture', JSON.stringify(picture));
   $.ajax({
     url: "{{ URL::to('/') }}/admin/car/save",
