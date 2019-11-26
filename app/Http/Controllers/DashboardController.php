@@ -259,11 +259,31 @@ class DashboardController extends Controller {
   
   public function documentCopies(){
     $session = Session::get(null);
-    $this->optimus['document'] = Front_model::getDocumentCopy('',$session['invoice']->id);  
+    $this->optimus['documents'] = Front_model::getDocumentCopy('',$session['invoice']->id);
+    if ($this->optimus['documents'] !== null) {
+        $document = [];
+        foreach ($this->optimus['documents'] as $key => $value) {
+          if ($value->category == 'bl') {
+            $document['bl'] = $value->filename;
+          }
+          if ($value->category == 'invoice') {
+            $document['invoice'] = $value->filename;
+          }
+          if ($value->category == 'registration_certificate') {
+            $document['registration_certificate'] = $value->filename;
+          }
+          if ($value->category == 'inspection_certificate') {
+            $document['inspection_certificate'] = $value->filename;
+          }
+          if ($value->category == 'marine_insurance') {
+            $document['marine_insurance'] = $value->filename;
+          }
+        }
+      }  
 
     $this->optimus['config'] = API::getDefaultConfig();
     
-    return view('customer.document_copies', compact('session'))->with($this->optimus);
+    return view('customer.document_copies', compact('session', 'document'))->with($this->optimus);
   }
   
   public function originalDocument(){
@@ -989,7 +1009,7 @@ class DashboardController extends Controller {
     
     $this->optimus['config'] = API::getDefaultConfig();
     
-    return view('customer.receive_item', compact('session','review'))->with($this->optimus);
+    return view('customer.receive_item', compact('session'))->with($this->optimus);
   }
   
   function session(){

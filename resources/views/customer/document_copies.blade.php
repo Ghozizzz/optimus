@@ -30,24 +30,43 @@
           <table class="table table-striped">
           <thead>
             <tr>
-              <th width="10%">No</th>
-              <th width="90%">File</th>              
+              <th width="10%">No</th>             
+              <th>Document</th>
+              <th width="50%">File</th> 
+              <th></th>
             </tr>
           </thead>
           <tbody>
-          @if(count($document)>0)
-            
-          <?php $i = 1; ?>
-            @foreach($document as $d)
             <tr>
-              <td>{{ $i }}</td>              
-              <td><a href="{{URL::to('/')}}/uploads/documents/{{ $d->filename }}">{{ $d->filename }}</a></td>              
+              <td>1</td>
+              <td>BL</td>
+              <td><?= (isset($document['bl']) ? '<a href="'.URL::to('/').'/uploads/documents/'.$document['bl'].'">'.$document['bl'].'</a>' : '-') ?></td>
+              <td>
             </tr>
-            <?php $i++ ?>
-            @endforeach
-          
-        
-          @endif
+            <tr>
+              <td>2</td>
+              <td>Invoice</td>
+              <td><?= (isset($document['invoice']) ? '<a href="'.URL::to('/').'/uploads/documents/'.$document['invoice'].'">'.$document['invoice'].'</a>' : '-') ?></td>
+              <td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>De-registration certificate</td>
+              <td><?= (isset($document['registration_certificate']) ? '<a href="'.URL::to('/').'/uploads/documents/'.$document['registration_certificate'].'">'.$document['registration_certificate'].'</a>' : '-') ?></td>
+              <td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Inspection certificate</td>
+              <td><?= (isset($document['inspection_certificate']) ? '<a href="'.URL::to('/').'/uploads/documents/'.$document['inspection_certificate'].'">'.$document['inspection_certificate'].'</a>' : '-') ?></td>
+              <td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Marine Insurance</td>
+              <td><?= (isset($document['marine_insurance']) ? '<a href="'.URL::to('/').'/uploads/documents/'.$document['marine_insurance'].'">'.$document['marine_insurance'].'</a>' : '-') ?></td>
+              <td>
+            </tr>
           </tbody>
           </table>
           <div class="height30"></div>

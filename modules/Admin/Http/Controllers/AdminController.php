@@ -2244,7 +2244,7 @@ class AdminController extends Controller {
           //reject
           $text = 'Invoice payment has been rejected.<br> Please input next payment using <a href='.route('admin.paymentConfirmation',['invoice_id'=>$invoice->id]).'>this link</a> before : '. date('d M Y', strtotime($invoice->due_date));
         }else{
-          $text = 'Invoice payment have been confirm and have been completely paid. Balance leave : USD '. ($total_amount - $total_payment) .' We will waiting for your next payment.<br> Please input next payment using <a href='.route('admin.paymentConfirmation',['invoice_id'=>$invoice->id]).'>this link</a> before : '. date('d M Y', strtotime($invoice->due_date));
+          $text = 'Invoice payment have been confirm and have been completely paid. Balance leave : USD '. number_format(($total_amount - $total_payment),0,'.',',') .' We will waiting for your next payment.<br> Please input next payment using <a href='.route('admin.paymentConfirmation',['invoice_id'=>$invoice->id]).'>this link</a> before : '. date('d M Y', strtotime($invoice->due_date));
         }
         
         $this->sendChat(
