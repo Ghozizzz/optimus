@@ -12,6 +12,7 @@
       font-size: 12px;
     }
   }
+  .modal { overflow-y: auto }
 </style>
 @stop
 @section('content')
@@ -828,7 +829,7 @@
               <div class="jumbotron how-to-create" >
                 <h3>Images <span id="photoCounter"></span></h3>
                 <br />
-                {!! Form::open(['class' => 'dropzone', 'files'=>true, 'id'=>'my-dropzone']) !!}
+                {!! Form::open(['class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
                 <div class="dz-clickable">
                   <div class="dz-message">
                     <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
@@ -918,40 +919,115 @@
   <script src="{{ URL::to('/') }}/assets/js/dropzone.js" type="text/javascript"></script>
   <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>  
   <script src="{{ URL::to('/') }}/assets/js/jquery-sortable-photos.js" type="text/javascript"></script>
-  <script src="{{ URL::to('/') }}/assets/js/jquery-cropper.js"></script>
+  <!-- <script src="{{ URL::to('/') }}/assets/js/jquery-cropper.js"></script> -->
   <script src="{{ URL::to('/') }}/assets/js/cropper.min.js"></script><!-- Cropper.js is required -->
   <script>
     var web_url = '{{$web_url}}';
-    var photo_counter = 1;
+    var photo_counter = 0;
     var fileList = new Array;
     var image_asset_url = "{{URL::to('/').'/uploads/car/'}}";
     var uploaded_picture = [];
     var model_id = '';
 
+
 $(document).ready(function() {
   // window.Cropper;
-  // Dropzone.autoDiscover = false;
+  Dropzone.autoDiscover = false;
   var c = 0;
 
   var cropped = false;
+  var realDropzone = new Dropzone("#real-dropzone", {
+          url: "{{route('upload-post')}}",
+          uploadMultiple: false,
+          maxFilesize: 4,
+          previewsContainer: '#dropzonePreview',
+          previewTemplate: document.querySelector('#preview-template').innerHTML,
+          addRemoveLinks: true,
+          dictRemoveFile: 'Remove',
+          dictFileTooBig: 'Image is bigger than 4MB',
+          // The setting up of the dropzone
+          init:function() {
+            // console.log(cropped);
+              this.on('addedfile', function(file) {
+                if(cropped==false){
+                  this.removeFile(file);
+                  cropper(file);
+                } else {
+                  cropped = false;
+                  this.on("success", function(file, serverFileName) {
+                    // console.log(cropped);
+                    fileList[photo_counter] = {"serverFileName" : serverFileName.filename, "fileName" : file.name, "fileId" : photo_counter };
+                    console.log(photo_counter);
+                  });
 
-  var myDropzone = new Dropzone('#my-dropzone', {
-    // url: "upload-post",
-    previewsContainer: '#dropzonePreview',
-    previewTemplate: document.querySelector('#preview-template').innerHTML,
-    addRemoveLinks: true,
-    parallelUploads: 1,
-    uploadMultiple: false,
-    createImageThumbnails: true,
-    autoProcessQueue: false,
-    maxFiles: 10,
-    init:function(){
+                  this.on("removedfile", function(file) {
+                    var rmvFile = "";
+                    for (x in fileList){
+                      if (fileList[x].fileName == file.name){
+                        rmvFile = fileList[x].serverFileName;
+                        delete fileList[x];
+                      }
+                    }
+                    console.log('rmvFile='+ rmvFile);
+                    if(rmvFile!=''){
+                      $.ajax({
+                        type: 'POST',
+                        url: 'upload/delete',
+                        data: {id: rmvFile, _token: $('#csrf-token').val()},
+                        dataType: 'html',
+                        success: function(data){
+                          var rep = JSON.parse(data);
+                          console.log(rep);
+                          if (rep.error == 0){
+                            photo_counter--;
+                            $("#photoCounter").text("(" + photo_counter + ")");
+                          }
+                        }
+                      });
+                    }
+                  });
+                }
+              });
+
+        },
+        error: function(file, response) {
+          if ($.type(response) === "string")
+                  var message = response; //dropzone sends it's own error messages in string
+          else
+                  var message = response.message;
+          file.previewElement.classList.add("dz-error");
+          _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          node = _ref[_i];
+          _results.push(node.textContent = message);
+          }
+          return _results;
+        },
+        success: function(file, done) {
+          photo_counter++;
+          console.log('success ='+photo_counter);
+          $("#photoCounter").text("(" + photo_counter + ")");
+        }
+  });
+
+  var dataURItoBlob = function (dataURI) {
+    var byteString = atob(dataURI.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type: 'image/jpeg'});
+  };
+
         var cropper = function(file) {
         var fileName = file.name;
+        console.log(fileName);
         var loadedFilePath = getSrcImageFromBlob(file);
         // @formatter:off
         var modalTemplate =
-          '<div class="modal fade" tabindex="-1" role="dialog">' +
+          '<div class="modal fade" tabindex="-2" role="dialog" id="cropModal">' +
           '<div class="modal-dialog" role="document">' +
           '<div class="modal-content">' +
           '<div class="modal-header">' +
@@ -959,7 +1035,7 @@ $(document).ready(function() {
           '</div>' +
           '<div class="modal-body">' +
           '<div class="cropper-container" style="height:400px;">' +
-          '<img id="img-' + ++c + '" src="' + loadedFilePath + '" data-vertical-flip="false" data-horizontal-flip="false">' +
+          '<img id="img-' + ++c + '" src="' + loadedFilePath + '" data-vertical-flip="false" data-horizontal-flip="false" style="max-width: 100%;">' +
           '</div>' +
           '</div>' +
           '<div class="modal-footer">' +
@@ -979,8 +1055,7 @@ $(document).ready(function() {
         var $cropperModal = $(modalTemplate);
 
         $cropperModal.modal('show').on("shown.bs.modal", function() {
-          var $image = $('#img-' + c);
-          var cropper = $image.cropper({
+          var cropper = new Cropper(document.getElementById('img-' + c), {
               aspectRatio: 1 / 1,
               cropBoxResizable: false,
               movable: true,
@@ -989,43 +1064,38 @@ $(document).ready(function() {
               viewMode: 2,
               minContainerWidth: 250,
               maxContainerWidth: 250
+              // initialAspectRatio: 500
             })
-            .on('hidden.bs.modal', function() {
-              $image.cropper('destroy');
-            });
+            var $this = $(this);
+            $this
+            .on('click', '.crop-upload', function () {
+                // get cropped image data
+                var blob = cropper.getCroppedCanvas({
+                  width: 1024,
+                  height: 1024,
+                  minWidth: 0,
+                  minHeight: 0,
+                  maxWidth: 1024,
+                  maxHeight: 1024,
+                  imageSmoothingEnabled: false,
+                  imageSmoothingQuality: 'high',}).toDataURL();
+                // transform it to Blob object
+                var croppedFile = dataURItoBlob(blob);
+                croppedFile.name = fileName;
 
-          $cropperModal.on('click', '.crop-upload', function() {
-              // get cropped image data
-              $image.cropper('getCroppedCanvas', {
-                width: 160,
-                height: 90,
-                minWidth: 256,
-                minHeight: 256,
-                maxWidth: 4096,
-                maxHeight: 4096,
-                fillColor: '#fff',
-                imageSmoothingEnabled: false,
-                imageSmoothingQuality: 'high'
-              }).toBlob(function(blob) {
-                var croppedFile = blobToFile(blob, fileName);
-                // console.log(croppedFile);
-                
-                croppedFile.accepted = true;
-                var files = myDropzone.getAcceptedFiles();
+                var files = realDropzone.getAcceptedFiles();
                 for (var i = 0; i < files.length; i++) {
-                  var file = files[i];
-                  if (file.name === fileName) {
-                    myDropzone.removeFile(file);
-                  }
+                    var file = files[i];
+                    if (file.name === fileName) {
+                        realDropzone.removeFile(file);
+                    }
                 }
-
                 cropped = true;
-
-                myDropzone.files.push(croppedFile);
-                myDropzone.emit('addedfile', croppedFile);
-                myDropzone.createThumbnail(croppedFile); //, width, height, resizeMethod, fixOrientation, callback)
-                $cropperModal.modal('hide');
-              });
+                // realDropzone.files.push(croppedFile);  
+                // realDropzone.emit('addedfile', croppedFile);
+                realDropzone.createThumbnail(croppedFile);
+                realDropzone.addFile(croppedFile);
+                $this.modal('hide');
             })
             .on('click', '.rotate-right', function() {
               $image.cropper('rotate', 90);
@@ -1055,51 +1125,8 @@ $(document).ready(function() {
               }
             });
         });
-      };
-      this.on('addedfile', function(file) {
-      if (!cropped) {
-        this.removeFile(file);
-        cropper(file);
-      } else {
-        cropped = false;
-        var previewURL = URL.createObjectURL(file);
-          // console.log(file);
-
-          $(this.element).addClass("dropzone");
-          this.on("success", function(file, serverFileName) {
-            fileList[photo_counter] = {"serverFileName" : serverFileName.filename, "fileName" : file.name, "fileId" : photo_counter };
-            console.log(fileList);
-            photo_counter++;
-          });
-
-          var rmvFile = "";
-          for (x in fileList){
-            if (fileList[x].fileName == file.name){
-              rmvFile = fileList[x].serverFileName;
-              delete fileList[x];
-            }
-          }
-
-          // $.ajax({
-          //   type: 'POST',
-          //   url: 'upload/delete',
-          //   data: {id: rmvFile, _token: $('#csrf-token').val()},
-          //   dataType: 'html',
-          //   success: function(data){
-          //     var rep = JSON.parse(data);
-          //     if (rep.code == 200) {
-          //       photo_counter--;
-          //     }else{
-          //       photo_counter++;
-          //     }
-          //     $("#photoCounter").text("(" + photo_counter + ")");
-          //   }
-          // });
-        }
-      });
     }
-  });
-
+});
   function getSrcImageFromBlob(blob) {
     var urlCreator = window.URL || window.webkitURL;
     return urlCreator.createObjectURL(blob);
@@ -1110,7 +1137,6 @@ $(document).ready(function() {
     theBlob.name = fileName;
     return theBlob;
   }
-});
 
 var accessories = [];
 $(".accessories td").on('click', function () {
