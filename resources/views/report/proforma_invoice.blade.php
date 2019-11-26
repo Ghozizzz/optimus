@@ -95,6 +95,7 @@
       </tr>
       <tr>
         <td colspan="5">
+          The price is 
           @if($session['proforma_invoice']->incoterm == 'FOB')
             {{$session['proforma_invoice']->incoterm}} {{$session['proforma_invoice']->currency}} {{number_format($session['proforma_invoice']->total_amount,2,'.',',')}}
           @elseif($session['proforma_invoice']->incoterm == 'C&F')
@@ -114,22 +115,19 @@
           @else 
             
             {{$session['proforma_invoice']->incoterm}} <?php echo isset($destination_port[0]->port_name) ? $destination_port[0]->port_name : '' ?> 
+            {{$session['proforma_invoice']->currency}}
+            {{number_format($session['proforma_invoice']->total_amount,2,'.',',')}}  
+            With Marine Insurance and Pre-shipment inspection include:
             
-            with marine insurance 
             
-            @if($session['proforma_invoice']->inspection == 1)
-              and {{$session['proforma_invoice']->inspection_value}}
-            @endif
             
-            {{$session['proforma_invoice']->currency}} {{number_format($session['proforma_invoice']->total_amount,2,'.',',')}}  
-            
-            <br>
-            Marine insurance {{$session['proforma_invoice']->currency}} {{number_format($session['negotiation']->insurance_fee,2,'.',',')}} 
             
             @if($session['proforma_invoice']->inspection == 1)
               <br>
-              pre-shipment inspection USD {{number_format($session['negotiation']->inspection_fee,2,'.',',')}}
+              - Car Inspection {{$session['proforma_invoice']->currency}} {{number_format($session['negotiation']->inspection_fee,2,'.',',')}}
             @endif
+            <br>
+            - Car insurance {{$session['proforma_invoice']->currency}} {{number_format($session['negotiation']->insurance_fee,2,'.',',')}} 
           @endif
         </td>
       </tr>
@@ -138,7 +136,7 @@
           @if($session['proforma_invoice']->incoterm == 'FOB')
             <!-- do nothing -->
           @else 
-            Ocean freight : {{$session['proforma_invoice']->currency}} {{number_format(round($session['proforma_invoice']->shipping_price + $session['negotiation']->ocean_freight_fee),2,'.',',')}}
+            - Ocean freight : {{$session['proforma_invoice']->currency}} {{number_format(round($session['proforma_invoice']->shipping_price + $session['negotiation']->ocean_freight_fee),2,'.',',')}}
           @endif
         </td>
       </tr>
@@ -160,9 +158,11 @@
         <td colspan="5">
           @if($session['proforma_invoice']->incoterm == 'FOB')
           <?php
-            $car_price = $session['proforma_invoice']->total_amount - $session['negotiation']->ocean_freight_fee;
+            // $car_price = $session['proforma_invoice']->total_amount - $session['negotiation']->ocean_freight_fee;
+            $car_price = $session['proforma_invoice']->total_amount;
           ?>
-            Car Price : USD {{number_format(round($car_price),2,'.',',')}}
+          
+            - Car Price : USD {{number_format(round($car_price),2,'.',',')}}
           @elseif($session['proforma_invoice']->incoterm == 'FOB')
             
             <?php 
@@ -171,7 +171,7 @@
               $car_price -= $session['negotiation']->inspection_fee;
             }?>
             
-            Car Price : USD {{number_format(round($car_price),2,'.',',')}}
+            - Car Price : USD {{number_format(round($car_price),2,'.',',')}}
           @else
           <!--cif-->
             
@@ -183,7 +183,7 @@
               }
             ?>
             
-            Car Price : USD {{number_format(round($car_price),2,'.',',')}}
+            - Car Price : USD {{number_format(round($car_price),2,'.',',')}}
           @endif
         </td>
       </tr>

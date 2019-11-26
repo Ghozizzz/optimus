@@ -2641,10 +2641,15 @@ class AdminController extends Controller {
   
   public function approveProformaInvoice(Request $request){
     $param = $request->all();
-    
+ 	$array = json_decode(json_encode(Session::get('proforma_invoice')), true);
+ 	$new_arr = array_merge($array,['due_date'=>$param['due_date']]);
+    // print_r($new_arr);die();
+ 	Session::set('proforma_invoice', (object)$new_arr);
+
     if($param['user_type'] == 'customer'){
       $data = [
           'id' => $param['id'],
+          'payment_due' => $param['due_date'],
           'customer_approval' => 1,
       ];
       $data_chat = array(
@@ -2657,6 +2662,7 @@ class AdminController extends Controller {
     }else{
       $data = [
           'id' => $param['id'],
+          'payment_due' => $param['due_date'],
           'approval' => 1,
       ];
       
@@ -2665,10 +2671,11 @@ class AdminController extends Controller {
         'chat' => 'Your proforma Invoice have been Approved, please click <a href="'.route('report.proformaInvoice').'" target="_blank">here</a> to see and download your proforma invoice',
         'file' => '',
         'user_chat_id' => Session::get('user_id'),
-      );       
-
-    
+      );
     }
+    // print_r(Session::get('proforma_invoice'));
+    // print_r($param);
+    // die();
     Front_model::approveProformaInvoice($data);
     Front_model::insertNegotiationLine($data_chat);
     
@@ -2677,6 +2684,7 @@ class AdminController extends Controller {
   
   public function createInvoice(){
     $session = Session::get(null);
+    // print_r($session);die();
     $invoices = Front_model::getInvoice('',$session['negotiation']->id);
     $consignee_destinaton_countries = Front_model::getDestinationPort($session['proforma_invoice']->port_destination);
 
@@ -2701,6 +2709,7 @@ class AdminController extends Controller {
           'total_amount' => $session['proforma_invoice']->total_amount, 
           'currency' => $session['proforma_invoice']->currency, 
           'proforma_invoice_id' =>  $session['proforma_invoice']->id,
+          'due_date'=> $session['proforma_invoice']->due_date,
           'status' => null,  
         ];
         $invoice_id = Front_model::insertInvoice($params);

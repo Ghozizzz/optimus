@@ -540,7 +540,7 @@
             <div class="col-md-8">
               <div class='row'>
                 <div class='col-md-4'>
-                  <select name='due_date' class="form-control" id='incoterms' width='40%'>
+                  <select name='due_date' class="form-control" id='due_date' width='40%'>
                     @if($payment_due !== '' && $status > 1)
                       <option value='{{$payment_due}}'>{{$payment_due}}</option>
                     @else
@@ -1238,6 +1238,7 @@
     $("#compareModal").modal('hide');
     var requestData = {
       id: $("#proforma_invoice_id").val(),
+      due_date: $('#due_date').val(),
       user_type : 'user',
       negotiation_id : "{{$session['negotiation']->id}}",
     };

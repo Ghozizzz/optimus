@@ -643,6 +643,7 @@
     var requestData = {
       id: $("#proforma_invoice_id").val(),
       user_type : 'customer',
+      due_date : $('#due_date').val(),
       negotiation_id : "{{$session['negotiation']->id}}",
     };
     $.ajax({
