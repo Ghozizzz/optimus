@@ -1057,13 +1057,14 @@ $(document).ready(function() {
         var $cropperModal = $(modalTemplate);
 
         $cropperModal.modal('show').on("shown.bs.modal", function() {
+          // var $image =document.getElementById('img-' + c);
           var cropper = new Cropper(document.getElementById('img-' + c), {
               aspectRatio: 1 / 1,
               cropBoxResizable: false,
               movable: true,
               rotatable: true,
               scalable: true,
-              viewMode: 2,
+              viewMode: 0,
               minContainerWidth: 250,
               maxContainerWidth: 250
               // initialAspectRatio: 500
@@ -1100,31 +1101,23 @@ $(document).ready(function() {
                 $this.modal('hide');
             })
             .on('click', '.rotate-right', function() {
-              $image.cropper('rotate', 90);
+              cropper.rotate(90);
             })
             .on('click', '.rotate-left', function() {
-              $image.cropper('rotate', -90);
+              cropper.rotate(-90);
             })
             .on('click', '.reset', function() {
-              $image.cropper('reset');
+              cropper.reset();
             })
-            .on('click', '.scale-x', function() {
-              if (!$image.data('horizontal-flip')) {
-                $image.cropper('scale', -1, 1);
-                $image.data('horizontal-flip', true);
-              } else {
-                $image.cropper('scale', 1, 1);
-                $image.data('horizontal-flip', false);
-              }
+            .on('click', '.scale-x', function () {
+                var $this = $(this);
+                cropper.scaleX($this.data('value'));
+                $this.data('value', -$this.data('value'));
             })
-            .on('click', '.scale-y', function() {
-              if (!$image.data('vertical-flip')) {
-                $image.cropper('scale', 1, -1);
-                $image.data('vertical-flip', true);
-              } else {
-                $image.cropper('scale', 1, 1);
-                $image.data('vertical-flip', false);
-              }
+            .on('click', '.scale-y', function () {
+                var $this = $(this);
+                cropper.scaleY($this.data('value'));
+                $this.data('value', -$this.data('value'));
             });
         });
     }
