@@ -1074,6 +1074,7 @@ $(document).ready(function() {
             .on('click', '.crop-upload', function () {
                 // get cropped image data
                 var blob = cropper.getCroppedCanvas({
+                  fillColor: '#000',
                   width: 1024,
                   height: 1024,
                   minWidth: 0,
