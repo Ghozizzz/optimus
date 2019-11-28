@@ -144,7 +144,7 @@
           $inspection_value = $session['proforma_invoice']->inspection_value != null ? $session['proforma_invoice']->inspection_value : '';
           $payment_due = $session['proforma_invoice']->payment_due != null ? $session['proforma_invoice']->payment_due : '';
           
-          if($status > 1){
+          if($status > 0){
             $readonly = 'readonly="true"';
             $disabled = 'disabled="true"';
           }else{
@@ -573,12 +573,20 @@
           <div class='row'>
             <div class="col-md-12" align="center">
               @if($session['proforma_invoice']->status <= 1)
-              <input type="submit" value="confirm" class="btn btn-danger">
+              <!-- <input type="submit" value="confirm" class="btn btn-danger"> -->
               @endif
             </div>
           </div>
           </form>
           
+          @if($session['proforma_invoice']->status <= 1)
+          <div class="row">
+            <div class="col-md-12" align="center">
+              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
+            </div>
+          </div>
+          @endif
+
           <div class='row'>
             @if($session['proforma_invoice']->status > 1)
             <div class="col-md-12" align="center">
@@ -621,7 +629,7 @@
   $("#edit-proforma").on('click',function(){
     swal({
       title: "Are you sure?",
-      text: "Once you reject proforma in, you can edit your proforma invoice and submit it again",
+      text: "Once you reject proforma in, you can't edit your proforma invoice and submit it again",
       icon: "warning",
       buttons: true,
       dangerMode: true,

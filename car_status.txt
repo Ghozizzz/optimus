@@ -1,0 +1,5 @@
+0 = 
+1 = AVAILABLE
+2 = SOLD
+3 = ON NEGOTIATION (kayaknya)
+4 = UNAVAILABLE

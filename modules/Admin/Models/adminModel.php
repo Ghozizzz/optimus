@@ -1070,6 +1070,14 @@ class adminModel {
             	['status' => '4']
             );
 	}
+
+	public static function AvailableCar($id){
+		$db = DB::table('car')
+            ->where('id', $id)
+            ->update(
+            	['status' => '1']
+            );
+	}
   
 	public static function carView($id){
 		$db = DB::table('car')

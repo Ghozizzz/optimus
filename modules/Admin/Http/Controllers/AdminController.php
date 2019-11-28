@@ -1269,6 +1269,15 @@ class AdminController extends Controller {
 		return $db;
 	}
 
+	public function carAvailable($id){
+    $ids = explode(',',$id);
+    
+    foreach($ids as $id){
+      $db = adminModel::AvailableCar($id);
+    }
+		return $db;
+	}
+
   
   //car color
   public function carColorIndex(){

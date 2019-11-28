@@ -59,6 +59,7 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Module
 	Route::post('/car/update/{id}', 'AdminController@carUpdate');
 	Route::get('/car/delete/{id}', 'AdminController@carDelete');
 	Route::get('/car/unavailable/{id}', 'AdminController@carUnavailable');
+	Route::get('/car/available/{id}', 'AdminController@carAvailable');
   Route::post('/car-list', ['as' => 'admin.carList', 'uses' => 'AdminController@carList']);
   Route::post('/car-chasis-validation', ['as' => 'admin.chasisValidation', 'uses' => 'AdminController@checkChasis']);
   Route::get('/car-chasis-validation-test/{vin?}', ['as' => 'admin.chasisValidation2', 'uses' => 'AdminController@checkChasis2']);

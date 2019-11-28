@@ -151,6 +151,9 @@
                     <br><br>
                     <button data-toggle="modal" data-target="#editModal" data-ids="{{ $d->id }}" data-action="copy" class="btn btn-sm btn-success act-btn">Copy Similiar Item</button>
                     <?php }?>
+                    <?php if($car_status == '4') { ?>
+                      <button onclick="availableCar({{ $d->id }})" class="btn btn-sm btn-danger act-btn" style="margin-top:5px;">Available</button>
+                    <?php } ?>
                   </td>
                 </tr>
     
@@ -393,7 +396,7 @@
                     
                     <div class='row row-border'>
                       <div class='col-md-6 col-xs-6 dark-div'>
-                        Engine No *
+                        Engine No
                       </div>
                       <div class='col-md-6 col-xs-6 '>
                         <input type="text" class="form-control" id="editSerial" required>
@@ -1269,10 +1272,12 @@ function newData() {
   } else if ($('#editSeller').val() === '') {
     alert('Seller required');
     return false;
-  } else if ($('#editSerial').val() === '') {
-    alert('Serial required');
-    return false;
-  } else if ($('#plate_number').val() === '') {
+  } 
+  // else if ($('#editSerial').val() === '') {
+  //   alert('Serial required');
+  //   return false;
+  // } 
+  else if ($('#plate_number').val() === '') {
     alert('Plate number required');
     return false;
   } else if ($('#editFuel').val() === '') {
@@ -1425,10 +1430,12 @@ function updateData() {
   } else if ($('#editSeller').val() === '') {
     alert('Seller required');
     return false;
-  } else if ($('#editSerial').val() === '') {
-    alert('Serial required');
-    return false;
-  } else if ($('#plate_number').val() === '') {
+  }
+  //  else if ($('#editSerial').val() === '') {
+  //   alert('Serial required');
+  //   return false;
+  // }
+   else if ($('#plate_number').val() === '') {
     alert('Plate Number required');
     return false;
   } else if ($('#editFuel').val() === '') {
@@ -1890,7 +1897,7 @@ function validate(evt) {
 function unavailableCar(id) {
   swal({
       title: "Are you sure?",
-      text: "Once unavailable, you will not be able to recover this file!",
+      // text: "Once unavailable, you will not be able to recover this file!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -1901,6 +1908,28 @@ function unavailableCar(id) {
           icon: "success",
         });
         $.get("{{ URL::to('/') }}/admin/car/unavailable/" + id, function (response) {
+          location.reload();
+        });
+      } else {
+        swal("Your file is safe!");
+      }
+    });
+}
+
+function availableCar(id) {
+  swal({
+      title: "Are you sure?",
+      // text: "Once unavailable, you will not be able to recover this file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Your file has been available!", {
+          icon: "success",
+        });
+        $.get("{{ URL::to('/') }}/admin/car/available/" + id, function (response) {
           location.reload();
         });
       } else {

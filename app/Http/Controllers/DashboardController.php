@@ -132,8 +132,68 @@ class DashboardController extends Controller {
         );
         Front_model::insertNegotiationLine($data);
       }
-        $chat = 'Dear Sir/Madam<br><br>Thanks for your enquiry.<br>' .
+
+      $original_price = $param['original_price'];
+      if ($param['insurance'] == 1) {
+        $original_price = $original_price + API::getSetting('insurance');
+      }
+      if ($param['inspection'] == 1) {
+        $original_price = $original_price + API::getSetting('inspection');
+      }
+      if ($param['shipping_price'] > 0) {
+        if ($param['vprice'] > 0) {
+          $original_price = $original_price + $param['shipping_price'] + $param['ocean_freight'];
+        } else {
+          $original_price = $original_price + $param['shipping_price'];
+        }
+      }
+
+      $admin_chat = 'Dear Sir/Madam<br><br>Thanks for your enquiry.<br>' .
                 'The price is ';
+        
+      if($param['insurance'] == 1){
+          $admin_chat .= 'CIF ' .$port_name. ' ' .$country_name. ' USD '. API::currency_format($original_price).' with Marine Insurance';
+          if($param['inspection'] == 1){
+              $admin_chat .= ' and Pre-shipment inspection';
+          }        
+      }else{
+          $admin_chat .= 'C&F ' .$port_name. ' ' .$country_name. ' USD '. API::currency_format($original_price);
+          if($param['inspection'] == 1){
+              $admin_chat .= ' with Pre-shipment inspection';
+          }
+      }
+      
+      $admin_chat .= ' include:<br>';
+  
+      if($param['inspection'] == 1){
+        $admin_chat .= '- Car Inspection : USD '. API::getSetting('inspection').'<br>';
+      }    
+      
+      if($param['insurance'] == 1){
+        $admin_chat .= '- Car Insurance : USD '. API::getSetting('insurance').'<br>';
+      }
+      
+      if($param['shipping_price'] >0 ){
+        if($param['vprice'] > 0){
+          $admin_chat .= '- Ocean freight : USD '. API::currency_format($param['shipping_price'] + $param['ocean_freight']).'<br>';
+        } else {
+          $admin_chat .= '- Ocean freight : USD '. API::currency_format($param['shipping_price']).'<br>';
+        }
+      }
+              
+      $admin_chat .= '- Car price : USD '. API::currency_format($param['original_price']).'<br>';
+      
+      $admin_chat .= '<br><br>Hope to hear from you soon<br><br>Thanks<br>Best Regards,<br>Optimus Auto Trading Pte Ltd';
+      
+      $data = array(
+        'negotiation_id' => $negotiation_id,
+        'chat' => $admin_chat,
+        'file' => '',
+        'customer_chat_id' => '',
+      );
+      Front_model::insertNegotiationLine($data);    
+
+        $chat = 'I want to negotiate for the price ';
         
         if($param['insurance'] == 1){
             $chat .= 'CIF ' .$port_name. ' ' .$country_name. ' USD '. API::currency_format($param['price']).' with Marine Insurance';
@@ -167,13 +227,11 @@ class DashboardController extends Controller {
                 
         $chat .= '- Car price : USD '. API::currency_format($car_price).'<br>';
         
-        $chat .= '<br><br>Hope to hear from you soon<br><br>Thanks<br>Best Regards,<br>Optimus Auto Trading Pte Ltd';
-        
         $data = array(
           'negotiation_id' => $negotiation_id,
           'chat' => $chat,
           'file' => '',
-          'customer_chat_id' => '',
+          'customer_chat_id' => Session::get('user_id'),
         );
         Front_model::insertNegotiationLine($data);      
       $negotiations = Front_model::getNegotiation($negotiation_id);     
@@ -578,7 +636,7 @@ class DashboardController extends Controller {
     
     $data = array(
           'negotiation_id' => $session['negotiation']->id,
-          'chat' => 'Proforma Invoice have been rejected, edit proforma invoice at <a href="'.route('admin.proformainvoice',['id'=> $proforma_invoice->id]).'">here</a>',
+          'chat' => 'Proforma Invoice have been rejected, and wait admin to edit proforma invoice at <a href="'.route('admin.proformainvoice',['id'=> $proforma_invoice->id]).'">here</a>',
           'file' => '',
           'customer_chat_id' => Session::get('user_id'),
     );

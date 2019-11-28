@@ -539,8 +539,8 @@
                   </div>
                 </div>
                 
-                <div class='row padding5 background1'>
-                  <table width='100%'>
+                <div class='row background1' style="padding: 20px;">
+                  <table width='100%' style="color: blue;">
                     <tr>
                       <td><input type="checkbox" name="tnc" id="tnc"> By Clicking "Order Item" button you agree to the following terms.</td>
                     </tr>
