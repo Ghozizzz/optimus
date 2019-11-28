@@ -170,9 +170,9 @@
   var rating = "{{isset($review->rating)?$review->rating:''}}";
   var rating_comment = "{{isset($review->comment)?$review->comment:''}}";
   
-  $(document).ready(function(){
-    ratingEnable();
-  });
+  // $(document).ready(function(){
+  //   ratingEnable();
+  // });
 
     function ratingEnable() {
         $('#speed-rating-bar').barrating({
@@ -312,6 +312,7 @@
         ratingDisable();
         $("#rating-comment").attr('disabled');
         $("#ratebtn").prop('disabled',false);
+        location.reload();
       }
     });
   }
