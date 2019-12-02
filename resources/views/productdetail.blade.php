@@ -31,9 +31,9 @@
               @php
                 $picture_arr = json_decode($car->picture);              
               @endphp
-              <div class="col-md-12 col-xs-12" align='center' style="height: 100vh;">
+              <div class="col-md-12 col-xs-12" align='center' style="height: 60vh;">
                 @if($picture_arr[0]->picture !== '')
-                <img id='main-picture' class='main-picture img-responsive' src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$car->description}}" style="border-radius:5px; height:100%;">
+                <img id='main-picture' class='main-picture img-responsive' src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$car->description}}" style="border-radius:5px; height:100%; border: 1px solid #000;">
                 @endif
               </div>
 

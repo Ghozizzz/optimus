@@ -1059,9 +1059,40 @@ class AdminController extends Controller {
     $file = $request->file('file');
     $imageName = rand(1,100).time().'.'.$request->file->getClientOriginalExtension();    
     $thumbnailPath = public_path('uploads/car/'.$imageName);
-    $watermark = 'OPTIMUS Auto Trading Pte Ltd';
-    $img = Image::make($file->getRealPath())->fit(1000, 1000);
-    $img->insert(public_path('uploads/car/optimus.png'), 'bottom-center', 110, 110);
+    $watermark = 'Optimus Auto Trading Pte Ltd';
+    // $img = Image::make($file->getRealPath())->fit(1000, 1000);
+    $img = Image::make($file->getRealPath());
+    $width  = $img->width();
+	$height = $img->height();
+	$dimension_w = 800;
+	$dimension_h = 600;
+	$vertical   = (($width < $height) ? true : false);
+	$horizontal = (($width > $height) ? true : false);
+	$square     = (($width = $height) ? true : false);
+	if ($vertical) {
+	    $top = $bottom = 400;
+	    $newHeight = ($dimension_w + $dimension_h) - ($bottom + $top);
+	    $img->resize(null, $newHeight, function ($constraint) {
+	        $constraint->aspectRatio();
+	    });
+
+	} else if ($horizontal) {
+	    $right = $left = 300;
+	    $newWidth = ($dimension_w + $dimension_h) - ($right + $left);
+	    $img->resize($newWidth, null, function ($constraint) {
+	        $constraint->aspectRatio();
+	    });
+
+	} else if ($square) {
+	    $right = $left = 400;
+	    $newWidth = ($dimension_w + $dimension_h) - ($left + $right);
+	    $img->resize($newWidth, null, function ($constraint) {
+	        $constraint->aspectRatio();
+	    });
+
+	}
+	$img->resizeCanvas($dimension_w, $dimension_h, 'center', false, '#0000');
+    $img->insert(public_path('uploads/watermark/optimus.png'), 'bottom-center', 0, 0);
     // $img->text($watermark, 450, 800, function($font) {
     //                 $font->size(30);
     //                 $font->file(public_path('assets/webfonts/HelveticaNeue.ttf'));

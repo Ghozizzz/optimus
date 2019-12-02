@@ -4,12 +4,15 @@
 {!! Html::style('/assets/css/admin.css') !!}
 {!! Html::style('/assets/css/select2.min.css') !!}
 {!! Html::style('/assets/css/dropzone.css') !!}
+{!! Html::style('/assets/css/imgareaselect-default.css') !!}
+{!! Html::style('/assets/css/cropper.min.css') !!}
 <style type="text/css">
   @media screen and (max-width: 1366px){
     table{
       font-size: 12px;
     }
   }
+  .modal { overflow-y: auto }
 </style>
 @stop
 @section('content')
@@ -131,7 +134,7 @@
                 ?>
                 <tr>
                   <td><input type="checkbox" name="ids" class="ids" data-id="{{ $d->id }}"></td>
-                  <td>@if(isset($picture_arr[0]->picture))<img src='{{URL::to('/')}}/uploads/car/{{ $picture_arr[0]->picture }}' width='60px'>@endif</td>
+                  <td>@if(isset($picture_arr[0]->picture))<img src="{{URL::to('/')}}/uploads/car/{{ $picture_arr[0]->picture }}" width='60px'>@endif</td>
                   <td>{{ $d->model .'/'. $d->make }}</td>
                   <td>{{ $d->plate_number }}</td>
                   <td>{{ $registration_date }}</td>
@@ -148,6 +151,9 @@
                     <br><br>
                     <button data-toggle="modal" data-target="#editModal" data-ids="{{ $d->id }}" data-action="copy" class="btn btn-sm btn-success act-btn">Copy Similiar Item</button>
                     <?php }?>
+                    <?php if($car_status == '4') { ?>
+                      <button onclick="availableCar({{ $d->id }})" class="btn btn-sm btn-danger act-btn" style="margin-top:5px;">Available</button>
+                    <?php } ?>
                   </td>
                 </tr>
     
@@ -390,7 +396,7 @@
                     
                     <div class='row row-border'>
                       <div class='col-md-6 col-xs-6 dark-div'>
-                        Engine No *
+                        Engine No
                       </div>
                       <div class='col-md-6 col-xs-6 '>
                         <input type="text" class="form-control" id="editSerial" required>
@@ -820,26 +826,24 @@
         
 <div class='image-container'>          
   <div class="photo-grid-container" align="center" width="80%" style="margin-top:10px;"></div>
-</div>  
-          
+</div>
           <div class="row">
             <div class="col-md-12 col-xs-12" id='edit-upload-container'>
               <div class="jumbotron how-to-create" >
                 <h3>Images <span id="photoCounter"></span></h3>
                 <br />
-                {!! Form::open(['url' => route('upload-post'), 'class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
-                <div class="dz-message">
-                </div>
-                <div class="fallback">
-                  <input name="file" type="file" multiple />
+                {!! Form::open(['class' => 'dropzone', 'files'=>true, 'id'=>'real-dropzone']) !!}
+                <div class="dz-clickable">
+                  <div class="dz-message">
+                    <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
+                  </div>
                 </div>
                 <div class="dropzone-previews" id="dropzonePreview"></div>
-                <h4 style="text-align: center;color:#428bca;">Drop images in this area  <span class="glyphicon glyphicon-hand-down"></span></h4>
                 {!! Form::close() !!}
               </div>
               Maximum allowed size of image is 4MB
 
-              Dropzone Preview Template 
+              <!--Dropzone Preview Template -->
               <div id="preview-template" style="display: none;">
                 <div class="dz-preview dz-file-preview">
                   <div class="dz-image"><img data-dz-thumbnail=""></div>
@@ -881,13 +885,22 @@
               </div>
               End Dropzone Preview Template 
               {!! Form::hidden('csrf-token', csrf_token(), ['id' => 'csrf-token']) !!}
-
-
             </div>
           </div>
         </div>  
-
-
+<!-- <div>
+  <div class="form-group row">
+    <label class="col-md-4 control-label text-md-right">
+    </label>
+    <div class="col-md-12">
+      <div class="dz-clickable" id="my-dropzone">
+        <div class="dz-message">
+          <p class="mb-xs fw-normal dz-message"> Drop here the images that you want to upload. You'll be able to crop them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -904,23 +917,84 @@
   <script src="{{URL::to('/')}}/assets/js/datetimepicker/bootstrap-datetimepicker.js"></script>
   <script src="{{URL::to('/')}}/assets/js/datetimepicker/locales/bootstrap-datetimepicker.id.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="{{URL::to('/')}}/assets/js/admin.js"></script>
+  <script src="{{ URL::to('/') }}/assets/js/admin.js"></script>
   <script src="{{ URL::to('/') }}/assets/js/select2.min.js" type="text/javascript"></script>
   <script src="{{ URL::to('/') }}/assets/js/dropzone.js" type="text/javascript"></script>
   <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>  
-  <script src="{{ URL::to('/') }}/assets/js/jquery-sortable-photos.js" type="text/javascript"></script> 
-
+  <script src="{{ URL::to('/') }}/assets/js/jquery-sortable-photos.js" type="text/javascript"></script>
+  <!-- <script src="{{ URL::to('/') }}/assets/js/jquery-cropper.js"></script> -->
+  <script src="{{ URL::to('/') }}/assets/js/cropper.min.js"></script><!-- Cropper.js is required -->
   <script>
-    
     var web_url = '{{$web_url}}';
     var photo_counter = 0;
     var fileList = new Array;
     var image_asset_url = "{{URL::to('/').'/uploads/car/'}}";
     var uploaded_picture = [];
     var model_id = '';
-    Dropzone.options.realDropzone = {
-    uploadMultiple: false,
-          parallelUploads: 100,
+//resize and crop image by center
+function resize_crop_image($max_width, $max_height, $source_file, $dst_dir, $quality = 80){
+    $imgsize = getimagesize($source_file);
+    $width = $imgsize[0];
+    $height = $imgsize[1];
+    $mime = $imgsize['mime'];
+ 
+    switch($mime){
+        case 'image/gif':
+            $image_create = "imagecreatefromgif";
+            $image = "imagegif";
+            break;
+ 
+        case 'image/png':
+            $image_create = "imagecreatefrompng";
+            $image = "imagepng";
+            $quality = 7;
+            break;
+ 
+        case 'image/jpeg':
+            $image_create = "imagecreatefromjpeg";
+            $image = "imagejpeg";
+            $quality = 80;
+            break;
+ 
+        default:
+            return false;
+            break;
+    }
+     
+    $dst_img = imagecreatetruecolor($max_width, $max_height);
+    $src_img = $image_create($source_file);
+     
+    $width_new = $height * $max_width / $max_height;
+    $height_new = $width * $max_height / $max_width;
+    //if the new width is greater than the actual width of the image, then the height is too large and the rest cut off, or vice versa
+    if($width_new > $width){
+        //cut point by height
+        $h_point = (($height - $height_new) / 2);
+        //copy image
+        imagecopyresampled($dst_img, $src_img, 0, 0, 0, $h_point, $max_width, $max_height, $width, $height_new);
+    }else{
+        //cut point by width
+        $w_point = (($width - $width_new) / 2);
+        imagecopyresampled($dst_img, $src_img, 0, 0, $w_point, 0, $max_width, $max_height, $width_new, $height);
+    }
+     
+    $image($dst_img, $dst_dir, $quality);
+ 
+    if($dst_img)imagedestroy($dst_img);
+    if($src_img)imagedestroy($src_img);
+}
+//usage example
+resize_crop_image(100, 100, "test.jpg", "test.jpg");
+
+$(document).ready(function() {
+  // window.Cropper;
+  Dropzone.autoDiscover = false;
+  var c = 0;
+
+  var cropped = false;
+  var realDropzone = new Dropzone("#real-dropzone", {
+          url: "{{route('upload-post')}}",
+          uploadMultiple: false,
           maxFilesize: 4,
           previewsContainer: '#dropzonePreview',
           previewTemplate: document.querySelector('#preview-template').innerHTML,
@@ -929,38 +1003,51 @@
           dictFileTooBig: 'Image is bigger than 4MB',
           // The setting up of the dropzone
           init:function() {
-            // console.log(this.element);
-            $(this.element).addClass("dropzone");
-              this.on("success", function(file, serverFileName) {
-                fileList[photo_counter] = {"serverFileName" : serverFileName.filename, "fileName" : file.name, "fileId" : photo_counter };
-                photo_counter++;
-              });
-              this.on("removedfile", function(file) {
+            // console.log(cropped);
+              this.on('addedfile', function(file) {
+                if(cropped==false){
+                  this.removeFile(file);
+                  cropper(file);
+                } else {
+                  cropped = false;
+                  this.on("success", function(file, serverFileName) {
+                    if(serverFileName!=null){
+                      fileList[photo_counter] = {"serverFileName" : serverFileName.filename, "fileName" : file.name, "fileId" : photo_counter };
+                      console.log(photo_counter);
+                    }
+                  });
 
-                var rmvFile = "";
-                for (x in fileList){
-                  if (fileList[x].fileName == file.name){
-                    rmvFile = fileList[x].serverFileName;
-                    delete fileList[x];
-                  }
-                }
-
-              $.ajax({
-                type: 'POST',
-                url: 'upload/delete',
-                data: {id: rmvFile, _token: $('#csrf-token').val()},
-                dataType: 'html',
-                success: function(data){
-                  var rep = JSON.parse(data);
-                  if (rep.code == 200){
-                    photo_counter--;
-                    $("#photoCounter").text("(" + photo_counter + ")");
-                  }
+                  this.on("removedfile", function(file) {
+                    var rmvFile = "";
+                    for (x in fileList){
+                      if (fileList[x].fileName == file.name){
+                        rmvFile = fileList[x].serverFileName;
+                        delete fileList[x];
+                      }
+                    }
+                    // console.log('rmvFile='+ rmvFile);
+                    if(rmvFile!=''){
+                      $.ajax({
+                        type: 'POST',
+                        url: 'upload/delete',
+                        data: {id: rmvFile, _token: $('#csrf-token').val()},
+                        dataType: 'html',
+                        success: function(data){
+                          var rep = JSON.parse(data);
+                          console.log(rep);
+                          if (rep.error == 0){
+                            photo_counter--;
+                            $("#photoCounter").text("(" + photo_counter + ")");
+                          }
+                        }
+                      });
+                    }
+                  });
                 }
               });
-            });
-          },
-          error: function(file, response) {
+
+        },
+        error: function(file, response) {
           if ($.type(response) === "string")
                   var message = response; //dropzone sends it's own error messages in string
           else
@@ -973,180 +1060,301 @@
           _results.push(node.textContent = message);
           }
           return _results;
-          },
-          success: function(file, done) {
+        },
+        success: function(file, done) {
+          photo_counter++;
+          console.log('success ='+photo_counter);
           $("#photoCounter").text("(" + photo_counter + ")");
-          }
+          console.log(fileList);
+        }
+  });
+
+  var dataURItoBlob = function (dataURI) {
+    var byteString = atob(dataURI.split(',')[1]);
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type: 'image/jpeg'});
+  };
+
+        var cropper = function(file) {
+        var fileName = file.name;
+        console.log(fileName);
+        var loadedFilePath = getSrcImageFromBlob(file);
+        // @formatter:off
+        var modalTemplate =
+          '<div class="modal fade" tabindex="-2" role="dialog" id="cropModal">' +
+          '<div class="modal-dialog" role="document">' +
+          '<div class="modal-content">' +
+          '<div class="modal-header">' +
+          '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+          '</div>' +
+          '<div class="modal-body">' +
+          '<div class="cropper-container" style="height:400px;">' +
+          '<img id="img-' + ++c + '" src="' + loadedFilePath + '" data-vertical-flip="false" data-horizontal-flip="false" style="max-width: 100%;">' +
+          '</div>' +
+          '</div>' +
+          '<div class="modal-footer">' +
+          '<button type="button" class="btn btn-warning rotate-left"><span class="fa fa-undo"></span></button>' +
+          '<button type="button" class="btn btn-warning rotate-right"><span class="fa fa-redo"></span></button>' +
+          '<button type="button" class="btn btn-warning scale-x" data-value="-1"><span class="fa fa-arrow-circle-left"></span><span class="fa fa-arrow-circle-right"></span></button>' +
+          '<button type="button" class="btn btn-warning scale-y" data-value="-1"><span class="fa fa-arrow-circle-down"></span><span class="fa fa-arrow-circle-up"></span></button>' +
+          '<button type="button" class="btn btn-warning reset"><span class="fa fa-sync"></span></button>' +
+          '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+          '<button type="button" class="btn btn-primary crop-upload">Crop & upload</button>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>';
+        // @formatter:on
+
+        var $cropperModal = $(modalTemplate);
+
+        $cropperModal.modal('show').on("shown.bs.modal", function() {
+          // var $image =document.getElementById('img-' + c);
+          var cropper = new Cropper(document.getElementById('img-' + c), {
+              aspectRatio: 1 / 1,
+              cropBoxResizable: false,
+              movable: true,
+              rotatable: true,
+              scalable: true,
+              viewMode: 0,
+              minContainerWidth: 250,
+              maxContainerWidth: 250
+              // initialAspectRatio: 500
+            })
+            var $this = $(this);
+            $this
+            .on('click', '.crop-upload', function () {
+                // get cropped image data
+                var blob = cropper.getCroppedCanvas({
+                  fillColor: '#000',
+                  width: 1024,
+                  height: 1024,
+                  minWidth: 0,
+                  minHeight: 0,
+                  maxWidth: 1024,
+                  maxHeight: 1024,
+                  imageSmoothingEnabled: false,
+                  imageSmoothingQuality: 'high',}).toDataURL();
+                // transform it to Blob object
+                var croppedFile = dataURItoBlob(blob);
+                croppedFile.name = fileName;
+
+                var files = realDropzone.getAcceptedFiles();
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    if (file.name === fileName) {
+                        realDropzone.removeFile(file);
+                    }
+                }
+                cropped = true;
+                // realDropzone.files.push(croppedFile);  
+                // realDropzone.emit('addedfile', croppedFile);
+                realDropzone.createThumbnail(croppedFile);
+                realDropzone.addFile(croppedFile);
+                $this.modal('hide');
+            })
+            .on('click', '.rotate-right', function() {
+              cropper.rotate(90);
+            })
+            .on('click', '.rotate-left', function() {
+              cropper.rotate(-90);
+            })
+            .on('click', '.reset', function() {
+              cropper.reset();
+            })
+            .on('click', '.scale-x', function () {
+                var $this = $(this);
+                cropper.scaleX($this.data('value'));
+                $this.data('value', -$this.data('value'));
+            })
+            .on('click', '.scale-y', function () {
+                var $this = $(this);
+                cropper.scaleY($this.data('value'));
+                $this.data('value', -$this.data('value'));
+            });
+        });
+    }
+});
+  function getSrcImageFromBlob(blob) {
+    var urlCreator = window.URL || window.webkitURL;
+    return urlCreator.createObjectURL(blob);
   }
 
+  function blobToFile(theBlob, fileName) {
+    theBlob.lastModifiedDate = new Date();
+    theBlob.name = fileName;
+    return theBlob;
+  }
 
-
-
-  var accessories = [];
-  $(".accessories td").on('click', function(){
+var accessories = [];
+$(".accessories td").on('click', function () {
   var value = $(this).text();
-  if ($.inArray(value, accessories) == - 1){
-  accessories.push(value);
-  } else{
-  var index = accessories.indexOf(value);
-  if (index !== - 1) accessories.splice(index, 1);
+  if ($.inArray(value, accessories) == -1) {
+    accessories.push(value);
+  } else {
+    var index = accessories.indexOf(value);
+    if (index !== -1) accessories.splice(index, 1);
   }
-  });
-  $(".accessories td").on('mouseover', function(){
+});
+$(".accessories td").on('mouseover', function () {
   var value = $(this).text();
-  if ($.inArray(value, accessories) == - 1){
-  $(this).css('background-color', '#DDFFDD');
+  if ($.inArray(value, accessories) == -1) {
+    $(this).css('background-color', '#DDFFDD');
   }
-  });
-  $(".accessories td").on('mouseout', function(){
-    var value = $(this).text();
-    if ($.inArray(value, accessories) == - 1){
-      $(this).css('background-color', '#FFF');
-    }
-  });
-  $("#add-car").on('click', function(){
-    openModal();
-  })
+});
+$(".accessories td").on('mouseout', function () {
+  var value = $(this).text();
+  if ($.inArray(value, accessories) == -1) {
+    $(this).css('background-color', '#FFF');
+  }
+});
+$("#add-car").on('click', function () {
+  openModal();
+})
 
-  function openModal(id){
-    if (typeof id !== 'undefined'){
-      //edit
-      $('#editModal').modal('show');
-    } else{
-      //new
-      clearModal();
-      $('#editModal').modal('show');
-    }
+function openModal(id) {
+  if (typeof id !== 'undefined') {
+    //edit
+    $('#editModal').modal('show');
+  } else {
+    //new
+    clearModal();
+    $('#editModal').modal('show');
+  }
+}
+
+function clearModal() {
+  $('#idEdit').val('');
+  $("#editVin").val('');
+  $("#editMake").val('');
+  $("#editModel").val('');
+  $("#editType").val('');
+  $("#editRegistrationYear").val('');
+  $("#editRegistrationMonth").val('');
+  $("#editRegistrationDay").val('');
+  $("#plate_number").val('');
+  $("#motor_number").val('');
+  $("#editManufactureYear").val('');
+  $("#editManufactureMonth").val('');
+  $("#editDistance").val('');
+  $("#editPrice").val('');
+  $("#editRemark").val('');
+  $("#editYoutube").val('');
+  $("#editEngine").val('');
+  $("#editSerial").val('');
+  $("#editFuel").val('');
+  $("#editSteering").val(2);
+  $("#editTransmission").val('');
+  $("#editDrive").val('');
+  $("#editColour").val('');
+  $("#editInteriorColor").val('');
+  $("#editExteriorColor").val('');
+  $("#editDoor").val('');
+  $("#editSeat").val('');
+  $("#editWeight").val('');
+  $("#editDescription").val('');
+  $("#editKeyword").val('');
+  $("#editAgent").val('');
+  $("#editBuyer").val('');
+  $("#editLength").val('');
+  $("#editWidth").val('');
+  $("#editHeight").val('');
+  $("#editComment").val('');
+  $("#editRecommendation").val(0);
+  $("#editBestDeal").val(0);
+  $("#editBestSeller").val(0);
+  $("#editHotCar").val(0);
+  $("#editStatus").val(1);
+  $("#editPromotion").val(0);
+  $("#editSellingPoint").val('');
+  $(".image-container").html('');
+  var default_seller = 'optimus auto trading';
+  $("#editSeller option").filter(function () {
+    return this.text == default_seller;
+  }).attr('selected', true);
+  uploaded_picture = [];
+}
+
+function saveData() {
+  if ($('#idEdit').val() == '') {
+    newData();
+  } else {
+    updateData();
+  }
+}
+
+function newData() {
+  if ($("#editRegistrationYear").val() !== '' && $("#editRegistrationMonth").val() !== '' && $("#editRegistrationDay").val() !== '') {
+    var registration_date = $("#editRegistrationYear").val() + '-' + $("#editRegistrationMonth").val() + '-' + $("#editRegistrationDay").val();
+  } else {
+    var registration_date = '';
   }
 
-  function clearModal(){
-    $('#idEdit').val('');
-    $("#editVin").val('');
-    $("#editMake").val('');
-    $("#editModel").val('');
-    $("#editType").val('');
-    $("#editRegistrationYear").val('');
-    $("#editRegistrationMonth").val('');
-    $("#editRegistrationDay").val('');
-    $("#plate_number").val('');
-    $("#motor_number").val('');
-    $("#editManufactureYear").val('');
-    $("#editManufactureMonth").val('');
-    $("#editDistance").val('');
-    $("#editPrice").val('');
-    $("#editRemark").val('');
-    $("#editYoutube").val('');
-    $("#editEngine").val('');
-    $("#editSerial").val('');
-    $("#editFuel").val('');
-    $("#editSteering").val(2);
-    $("#editTransmission").val('');
-    $("#editDrive").val('');
-    $("#editColour").val('');
-    $("#editInteriorColor").val('');
-    $("#editExteriorColor").val('');
-    $("#editDoor").val('');
-    $("#editSeat").val('');
-    $("#editWeight").val('');
-    $("#editDescription").val('');
-    $("#editKeyword").val('');
-    $("#editAgent").val('');
-    $("#editBuyer").val('');
-    $("#editLength").val('');
-    $("#editWidth").val('');
-    $("#editHeight").val('');
-    $("#editComment").val('');
-    $("#editRecommendation").val(0);
-    $("#editBestDeal").val(0);
-    $("#editBestSeller").val(0);
-    $("#editHotCar").val(0);
-    $("#editStatus").val(1);
-    $("#editPromotion").val(0);
-    $("#editSellingPoint").val('');
-    $(".image-container").html('');
-    var default_seller = 'optimus auto trading';
-    $("#editSeller option").filter(function() {
-        return this.text == default_seller; 
-    }).attr('selected', true);
-    uploaded_picture = [];
-  }
 
-  function saveData(){
-    if ($('#idEdit').val() == ''){
-      newData();
-    } else{
-      updateData();
-    }
-  }
-
-  function newData(){
-    
-    
-    if($("#editRegistrationYear").val() !== '' && $("#editRegistrationMonth").val() !== '' && $("#editRegistrationDay").val() !== ''){
-      var registration_date = $("#editRegistrationYear").val() +'-'+ $("#editRegistrationMonth").val() +'-'+ $("#editRegistrationDay").val();
-    }else{
-      var registration_date = '';
-    }
-    
-    
-  if ($('#editVin').val() === ''){
+  if ($('#editVin').val() === '') {
     alert('Chassis Number required');
     return false;
-  } else if ($('#editMake').val() === ''){
+  } else if ($('#editMake').val() === '') {
     alert('Make required');
     return false;
-  } else if ($('#editModel').val() === ''){
+  } else if ($('#editModel').val() === '') {
     alert('Model required');
     return false;
-  } else if ($('#editType').val() === ''){
+  } else if ($('#editType').val() === '') {
     alert('Product Type required');
     return false;
-  } else if ($("#editState").val() == '1' && registration_date === ''){
+  } else if ($("#editState").val() == '1' && registration_date === '') {
     alert('Registration date required');
     return false;
-  } else if ($('#editDistance').val() === ''){
+  } else if ($('#editDistance').val() === '') {
     alert('Mileage required');
     return false;
-  } else if ($('#editType').val() === ''){
+  } else if ($('#editType').val() === '') {
     alert('Product Type required');
     return false;
-  } else if ($('#editEngine').val() === ''){
+  } else if ($('#editEngine').val() === '') {
     alert('Engine required');
     return false;
-  } else if ($('#editPrice').val() === ''){
+  } else if ($('#editPrice').val() === '') {
     alert('Price required');
     return false;
-  } else if ($('#editSeller').val() === ''){
+  } else if ($('#editSeller').val() === '') {
     alert('Seller required');
     return false;
-  } else if ($('#editSerial').val() === ''){
-    alert('Serial required');
-    return false;
-  } else if ($('#plate_number').val() === ''){
+  } 
+  // else if ($('#editSerial').val() === '') {
+  //   alert('Serial required');
+  //   return false;
+  // } 
+  else if ($('#plate_number').val() === '') {
     alert('Plate number required');
     return false;
-  } else if ($('#editFuel').val() === ''){
+  } else if ($('#editFuel').val() === '') {
     alert('Fuel required');
     return false;
-  } else if ($('#editTransmission').val() === ''){
+  } else if ($('#editTransmission').val() === '') {
     alert('Transmission required');
     return false;
-  } else if ($('#editExteriorColor').val() === ''){
+  } else if ($('#editExteriorColor').val() === '') {
     alert('Exterior color required');
     return false;
-  } else if ($('#editWeight').val() === ''){
+  } else if ($('#editWeight').val() === '') {
     alert('Weight required');
     return false;
-  } else if ($('#editSteering').val() === ''){
+  } else if ($('#editSteering').val() === '') {
     alert('Steering required');
     return false;
-  } else if ($('#editDoor').val() === ''){
+  } else if ($('#editDoor').val() === '') {
     alert('Door required');
     return false;
-  } else if ($('#editWidth').val() === '' && $('#editLength').val() === '' && $('#editHeight').val() === ''){
+  } else if ($('#editWidth').val() === '' && $('#editLength').val() === '' && $('#editHeight').val() === '') {
     alert('Size required');
     return false;
-  } else if($('#editManufactureYear').val() > registration_date){
+  } else if ($('#editManufactureYear').val() > registration_date) {
     alert("registration date can't before than manufacture date");
     return false;
   }
@@ -1198,106 +1406,116 @@
   data.append('newDimension', $('#editLength').val() + ',' + $('#editWidth').val() + ',' + $('#editHeight').val());
   data.append('newAccessories', JSON.stringify(accessories));
   var picture = [];
-  
-  if(fileList.length == 0){
+
+  if (fileList.length == 0) {
     alert("Please upload minimal 1 picture");
     return false;
   }
-  
-  for (x in fileList){
-    picture[x] = {'picture':fileList[x]['serverFileName']}
+
+  y = 0;
+  for (x in fileList) {
+    if(fileList[x]['serverFileName']!=null){
+      picture[y] = {
+        'picture': fileList[x]['serverFileName']
+      }
+      y++;
+    }
   }
+  // console.log(picture);
+  // console.log(JSON.stringify(picture));
   data.append('newPicture', JSON.stringify(picture));
   $.ajax({
-  url: "{{ URL::to('/') }}/admin/car/save",
-          type: "POST",
-          data:  data,
-          processData: false,
-          contentType: false,
-          success: function (response) {
-            if (response.error) {
-              alert(response.error);
-              return false;
-            }else{
-              location.reload();
-            }
-          },
-          error: function(error) {
-          console.log(error);
-          }
+    url: "{{ URL::to('/') }}/admin/car/save",
+    type: "POST",
+    data: data,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      if (response.error) {
+        alert(response.error);
+        return false;
+      } else {
+        location.reload();
+      }
+    },
+    error: function (error) {
+      console.log(error);
+    }
   });
+}
+
+function updateData() {
+
+  if ($("#editRegistrationYear").val() !== '' && $("#editRegistrationMonth").val() !== '' && $("#editRegistrationDay").val() !== '') {
+    var registration_date = $("#editRegistrationYear").val() + '-' + $("#editRegistrationMonth").val() + '-' + $("#editRegistrationDay").val();
+  } else {
+    var registration_date = '';
   }
 
-  function updateData(){
-    
-    if($("#editRegistrationYear").val() !== '' && $("#editRegistrationMonth").val() !== '' && $("#editRegistrationDay").val() !== ''){
-      var registration_date = $("#editRegistrationYear").val() +'-'+ $("#editRegistrationMonth").val() +'-'+ $("#editRegistrationDay").val();
-    }else{
-      var registration_date = '';
-    }
-    
-    var id = $('#idEdit').val();
-    if ($('#editVin').val() === ''){
+  var id = $('#idEdit').val();
+  if ($('#editVin').val() === '') {
     alert('Chassis Number required');
     return false;
-    } else if ($('#editMake').val() === ''){
+  } else if ($('#editMake').val() === '') {
     alert('Make required');
     return false;
-    } else if ($('#editModel').val() === ''){
+  } else if ($('#editModel').val() === '') {
     alert('Model required');
     return false;
-    } else if ($('#editType').val() === ''){
+  } else if ($('#editType').val() === '') {
     alert('Product Type required');
     return false;
-    } else if ($("#editState").val() == '1' && registration_date === ''){
+  } else if ($("#editState").val() == '1' && registration_date === '') {
     alert('Registration date required');
     return false;
-    } else if ($('#editDistance').val() === ''){
+  } else if ($('#editDistance').val() === '') {
     alert('Mileage required');
     return false;
-    } else if ($('#editType').val() === ''){
+  } else if ($('#editType').val() === '') {
     alert('Product Type required');
     return false;
-    } else if ($('#editEngine').val() === ''){
-      alert('Engine required');
-      return false;
-    } else if ($('#editPrice').val() === ''){
-      alert('Price required');
-      return false;
-    } else if ($('#editSeller').val() === ''){
-      alert('Seller required');
-      return false;
-    } else if ($('#editSerial').val() === ''){
-      alert('Serial required');
-      return false;
-    }else if ($('#plate_number').val() === ''){
-      alert('Plate Number required');
-      return false;
-    }else if ($('#editFuel').val() === ''){
-      alert('Fuel required');
-      return false;
-    }else if ($('#editTransmission').val() === ''){
-      alert('Transmission required');
-      return false;
-    }else if ($('#editExteriorColor').val() === ''){
-      alert('Exterior Color required');
-      return false;
-    } else if ($('#editWeight').val() === ''){
-      alert('Weight required');
-      return false;
-    } else if ($('#editSteering').val() === ''){
-      alert('Steering required');
-      return false;
-    } else if ($('#editDoor').val() === ''){
-      alert('Door required');
-      return false;
-    } else if ($('#editWidth').val() === '' && $('#editLength').val() === '' && $('#editHeight').val() === ''){
-      alert('Size required');
-      return false;
-    } else if($('#editManufactureYear').val() > registration_date){
-      alert("registration date can't before than manufacture date");
-      return false;
-    }
+  } else if ($('#editEngine').val() === '') {
+    alert('Engine required');
+    return false;
+  } else if ($('#editPrice').val() === '') {
+    alert('Price required');
+    return false;
+  } else if ($('#editSeller').val() === '') {
+    alert('Seller required');
+    return false;
+  }
+  //  else if ($('#editSerial').val() === '') {
+  //   alert('Serial required');
+  //   return false;
+  // }
+   else if ($('#plate_number').val() === '') {
+    alert('Plate Number required');
+    return false;
+  } else if ($('#editFuel').val() === '') {
+    alert('Fuel required');
+    return false;
+  } else if ($('#editTransmission').val() === '') {
+    alert('Transmission required');
+    return false;
+  } else if ($('#editExteriorColor').val() === '') {
+    alert('Exterior Color required');
+    return false;
+  } else if ($('#editWeight').val() === '') {
+    alert('Weight required');
+    return false;
+  } else if ($('#editSteering').val() === '') {
+    alert('Steering required');
+    return false;
+  } else if ($('#editDoor').val() === '') {
+    alert('Door required');
+    return false;
+  } else if ($('#editWidth').val() === '' && $('#editLength').val() === '' && $('#editHeight').val() === '') {
+    alert('Size required');
+    return false;
+  } else if ($('#editManufactureYear').val() > registration_date) {
+    alert("registration date can't before than manufacture date");
+    return false;
+  }
 
   var data = new FormData();
   data.append('editMake', $('#editMake').val());
@@ -1344,332 +1562,353 @@
   data.append('editYoutube', $('#editYoutube').val());
   data.append('editSellingPoint', $('#editSellingPoint').val());
   data.append('editAccessories', JSON.stringify(accessories));
+
+  y = 0;
   var picture = [];
-  for (x in fileList){
-    picture[x] = {'picture':fileList[x]['serverFileName']}
+  for (x in fileList) {
+    if(fileList[x]['serverFileName']!=null){
+      picture[y] = {
+        'picture': fileList[x]['serverFileName']
+      }
+      y++;
+    }
   }
-  
+
   uploaded_picture = [];
-  $(".photo-grid-item").each(function(x){
-    uploaded_picture[x] = {'picture':$(this).data('img')};    
+  $(".photo-grid-item").each(function (y) {
+    uploaded_picture[y] = {
+      'picture': $(this).data('img')
+    };
   });
-  
+
   var all_image = $.merge(picture, uploaded_picture)
 
-if(all_image.length == 0){
+  if (all_image.length == 0) {
     alert('please upload minimal 1 picture');
     return false;
-}
-          data.append('editPicture', JSON.stringify(all_image));
+  }
+  data.append('editPicture', JSON.stringify(all_image));
   $.ajax({
-  url: "{{ URL::to('/') }}/admin/car/update/" + id,
-          type: "POST",
-          data:  data,
-          processData: false,
-          contentType: false,
-          success: function (response) {
-            if (response.error) {
-              alert(response.error);
-              return false;
-            }else{
-              location.reload();
-            }
-          },
-          error: function(error) {
-          console.log(error);
-          }
-  });
-  }
-
-  $('#editModal').on('show.bs.modal', function (event) {
-    $("#editMake").select2();
-    $("#editModel").select2();
-    $("#editType").select2();
-    
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var ids = button.data('ids') // Extract info from data-* attributes
-    
-    var action = button.data('action') // Extract info from data-* attributes
-    if (typeof ids !== 'undefined'){
-      var modal = $(this);
-      loadData($(this), ids, action);
-    }else{
-      clearModal();
-    }
-  })
-
-  function calculateVolume(p, l, t){
-    if(p !== '' && l !== ''  && t !== ''){
-      var volume = p * l * t / 1000000;
-      $('#volume').text('M3 ' + volume.toFixed(3));
-    }
-  }
-  
-  $("#editLength").on('change',function(){
-    calculateVolume($("#editLength").val(), $("#editWidth").val(), $("#editHeight").val());
-  })
-  
-  $("#editWidth").on('change',function(){
-    calculateVolume($("#editLength").val(), $("#editWidth").val(), $("#editHeight").val())
-  })
-  
-  $("#editHeight").on('change',function(){
-    calculateVolume($("#editLength").val(), $("#editWidth").val(), $("#editHeight").val())
-  })
-
-  $.strPad = function(i,l,s) {
-    var o = i.toString();
-    if (!s) { s = '0'; }
-    while (o.length < l) {
-      o = s + o;
-    }
-    return o;
-  };
-
-  $("#editVin").on('blur',function(){
-    if($('#idEdit').val() !== '' || $("#editVin").val() == ''){
-      return false;
-    }
-    var data = {
-      'newVin' : $("#editVin").val(),
-    };
-    $.ajax({
-    url: "{{ route('admin.chasisValidation') }}",
-      type: "POST",
-      data:  data,
-      success: function (response) {
-        if(typeof response.error !== 'undefined' && response.error != ''){
-          alert(response.error);
-          $("#editVin").val('');
-        }
-      },
-      error: function(error) {
+    url: "{{ URL::to('/') }}/admin/car/update/" + id,
+    type: "POST",
+    data: data,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      if (response.error) {
+        alert(response.error);
+        return false;
+      } else {
+        location.reload();
+      }
+    },
+    error: function (error) {
       console.log(error);
+    }
+  });
+}
+
+$('#editModal').on('show.bs.modal', function (event) {
+  $("#editMake").select2();
+  $("#editModel").select2();
+  $("#editType").select2();
+
+  var button = $(event.relatedTarget) // Button that triggered the modal
+  var ids = button.data('ids') // Extract info from data-* attributes
+
+  var action = button.data('action') // Extract info from data-* attributes
+  if (typeof ids !== 'undefined') {
+    var modal = $(this);
+    loadData($(this), ids, action);
+  } else {
+    clearModal();
+  }
+})
+
+function calculateVolume(p, l, t) {
+  if (p !== '' && l !== '' && t !== '') {
+    var volume = p * l * t / 1000000;
+    $('#volume').text('M3 ' + volume.toFixed(3));
+  }
+}
+
+$("#editLength").on('change', function () {
+  calculateVolume($("#editLength").val(), $("#editWidth").val(), $("#editHeight").val());
+})
+
+$("#editWidth").on('change', function () {
+  calculateVolume($("#editLength").val(), $("#editWidth").val(), $("#editHeight").val())
+})
+
+$("#editHeight").on('change', function () {
+  calculateVolume($("#editLength").val(), $("#editWidth").val(), $("#editHeight").val())
+})
+
+$.strPad = function (i, l, s) {
+  var o = i.toString();
+  if (!s) {
+    s = '0';
+  }
+  while (o.length < l) {
+    o = s + o;
+  }
+  return o;
+};
+
+$("#editVin").on('blur', function () {
+  if ($('#idEdit').val() !== '' || $("#editVin").val() == '') {
+    return false;
+  }
+  var data = {
+    'newVin': $("#editVin").val(),
+  };
+  $.ajax({
+    url: "{{ route('admin.chasisValidation') }}",
+    type: "POST",
+    data: data,
+    success: function (response) {
+      if (typeof response.error !== 'undefined' && response.error != '') {
+        alert(response.error);
+        $("#editVin").val('');
+      }
+    },
+    error: function (error) {
+      console.log(error);
+    }
+  });
+
+})
+
+$("#editRegistrationMonth").on('change', function () {
+  createRegistrationDay($("#editRegistrationMonth").val());
+})
+
+function createRegistrationDay(month) {
+  var total_day = ['', '31', '29', '31', '30', '31', '30', '31', '31', '30', '31', '30', '31'];
+
+  var html = '';
+  var i = 1;
+  for (i = 1; i <= total_day[parseInt(month)]; i++) {
+    html += '<option value="' + $.strPad(i, 2) + '">' + i + '</option>';
+  }
+
+  $("#editRegistrationDay").html(html);
+}
+
+function loadData(obj, ids, action) {
+  var modal = obj;
+  $.get("{{ URL::to('/') }}/admin/car/view/" + ids, function (response) {
+    accessories = [];
+    if (response.accessories !== '') {
+      accessories = JSON.parse(response.accessories);
+    }
+
+    $('#editAccessories td').each(function () {
+      if ($.inArray($(this).html(), accessories) != -1) {
+        $(this).css('background-color', '#DDFFDD');
       }
     });
-  
-  })
-  
-  $("#editRegistrationMonth").on('change',function(){
-    createRegistrationDay($("#editRegistrationMonth").val());
-  })
-  function createRegistrationDay(month){
-    var total_day = ['','31','29','31','30','31','30','31','31','30','31','30','31'];
-    
-    var html = '';
-    var i = 1;
-    for(i = 1; i<= total_day[parseInt(month)]; i++){
-      html += '<option value="'+ $.strPad(i, 2) +'">'+ i +'</option>';
+    var registration_date_arr = [];
+    if (response.registration_date !== '') {
+      var registration_date_arr = response.registration_date.split('-');
     }
-    
-    $("#editRegistrationDay").html(html);
-  }
-  
-  function loadData(obj, ids, action){
-          var modal = obj;
-          $.get("{{ URL::to('/') }}/admin/car/view/" + ids, function(response) {
-          accessories = [];
-          if (response.accessories !== ''){
-            accessories = JSON.parse(response.accessories);
-          }
 
-          $('#editAccessories td').each(function() {
-            if ($.inArray($(this).html(), accessories) != - 1){
-              $(this).css('background-color', '#DDFFDD');
-            }
-          });
-          var registration_date_arr = [];
-          if(response.registration_date !== ''){
-            var registration_date_arr = response.registration_date.split('-');
-          }
+    model_id = response.model_id;
+    modal.find('#editMake').val(response.make_id).change();
+    modal.find('#editModel').val(response.model_id).change();
+    modal.find('#editVin').val(response.vin);
+    modal.find('#editSerial').val(response.serial);
 
-          model_id = response.model_id;
-          modal.find('#editMake').val(response.make_id).change();
-          modal.find('#editModel').val(response.model_id).change();
-          modal.find('#editVin').val(response.vin);
-          modal.find('#editSerial').val(response.serial);
-          
-          if(registration_date_arr.length > 0){
-            modal.find('#editRegistrationYear').val(registration_date_arr[0]);
-            modal.find('#editRegistrationMonth').val(registration_date_arr[1]);
-            
-            createRegistrationDay($('#editRegistrationMonth').val());
-            
-            modal.find('#editRegistrationDay').val(registration_date_arr[2]);
-          }else{
-            modal.find('#editRegistrationYear').val('');
-            modal.find('#editRegistrationMonth').val('');
-            modal.find('#editRegistrationDay').val('');
-          }
-          
-          if(action == 'edit'){
-            modal.find('#editStatus').val(response.status == ''? 1 : response.status).change();
-          }else{
-            modal.find('#editStatus').val(1).change();
-          }
-          modal.find('#plate_number').val(response.plate_number);
-          modal.find('#motor_nunber').val(response.motor_number);
-          modal.find('#editDistance').val(response.distance);
-          modal.find('#editType').val(response.type);
-          modal.find('#editType').val(response.type).trigger('change');
-          modal.find('#editColour').val(response.colour);
-          modal.find('#editEngine').val(response.engine);
-          modal.find('#editPrice').val(response.price);
-          modal.find('#editPromotion').val(response.promotion).change();
-          modal.find('#editState').val(response.state).change();
-          modal.find('#editFuel').val(response.fuel);
-          modal.find('#editSteering').val(response.steering).change();
-          modal.find('#editManufactureYear').val(response.manufacture_year);
-          modal.find('#editManufactureMonth').val(response.manufacture_month);
-          modal.find('#editCurrencySymbol').val(response.currency_symbol);
-          modal.find('#editType2').val(response.type2);
-          modal.find('#editExteriorColor').val(response.exterior_color);
-          modal.find('#editDrive').val(response.drive).change();
-          modal.find('#editTransmission').val(response.transmission).change();
-          modal.find('#editDoor').val(response.door);
-          modal.find('#editSeat').val(response.seat);
-          modal.find('#editOptions').val(response.options);
-          modal.find('#editDescription').val(response.description);
-          modal.find('#editRemark').val(response.remark);
-          modal.find('#editComment').val(response.comment);
-          modal.find('#editKeyword').val(response.keyword);
-          modal.find('#editSeller').val(response.seller).change();
-          modal.find('#editAgent').val(response.agent);
-          modal.find('#editBuyer').val(response.buyer);
-          modal.find('#editWeight').val(response.weight);
-          modal.find('#editRecommendation').val(response.recommendation).change();
-          modal.find('#editBestDeal').val(response.best_deal).change();
-          modal.find('#editBestSeller').val(response.best_seller).change();
-          modal.find('#editHotCar').val(response.hot_car).change();
-          modal.find('#editInteriorColor').val(response.interior_color);
-          modal.find('#editYoutube').val(response.youtube);
-          modal.find('#editSellingPoint').val(response.selling_point);
-          
-          if(response.dimension != null){
-            var dimensions = response.dimension.split(',');
-            modal.find('#editLength').val(dimensions[0]);
-            modal.find('#editWidth').val(dimensions[1]);
-            modal.find('#editHeight').val(dimensions[2]);
-            calculateVolume(dimensions[0], dimensions[1], dimensions[2]);           
-                        
-          }
-          
-          
-          $("#editExteriorColor").select2();
-          $("#editInteriorColor").select2();
-    
-          if(action == 'edit'){
-            $('#idEdit').val(ids);
-            uploaded_picture = [];
-            var image_html = '<div class="photo-grid-container" align="center" width="80%" style="margin-top:10px;">';
-            var image = response.picture;
-            if (image !== ''){
-              var image = JSON.parse(image);
-              for (x in image){
-                if (image_asset_url + image[x]['picture'] !== ''){
-                  uploaded_picture[x] = {'picture':image[x]['picture']};
-                                    
-                  image_html += '<div class="photo-grid-item" data-img = "' + image[x]['picture'] + '">'
-                    + '<img src="' + image_asset_url + image[x]['picture'] + '" width="120px" style="border:1px solid;border-radius:10px;"><br><a href="#" onclick="deleteImage(\'' + image[x]['picture'] + '\');">delete</a></div>';
-                  
-                  
-                }
-              }
-              
-              image_html += '</div>';
+    if (registration_date_arr.length > 0) {
+      modal.find('#editRegistrationYear').val(registration_date_arr[0]);
+      modal.find('#editRegistrationMonth').val(registration_date_arr[1]);
 
-              $(".image-container").html(image_html);
-              
-              $('.photo-grid-container').sortablePhotos({
-                selector: '> .photo-grid-item',
-                padding: 20
-              });
-            }
-          }else{
-          /** copy similiar item */
-            $(".image-container").html('');
-            $('#idEdit').val('');
-            $("#editDistance").val('');
-            $("#editVin").val('');
-            $("#plate_number").val('');
-            $("#editSerial").val('');
-            $("#editYoutube").val('');
-            $("#editRecommendation").val(0);
-            $("#editBestDeal").val(0);`
+      createRegistrationDay($('#editRegistrationMonth').val());
+
+      modal.find('#editRegistrationDay').val(registration_date_arr[2]);
+    } else {
+      modal.find('#editRegistrationYear').val('');
+      modal.find('#editRegistrationMonth').val('');
+      modal.find('#editRegistrationDay').val('');
+    }
+
+    if (action == 'edit') {
+      modal.find('#editStatus').val(response.status == '' ? 1 : response.status).change();
+    } else {
+      modal.find('#editStatus').val(1).change();
+    }
+    modal.find('#plate_number').val(response.plate_number);
+    modal.find('#motor_nunber').val(response.motor_number);
+    modal.find('#editDistance').val(response.distance);
+    modal.find('#editType').val(response.type);
+    modal.find('#editType').val(response.type).trigger('change');
+    modal.find('#editColour').val(response.colour);
+    modal.find('#editEngine').val(response.engine);
+    modal.find('#editPrice').val(response.price);
+    modal.find('#editPromotion').val(response.promotion).change();
+    modal.find('#editState').val(response.state).change();
+    modal.find('#editFuel').val(response.fuel);
+    modal.find('#editSteering').val(response.steering).change();
+    modal.find('#editManufactureYear').val(response.manufacture_year);
+    modal.find('#editManufactureMonth').val(response.manufacture_month);
+    modal.find('#editCurrencySymbol').val(response.currency_symbol);
+    modal.find('#editType2').val(response.type2);
+    modal.find('#editExteriorColor').val(response.exterior_color);
+    modal.find('#editDrive').val(response.drive).change();
+    modal.find('#editTransmission').val(response.transmission).change();
+    modal.find('#editDoor').val(response.door);
+    modal.find('#editSeat').val(response.seat);
+    modal.find('#editOptions').val(response.options);
+    modal.find('#editDescription').val(response.description);
+    modal.find('#editRemark').val(response.remark);
+    modal.find('#editComment').val(response.comment);
+    modal.find('#editKeyword').val(response.keyword);
+    modal.find('#editSeller').val(response.seller).change();
+    modal.find('#editAgent').val(response.agent);
+    modal.find('#editBuyer').val(response.buyer);
+    modal.find('#editWeight').val(response.weight);
+    modal.find('#editRecommendation').val(response.recommendation).change();
+    modal.find('#editBestDeal').val(response.best_deal).change();
+    modal.find('#editBestSeller').val(response.best_seller).change();
+    modal.find('#editHotCar').val(response.hot_car).change();
+    modal.find('#editInteriorColor').val(response.interior_color);
+    modal.find('#editYoutube').val(response.youtube);
+    modal.find('#editSellingPoint').val(response.selling_point);
+
+    if (response.dimension != null) {
+      var dimensions = response.dimension.split(',');
+      modal.find('#editLength').val(dimensions[0]);
+      modal.find('#editWidth').val(dimensions[1]);
+      modal.find('#editHeight').val(dimensions[2]);
+      calculateVolume(dimensions[0], dimensions[1], dimensions[2]);
+
+    }
+
+
+    $("#editExteriorColor").select2();
+    $("#editInteriorColor").select2();
+
+    if (action == 'edit') {
+      $('#idEdit').val(ids);
+      uploaded_picture = [];
+      var image_html = '<div class="photo-grid-container" align="center" width="80%" style="margin-top:10px;">';
+      var image = response.picture;
+      if (image !== '') {
+        var image = JSON.parse(image);
+        for (x in image) {
+          if (image_asset_url + image[x]['picture'] !== '') {
+            uploaded_picture[x] = {
+              'picture': image[x]['picture']
+            };
+
+            image_html += '<div class="photo-grid-item" data-img = "' + image[x]['picture'] + '">' +
+              '<img src="' + image_asset_url + image[x]['picture'] + '" width="120px" style="border:1px solid;border-radius:10px;"><br><a href="#" onclick="deleteImage(\'' + image[x]['picture'] + '\');">delete</a></div>';
+
+
+          }
+        }
+
+        image_html += '</div>';
+
+        $(".image-container").html(image_html);
+
+        $('.photo-grid-container').sortablePhotos({
+          selector: '> .photo-grid-item',
+          padding: 20
+        });
+      }
+    } else {
+      /** copy similiar item */
+      $(".image-container").html('');
+      $('#idEdit').val('');
+      $("#editDistance").val('');
+      $("#editVin").val('');
+      $("#plate_number").val('');
+      $("#editSerial").val('');
+      $("#editYoutube").val('');
+      $("#editRecommendation").val(0);
+      $("#editBestDeal").val(0);
+      `
             $("#editBestSeller").val(0);
             $("#editHotCar").val(0);
             $("#editStatus").val(1);
             $("#editPromotion").val(0);`
-          }
+    }
 
-        });
-      }
+  });
+}
 
-  function deleteImage(picture){
-    var confirmation = confirm("Are you sure want to delete?");
-    if (confirmation) {
+function deleteImage(picture) {
+  var confirmation = confirm("Are you sure want to delete?");
+  if (confirmation) {
     var temp = [];
     var i = 0;
-    
+
     uploaded_picture = [];
-    $(".photo-grid-item").each(function(x){
-      uploaded_picture[x] = {'picture':$(this).data('img')};    
+    $(".photo-grid-item").each(function (x) {
+      uploaded_picture[x] = {
+        'picture': $(this).data('img')
+      };
     });
-  
-    for (x in uploaded_picture){
-    if (uploaded_picture[x]['picture'] !== picture){
-    temp[i] = {'picture':uploaded_picture[x]['picture']};
-    i++;
-    }
+
+    for (x in uploaded_picture) {
+      if (uploaded_picture[x]['picture'] !== picture) {
+        temp[i] = {
+          'picture': uploaded_picture[x]['picture']
+        };
+        i++;
+      }
     }
 
     uploaded_picture = temp;
     var data = {
-      'deleted_picture' : picture,
-      'uploaded_picture' : uploaded_picture,
-      'id' : $('#idEdit').val(),
+      'deleted_picture': picture,
+      'uploaded_picture': uploaded_picture,
+      'id': $('#idEdit').val(),
     }
-  
-  $.ajax({
-  url: "{{ URL::to('/') }}/admin/car/delete-picture",
-          type: "POST",
-          data:  data,
-          success: function (response) {
-          if (response.error == 0){
+
+    $.ajax({
+      url: "{{ URL::to('/') }}/admin/car/delete-picture",
+      type: "POST",
+      data: data,
+      success: function (response) {
+        if (response.error == 0) {
           var image_html = '<div class="photo-grid-container" align="center" width="80%" style="margin-top:10px;">';
           var image = response.uploaded_picture;
-          if (image !== ''){
-          for (x in image){
-            uploaded_picture[x] = {'picture':image[x]['picture']};
-            image_html += '<div class="photo-grid-item" data-img = "' + image[x]['picture'] + '">'
-                    + '<img src="' + image_asset_url + image[x]['picture'] + '" width="120px" style="border:1px solid;border-radius:10px;"><br><a href="#" onclick="deleteImage(\'' + image[x]['picture'] + '\');">delete</a></div>';
-          
-          }
+          if (image !== '') {
+            for (x in image) {
+              uploaded_picture[x] = {
+                'picture': image[x]['picture']
+              };
+              image_html += '<div class="photo-grid-item" data-img = "' + image[x]['picture'] + '">' +
+                '<img src="' + image_asset_url + image[x]['picture'] + '" width="120px" style="border:1px solid;border-radius:10px;"><br><a href="#" onclick="deleteImage(\'' + image[x]['picture'] + '\');">delete</a></div>';
 
-          image_html += '</div>';
-          
-          $(".image-container").html(image_html);
-          
-          $('.photo-grid-container').sortablePhotos({
-            selector: '> .photo-grid-item',
-            padding: 20
-          });
-              
+            }
+
+            image_html += '</div>';
+
+            $(".image-container").html(image_html);
+
+            $('.photo-grid-container').sortablePhotos({
+              selector: '> .photo-grid-item',
+              padding: 20
+            });
+
           }
-          } else{
+        } else {
           alert('failed to delete, please try again letter');
-          }
-          },
-          error: function(error) {
-          console.log(error);
-          }
-  });
+        }
+      },
+      error: function (error) {
+        console.log(error);
+      }
+    });
   }
   return false;
-  }
+}
 
-  function deleteData(id){
-    swal({
+function deleteData(id) {
+  swal({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this file!",
       icon: "warning",
@@ -1679,39 +1918,39 @@ if(all_image.length == 0){
     .then((willDelete) => {
       if (willDelete) {
         swal("Poof! Your file has been deleted!", {
-        icon: "success",
+          icon: "success",
         });
-        $.get("{{ URL::to('/') }}/admin/car/delete/" + id, function(response) {
+        $.get("{{ URL::to('/') }}/admin/car/delete/" + id, function (response) {
           location.reload();
         });
       } else {
         swal("Your file is safe!");
       }
     });
-  }
-  
-  function validate(evt) {
-    var theEvent = evt || window.event;
+}
 
-    // Handle paste
-    if (theEvent.type === 'paste') {
-        key = event.clipboardData.getData('text/plain');
-    } else {
+function validate(evt) {
+  var theEvent = evt || window.event;
+
+  // Handle paste
+  if (theEvent.type === 'paste') {
+    key = event.clipboardData.getData('text/plain');
+  } else {
     // Handle key press
-        var key = theEvent.keyCode || theEvent.which;
-        key = String.fromCharCode(key);
-    }
-    var regex = /[0-9]|\./;
-    if( !regex.test(key) ) {
-      theEvent.returnValue = false;
-      if(theEvent.preventDefault) theEvent.preventDefault();
-    }
+    var key = theEvent.keyCode || theEvent.which;
+    key = String.fromCharCode(key);
   }
+  var regex = /[0-9]|\./;
+  if (!regex.test(key)) {
+    theEvent.returnValue = false;
+    if (theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
 
-  function unavailableCar(id){
-    swal({
+function unavailableCar(id) {
+  swal({
       title: "Are you sure?",
-      text: "Once unavailable, you will not be able to recover this file!",
+      // text: "Once unavailable, you will not be able to recover this file!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -1719,72 +1958,93 @@ if(all_image.length == 0){
     .then((willDelete) => {
       if (willDelete) {
         swal("Poof! Your file has been unavailable!", {
-        icon: "success",
+          icon: "success",
         });
-        $.get("{{ URL::to('/') }}/admin/car/unavailable/" + id, function(response) {
+        $.get("{{ URL::to('/') }}/admin/car/unavailable/" + id, function (response) {
           location.reload();
         });
       } else {
         swal("Your file is safe!");
       }
     });
-  }
-    
-  $("#editMake").on('change',function(){    
-     getModel();
-  })
-  
-  function getModel(){
-    var requestData = {
-      make_id : $("#editMake option:selected").attr('data-id'),      
-    };
-    
-    $.ajax({
-        headers: {
-                'X-CSRF-TOKEN': '{{csrf_token()}}',
-                    },
-        url: "{{route('front.getCarModel')}}",
-        data: requestData,
-        type: 'post',
-        dataType: 'json',
-        beforeSend:function(){
-        },
-        success: function (result) {
-          var select_template = '';
-          for (x in result){
-            select_template += '<option value="'+ result[x].id +'">'+ result[x].model +'</option>';
-          }
-          $("#editModel").html(select_template);
-          
-          if(model_id !== ''){
-            $('#editModel').val(model_id).change();
-          }
-          
-          $("#editModel").prop('disabled',false);
-        }
+}
+
+function availableCar(id) {
+  swal({
+      title: "Are you sure?",
+      // text: "Once unavailable, you will not be able to recover this file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        swal("Your file has been available!", {
+          icon: "success",
+        });
+        $.get("{{ URL::to('/') }}/admin/car/available/" + id, function (response) {
+          location.reload();
+        });
+      } else {
+        swal("Your file is safe!");
+      }
     });
-  }
-  
-  $( "#car_status" ).change(function() {
-    var car_status = $('#car_status').val();
-    window.location.href = car_status;
-  });
-  
-  $("#check_all").on('change',function(){
-    if($('#check_all').is(":checked")){
-      $(".ids").prop('checked',true);
-    }else{
-      $(".ids").prop('checked',false);
+}
+
+$("#editMake").on('change', function () {
+  getModel();
+})
+
+function getModel() {
+  var requestData = {
+    make_id: $("#editMake option:selected").attr('data-id'),
+  };
+
+  $.ajax({
+    headers: {
+      'X-CSRF-TOKEN': '{{csrf_token()}}',
+    },
+    url: "{{route('front.getCarModel')}}",
+    data: requestData,
+    type: 'post',
+    dataType: 'json',
+    beforeSend: function () {},
+    success: function (result) {
+      var select_template = '';
+      for (x in result) {
+        select_template += '<option value="' + result[x].id + '">' + result[x].model + '</option>';
+      }
+      $("#editModel").html(select_template);
+
+      if (model_id !== '') {
+        $('#editModel').val(model_id).change();
+      }
+
+      $("#editModel").prop('disabled', false);
     }
-  })
-  
-  function unavailableAll(){
-    var arr = [];
-    $(".ids:checked").each(function(x){
-      arr.push($(this).data('id'));
-    });  
-    
-    swal({
+  });
+}
+
+$("#car_status").change(function () {
+  var car_status = $('#car_status').val();
+  window.location.href = car_status;
+});
+
+$("#check_all").on('change', function () {
+  if ($('#check_all').is(":checked")) {
+    $(".ids").prop('checked', true);
+  } else {
+    $(".ids").prop('checked', false);
+  }
+})
+
+function unavailableAll() {
+  var arr = [];
+  $(".ids:checked").each(function (x) {
+    arr.push($(this).data('id'));
+  });
+
+  swal({
       title: "Are you sure?",
       text: "Once unavailable, you will not be able to recover this file!",
       icon: "warning",
@@ -1794,15 +2054,15 @@ if(all_image.length == 0){
     .then((willDelete) => {
       if (willDelete) {
         swal("Poof! Your file has been unavailable!", {
-        icon: "success",
+          icon: "success",
         });
-        $.get("{{ URL::to('/') }}/admin/car/unavailable/" + arr.join(','), function(response) {
+        $.get("{{ URL::to('/') }}/admin/car/unavailable/" + arr.join(','), function (response) {
           location.reload();
         });
       } else {
         swal("Your file is safe!");
       }
     });
-  }
+}
   </script>
   @stop
