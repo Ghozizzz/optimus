@@ -390,10 +390,10 @@
                     
                     <div class='row row-border'>
                       <div class='col-md-6 col-xs-6 dark-div'>
-                        Engine No *
+                        Engine No
                       </div>
                       <div class='col-md-6 col-xs-6 '>
-                        <input type="text" class="form-control" id="editSerial" required>
+                        <input type="text" class="form-control" id="editSerial">
                       </div>
                     </div>
 
@@ -1119,9 +1119,6 @@
   } else if ($('#editSeller').val() === ''){
     alert('Seller required');
     return false;
-  } else if ($('#editSerial').val() === ''){
-    alert('Serial required');
-    return false;
   } else if ($('#plate_number').val() === ''){
     alert('Plate number required');
     return false;
@@ -1266,9 +1263,6 @@
       return false;
     } else if ($('#editSeller').val() === ''){
       alert('Seller required');
-      return false;
-    } else if ($('#editSerial').val() === ''){
-      alert('Serial required');
       return false;
     }else if ($('#plate_number').val() === ''){
       alert('Plate Number required');
