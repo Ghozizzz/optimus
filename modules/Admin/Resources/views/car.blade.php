@@ -135,7 +135,15 @@
                   <td>{{ $d->model .'/'. $d->make }}</td>
                   <td>{{ $d->plate_number }}</td>
                   <td>{{ $registration_date }}</td>
-                  <td>{{ $d->vin }}</td>                  
+                  <td>
+                  <?php $vin = str_split($d->vin, 7); 
+                  // print_r($vin);
+                    foreach ($vin as $v) {
+                      echo $v.'<br>';
+                    }
+                  ?>
+                  </td>
+                  <!-- <td>{{ $d->vin }}</td>                   -->
                   <td>{{ $d->currency.' '. number_format($d->price,'0','.',',') }}</td>
                   <td>{{ number_format($d->distance,'0','.',',') }}</td>
                   <td>{{ $d->pic_name }}</td>
@@ -903,7 +911,7 @@
   @section('script')
   <script src="{{URL::to('/')}}/assets/js/datetimepicker/bootstrap-datetimepicker.js"></script>
   <script src="{{URL::to('/')}}/assets/js/datetimepicker/locales/bootstrap-datetimepicker.id.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
   <script src="{{URL::to('/')}}/assets/js/admin.js"></script>
   <script src="{{ URL::to('/') }}/assets/js/select2.min.js" type="text/javascript"></script>
   <script src="{{ URL::to('/') }}/assets/js/dropzone.js" type="text/javascript"></script>

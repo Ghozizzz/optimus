@@ -742,6 +742,22 @@ class Front_model {
                           ->update($sqlValue); 
       return true;
     }
+
+    public static function updateCarPayment($array = array())
+    {
+        $sqlValue = [
+            'flag_payment' => $array['flag_payment'],
+        ];
+        DB::table('car')->where('id', '=', $array['id'])->update($sqlValue);
+    }
+
+    public static function updateCarDueDate($array = array())
+    {
+        $sqlValue = [
+            'due_date' => $array['due_date'],
+        ];
+        DB::table('car')->where('id', '=', $array['id'])->update($sqlValue);
+    }
     
     public static function insertNegotiation($array = array()) {
                 
@@ -2198,5 +2214,53 @@ class Front_model {
         $result = DB::insert($sql ,$sqlValue);
         
         return $result;
+    }
+
+    public static function insertNotification($array = array())
+    {
+      $sql = 'insert into notify ('
+                . 'customer_id, '
+                . 'car_id, '
+                . 'createdon) '
+                . 'values (?, ?, now())';
+                
+        $sqlValue = [
+            $array['customer_id'],
+            $array['car_id'],         
+        ];
+        $result = DB::insert($sql ,$sqlValue);
+        
+        return $result;
+    }
+
+    public static function getAllNotification($count = false, $where = array())
+    {
+        $customer_id = (isset($where['customer_id']) ? $where['customer_id'] : '');
+        $car_id = (isset($where['car_id']) ? $where['car_id'] : '');
+        $sent = (isset($where['sent']) ? $where['sent'] : '');
+        $sql = DB::table('notify');
+
+        if ($customer_id != '') {
+            $sql->where('customer_id', $customer_id);
+        }
+
+        if ($car_id != '') {
+            $sql->where('car_id', $car_id);
+        }
+
+        if ($sent != '') {
+            $sql->where('sent', $sent);
+        }
+
+        if ($count) {
+            return $sql->count();
+        } else {
+            return $sql->get();
+        }
+    }
+
+    public static function updateNotification($data, $id)
+    {
+        return DB::table('notify')->where('id', $id)->update($data);
     }
 }

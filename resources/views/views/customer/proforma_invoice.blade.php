@@ -605,7 +605,7 @@
 
 
 @section('script')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
 <script>  
   $("#country").select2();
   $("#departure_country").select2();

@@ -10,6 +10,8 @@ use Modules\Admin\Models\adminModel;
 use Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\API as API;
+use Illuminate\Http\Request as NewRequest;
+use Mail as NewEmail;
 
 class HomeController extends Controller {
 
@@ -20,16 +22,18 @@ class HomeController extends Controller {
     $body_type_array = Front_model::getAllBodyType();
     $car_engine_array = Front_model::getAllCarEngine();
 
-    $hot_car = Front_model::getAllCar('', 'new-arrival', false, 6, 0,array(1,3));
+    $hot_car = Front_model::getAllCar('', 'new-arrival', false, 4, 0,array(1,3));
     $total_hot_car = Front_model::getAllCar('', 'new-arrival', true, '', '',array(1,3));
     
-    $recommendation_car = Front_model::getAllCar('', 'recommended', false, 6, 0, array(1,3));
+    $recommendation_car = Front_model::getAllCar('', 'recommended', false, 4, 0, array(1,3));
     $total_recommendation_car = Front_model::getAllCar('', 'recommended', true, '', '', array(1,3));
-    $best_seller_car = Front_model::getAllCar('', 'best-seller', false, 6, 0, array(1,3));
+    $best_seller_car = Front_model::getAllCar('', 'best-seller', false, 4, 0, array(1,3));
     $total_best_seller_car = Front_model::getAllCar('', 'best-seller', true, '', '', array(1,3));
-    $best_deal_car = Front_model::getAllCar('', 'clearance-sale', false, 6, 0, array(1,3));
+    $best_deal_car = Front_model::getAllCar('', 'clearance-sale', false, 4, 0, array(1,3));
     $total_best_deal_car = Front_model::getAllCar('', 'clearance-sale', true, '', '', array(1,3));
-//    $hot_car = Front_model::getAllCar('', 'hot-car', false, 6, 0);
+//    $hot_car = Front_model::getAllCar('', 'hot-car', false, 4, 0);
+    $all_car = Front_model::getAllCar('', '', false, '', '', array(1,3));
+    $total_all_car = Front_model::getAllCar('', '', true, '', '', array(1,3));
     
     
     $optimus['banner'] = Front_model::getAllBanner('', 3, 1);
@@ -57,6 +61,10 @@ class HomeController extends Controller {
         'recommended' => array(
             'items' => $recommendation_car,
             'total' => $total_recommendation_car,
+        ),
+        'all_car' => array(
+            'items' => $all_car,
+            'total' => $total_all_car,
         ),
     ];
 
@@ -150,9 +158,9 @@ class HomeController extends Controller {
     $limit = 12;
     $offset = ($page - 1) * $limit;
 
-    $optimus['car'] = Front_model::getAllCar('', $criteria, false, $limit, $offset, array(1,2), $make, $body_type, $price_range, $keyword, $model, $car_engine, array($car_year,$car_end_year), $car_status, $promotion);
+    $optimus['car'] = Front_model::getAllCar('', $criteria, false, $limit, $offset, array(1,3), $make, $body_type, $price_range, $keyword, $model, $car_engine, array($car_year,$car_end_year), $car_status, $promotion);
     
-    $optimus['total_car'] = Front_model::getAllCar('', $criteria, true, '', '', array(1,2), $make, $body_type, $price_range, $keyword, $model, $car_engine, array($car_year,$car_end_year), $car_status, $promotion);
+    $optimus['total_car'] = Front_model::getAllCar('', $criteria, true, '', '', array(1,3), $make, $body_type, $price_range, $keyword, $model, $car_engine, array($car_year,$car_end_year), $car_status, $promotion);
     $optimus['active_menu'] = 'gallery';
     
     return view('gallery', compact('session'))->with($optimus);
@@ -210,7 +218,7 @@ class HomeController extends Controller {
   public function checkLogin(Request $request) {
     $param = $request::all();
     $result = Front_model::getAllCustomer('', $param['email'], md5($param['password']));
-
+    
     if (count($result) > 0) {
       $data_customer = $result[0];
       Session::set('user_id', $data_customer->id);
@@ -268,7 +276,7 @@ class HomeController extends Controller {
       ];
 
       $result = Front_model::insertCustomer($arr);
-      $arr['link'] = route('front.signupVerificationseller') . "/" . base64_encode($param['email']);
+      $arr['link'] = route('front.signupVerification') . "/" . base64_encode($param['email']);
 
       try {
         $this->sentEmailSignup($arr);
@@ -513,6 +521,26 @@ class HomeController extends Controller {
     if(count($car_array)== 0){
       return redirect('/');
     }
+
+    if($car_array[0]->status == 2){
+      echo "
+          <script>
+            alert('Car already sold');
+            window.location.href = '/';
+          </script>
+        ";
+      // return redirect('/');
+    }
+
+    if($car_array[0]->status == 4){
+      echo "
+          <script>
+            alert('Car not available');
+            window.location.href = '/';
+          </script>
+        ";
+      // return redirect('/');
+    }
     
     $car_images = Front_model::getAllCarImage('', $id, false, 4);
     $car = [];
@@ -543,6 +571,107 @@ class HomeController extends Controller {
     echo json_encode($destination_array);
   }
 
+  public function notify($car_id)
+  {
+    #only customer can get notification
+    if (Session::get('login_type') != 'customer') {
+      echo "<script>alert('Please use customer account to get notification'); window.location.href='/'</script>";
+    }
+    $customer_id = Session::get('user_id');
+
+    DB::beginTransaction();
+
+    #customer can't waiting same car
+    $check = Front_model::getAllNotification(true, array('customer_id' => $customer_id, 'car_id' => $car_id, 'sent' => '0'));
+    
+    if ($check > 0) {
+      echo "<script>alert('You are already registered.\nYou will be notified by email when this vehicle is available, Thanks!'); window.location.href='/'</script>";
+    }
+
+    $data = [
+      'customer_id' => $customer_id,
+      'car_id' => $car_id,
+    ];
+    Front_model::insertNotification($data);
+
+    if ($check > 0) {
+      DB::rollBack();
+    } else {
+      DB::commit();
+    }
+
+    echo "<script>alert('You will be notified by email when this vehicle is available, Thanks!'); window.location.href='/'</script>";
+  }
+
+  public function cancelNegotiation(NewRequest $request)
+  {
+    $return = [];
+    DB::beginTransaction();
+    try {
+      $negotiations = DB::table('negotiation AS n')
+        ->select('n.*', 'i.due_date')
+        ->leftJoin('invoice AS i', 'i.negotiation_id', '=', 'n.id')
+        ->where('n.car_id', $request->car_id)
+        ->whereRaw('i.due_date <= ?', [$request->due_date])
+        ->get();
+      foreach ($negotiations as $key => $negotiation) {
+        #update status negotiation
+        $data = [
+          'status' => 0,
+          'id' => $negotiation->id,
+        ];
+        Front_model::updateNegotiationStatus($data);
+
+        #insert negotiationline / chat
+        $chat = 'The negotiation has been canceled, because there is no settlement.';
+        $data_chat = array(
+          'negotiation_id' => $negotiation->id,
+          'chat' => $chat,
+          'file' => '',
+          'user_chat_id' => '',
+        );
+        Front_model::insertNegotiationLine($data_chat);  
+      }
+
+      #update car status
+      $data_car = [
+        'status' => 1,
+        'flag_payment' => 0,
+        'due_date' => null,
+        'id' => $request->car_id,
+      ];
+      Front_model::updateCarStatus($data_car);
+      Front_model::updateCarPayment($data_car);
+      Front_model::updateCarDueDate($data_car);
+
+
+      $param = [
+        'car_id' => $request->car_id,
+        'customer_id' => $negotiation->customer_id,
+        'sent' => '0',
+        'subject' => 'Reminder',
+      ];
+      $notification = Front_model::getAllNotification(false, $param);
+      foreach ($notification as $key => $row) {
+        $sent = API::newSendEmail($param);
+        $data_notif = [
+          'sent' => 1,
+          'updatedon' => date('Y-m-d H:i:s'),
+        ];
+        Front_model::updateNotification($data_notif, $row->id);
+      }
+      DB::commit();
+
+      $return['response'] = 1;
+      return json_encode($return);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      $return['response'] = 0;
+      $return['message'] = [$e->getMessage()];
+      return json_encode($return);
+    }
+  }
+
   
   public function test() {
     echo '<!DOCTYPE html> 
@@ -558,5 +687,26 @@ class HomeController extends Controller {
       </body> 
       </html>';
 
+  }
+
+  public function testemail()
+  {
+    $data = [
+      'nama' => 'Tester',
+      'email' => 'hendryrafdi@gmail.com',
+    ];
+    
+    $sent = Mail::send('emails.testemail', ['data' => $data], function ($message) {
+      $message->from('optimuscartrade@gmail.com', 'Optimus')->subject('Hello World');
+      $message->to('hendryrafdi@gmail.com', 'Hendry');
+      // $message->getSwiftMessage();
+      // $type = $message->getHeaders()->get('Content-Type');
+      //         $type->setParameter('charset', 'iso-8859-1');
+    });
+    if (!$sent) {
+      echo "error";
+    } else {
+      return "sent";
+    }
   }
 }

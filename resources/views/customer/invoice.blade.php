@@ -116,7 +116,7 @@
                   <div class='col-md-8'>
                     <div class='row'>
                       <div class='col-md-12'>
-                        <input class='form-control' readonly="true" type='tex' name='final-destination' id='final-destination' value='{{$session['invoice']->final_destination}}'>
+                        <input class='form-control' readonly="true" type='text' name='final-destination' id='final-destination' value='{{$session['invoice']->final_destination}}'>
                       </div>                      
                     </div>
                     

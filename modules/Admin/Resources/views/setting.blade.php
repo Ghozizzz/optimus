@@ -158,7 +158,7 @@
 
 @stop
 @section('script')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
   <script>
     var web_url = '{{$web_url}}';
     $("#search-btn").on('click',function(){

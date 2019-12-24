@@ -189,10 +189,11 @@ class DashboardController extends Controller {
         'negotiation_id' => $negotiation_id,
         'chat' => $admin_chat,
         'file' => '',
-        'customer_chat_id' => '',
+        'user_chat_id' => '',
       );
       Front_model::insertNegotiationLine($data);    
 
+      if ($param['checker_price'] != $param['price']) {
         $chat = 'I want to negotiate for the price ';
         
         if($param['insurance'] == 1){
@@ -233,7 +234,8 @@ class DashboardController extends Controller {
           'file' => '',
           'customer_chat_id' => Session::get('user_id'),
         );
-        Front_model::insertNegotiationLine($data);      
+        Front_model::insertNegotiationLine($data);    
+      }  
       $negotiations = Front_model::getNegotiation($negotiation_id);     
       
     
@@ -906,6 +908,7 @@ class DashboardController extends Controller {
   function updateInvoice(Request $request){
     $param = $request->all();
     $negotiation = Session::get('negotiation');
+    $invoice = Session::get('invoice');
     
     $other_data = [];
     $other_data['other_name'] = isset($param['other_name'])?$param['other_name']:'';
@@ -954,6 +957,19 @@ class DashboardController extends Controller {
         'user_chat_id' => Session::get('user_id'),
       );
       Front_model::insertNegotiationLine($data_chat);
+
+      $data_car = [
+        'flag_payment' => 1,
+        'id' => $negotiation->car_id,
+      ];
+      Front_model::updateCarPayment($data_car);
+
+      $data_car = [
+        'due_date' => $invoice->due_date,
+        'id' => $negotiation->car_id,
+      ];
+      Front_model::updateCarDueDate($data_car);
+
       $link = route('customer.negotiation',['id'=> $negotiation->id]);
     }
     

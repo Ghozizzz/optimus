@@ -164,9 +164,9 @@ if($page_type == 'negotiation_list'){ ?>
         <button data-ids="{{ $d->id }}" data-toggle="modal" data-target="#editModal" class="btn btn-danger mini-act-btn pull-right">Sales</button>
         <button data-ids="{{ $d->id }}" data-toggle="modal" data-target="#recommendationModal" class="btn btn-success margin-top10 act-btn">Recommend other car</button>
         <?php if($d->due_date != null){?>
-            <button data-ids="{{ $d->invoice_id }}" data-due='{{$d->due_date}}' data-toggle="modal" class="btn btn-info margin-top10 extend-button act-btn">Extend due date</button>
+            <button data-ids="{{ $d->invoice_id }}" data-due='{{$d->due_date}}' data-carid='{{ $d->car_id }}' data-toggle="modal" class="btn btn-info margin-top10 extend-button act-btn">Extend due date</button>
         <?php }?>        
-        <button data-ids="{{ $d->id }}" data-toggle="modal" class="btn btn-info margin-top10 cancel-btn act-btn">Cancel Negotiation</button>
+        <button data-ids="{{ $d->id }}" data-carid='{{ $d->car_id }}' data-toggle="modal" class="btn btn-info margin-top10 cancel-btn act-btn">Cancel Negotiation</button>
 			</td>
 		</tr>
 		<?php $i++ ?>
@@ -428,6 +428,7 @@ if($page_type == 'negotiation_list'){ ?>
         <div class='row'>
           <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <input type='hidden' id='invoiceid'>
+            <input type="hidden" id="car_id">
             <input class='form-control' type='text' name='due_date' id="due_date" data-date-format="yyyy-mm-dd" data-link-format="yyyy-mm-dd" autocomplete="off">
           </div>
         </div>
@@ -694,16 +695,20 @@ function searchCarList(){
 $(".extend-button").on('click',function(){
   var id = $(this).data('ids'); // Extract info from data-* attributes
   var due = $(this).data('due'); // Extract info from data-* attributes
+  var car_id = $(this).data('carid');
   
   $("#extend-date").modal('show');  
   $("#invoiceid").val(id);
+  $("#car_id").val(car_id);
   $("#due_date").val(due);
 })
 
 $("#extended-btn").on('click',function(){
   var id = $("#invoiceid").val();
+  var car_id = $('#car_id').val();
 	var data = new FormData();
 	data.append('id', id);
+  data.append('car_id', car_id);
 	data.append('due_date', $("#due_date").val());
 	$.ajax({  
 	    url: "{{ route('admin.extendDate') }}",  
@@ -743,12 +748,13 @@ $('#editModal').on('show.bs.modal', function (event) {
 
 $(".cancel-btn").on('click',function(){
   var id = $(this).data('ids'); // Extract info from data-* attributes
-  
+  var car_id = $(this).data('carid');
   var response = confirm('Are you sure want to cancel car negotiation?');
   if(response){
     var data = new FormData();
     data.append('editUserId', $('.editUserId').val());
     data.append('status', 0);
+    data.append('car_id', car_id);
     $.ajax({  
         url: "{{ URL::to('/') }}/admin/negotiation/update/"+id,  
         type: "POST",  

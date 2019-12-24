@@ -16,8 +16,8 @@ return [
     |
     */
 
-//    'driver' => env('MAIL_DRIVER', 'smtp'),
-    'driver' => 'mailgun',
+   'driver' => env('MAIL_DRIVER', 'smtp'),
+    // 'driver' => 'mailgun',
 
     /*
     |--------------------------------------------------------------------------
@@ -30,8 +30,8 @@ return [
     |
     */
 
-//    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
-    'host' => 'smtp.mailgun.org',
+   'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+    // 'host' => 'smtp.mailgun.org',
 
     /*
     |--------------------------------------------------------------------------
@@ -45,7 +45,8 @@ return [
     */
 
 //    'port' => env('MAIL_PORT', 465),
-    'port' => '587',
+    // 'port' => '587',
+    'port' => env('MAIL_PORT'),
 
     /*
     |--------------------------------------------------------------------------
@@ -71,7 +72,7 @@ return [
     |
     */
 
-    'encryption' => '',
+    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
 
     /*
     |--------------------------------------------------------------------------
@@ -84,7 +85,8 @@ return [
     |
     */
 
-    'username' => ('postmaster@sandbox532a5675486c4ed69e3fe1e199589ad3.mailgun.org'),
+    // 'username' => ('postmaster@sandbox532a5675486c4ed69e3fe1e199589ad3.mailgun.org'),
+    'username' => env('MAIL_USERNAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -97,7 +99,8 @@ return [
     |
     */
 
-    'secret' => ('1efb782839577853d98765adf38cb4b2-770f03c4-c8cabba6'),
+    // 'secret' => ('1efb782839577853d98765adf38cb4b2-770f03c4-c8cabba6'),
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -111,5 +114,37 @@ return [
     */
 
     'sendmail' => '/usr/sbin/sendmail -bs',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Markdown Mail Settings
+    |--------------------------------------------------------------------------
+    |
+    | If you are using Markdown based email rendering, you may configure your
+    | theme and component paths here, allowing you to customize the design
+    | of the emails. Or, you may simply stick with the Laravel defaults!
+    |
+    */
+
+    'markdown' => [
+        'theme' => 'default',
+
+        'paths' => [
+            resource_path('views/vendor/mail'),
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Channel
+    |--------------------------------------------------------------------------
+    |
+    | If you are using the "log" driver, you may specify the logging channel
+    | if you prefer to keep mail messages separate from other log entries
+    | for simpler reading. Otherwise, the default channel will be used.
+    |
+    */
+
+    'log_channel' => env('MAIL_LOG_CHANNEL'),
 
 ];

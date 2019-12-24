@@ -27,7 +27,7 @@
     var reset_password_url = "{{route('front.resetPassword')}}";
     var token = '{{csrf_token()}}';
   </script>
-  
+  <!-- </head> -->
   </head>
 
   <body class='bg-light'>
@@ -45,7 +45,7 @@
       <div class="wrap" style='background:#fff'>
         @include('layouts.footer')
       </div>
-      <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
       <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
       <script src="{{URL::to('/')}}/assets/js/bootstrap.js"></script>
       <script src="{{URL::to('/')}}/assets/js/jquery-ui.js"></script>
@@ -53,5 +53,6 @@
       <script src="{{URL::to('/')}}/assets/js/main.js"></script>      
       <script src="{{URL::to('/')}}/assets/js/select2.min.js"></script>      
       @yield('script')
+    <!-- </body></html> -->
   </body>
 </html>
