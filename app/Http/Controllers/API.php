@@ -267,7 +267,7 @@ class API {
       $from_name = $param['from_name'];
     }
 
-    $data['car'] = DB::table('car')->where('id', $param['car_id'])->first();
+    $data['car'] = DB::table('car')->where('id', $param['car_id'])->where('status', [1,3])->first();
     $data['customer'] = DB::table('customer')->where('id', $param['customer_id'])->first();
     $data['link'] = route('front.productdetail', ['id' => $param['car_id']]);
 

@@ -15,6 +15,7 @@
   $current_url = Request::fullUrl();
   $explode = explode('?', $current_url);
   $web_url = $explode[0];
+  $getMax === isset($_GET['max']) ? $_GET['max'] : '';
 
   $total_item = $db['total'];
   $limit = isset($_GET['max'])?$_GET['max']:5;
@@ -42,7 +43,7 @@
 			<option <?php if($getMax === "5") echo 'selected' ?> <?php $qs['max'] = 5; ?> value="{{ $web_url . '?' . http_build_query($qs) }}">5</option>
 			<option <?php if($getMax === "10") echo 'selected' ?> <?php $qs['max'] = 10; ?> value="{{ $web_url . '?' . http_build_query($qs) }}">10</option>
 			<option <?php if($getMax === "20") echo 'selected' ?> <?php $qs['max'] = 20; ?> value="{{ $web_url . '?' . http_build_query($qs) }}">20</option>
-			<option <?php if($getMax === "all") echo 'selected' ?> <?php $qs['max'] = 'all'; ?> value="{{ $web_url . '?' . http_build_query($qs) }}">All</option>
+			<option <?php if($getMax !== "5" && $getMax !== "10" && $getMax !== "20") echo 'selected' ?> <?php $qs['max'] = 'all'; ?> value="{{ $web_url . '?' . http_build_query($qs) }}">All</option>
 		</select>
   </div>
   <div class="col-md-5 col-xs-12 input-group" align='center'>
@@ -369,6 +370,11 @@ function deleteData(id){
 		var max = $('#maxpage').val();
 		window.location.href = max;
 	});
+
+  $("#search-btn").click(function(){
+    var filter = $('#filter').val();
+    window.location.href = filter;
+  });
 
 	$( "#descasc" ).change(function() {
 		var descasc = $('#descasc').val();

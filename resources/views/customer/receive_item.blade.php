@@ -35,7 +35,7 @@
           
           <div class='row'>
             <div class='col-md-12' align='center'>
-              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
+              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a>
               @if($session['negotiation']->status<8)
                 <button class='btn btn-danger' id='confirmbtn'>Item Received</button>
               @endif

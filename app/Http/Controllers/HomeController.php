@@ -18,6 +18,16 @@ class HomeController extends Controller {
   //function to show home page
   public function index() {
     $session = Session::get(null);
+    // unset($session['recently_view'][7]);
+    // Session::forget('recently_view'[7]);
+    // dd($session['recently_view']);
+    foreach ($session['recently_view'] as $key => $value) {
+      $car = Front_model::getOneCar($value->id);
+      if($car->status == 2 || $car->status == 4) {
+        unset($session['recently_view'][$value->id]);
+      }
+    }
+
     $make_array = Front_model::getAllMake();
     $body_type_array = Front_model::getAllBodyType();
     $car_engine_array = Front_model::getAllCarEngine();
@@ -585,7 +595,7 @@ class HomeController extends Controller {
     $check = Front_model::getAllNotification(true, array('customer_id' => $customer_id, 'car_id' => $car_id, 'sent' => '0'));
     
     if ($check > 0) {
-      echo "<script>alert('You are already registered.\nYou will be notified by email when this vehicle is available, Thanks!'); window.location.href='/'</script>";
+      echo "<script>alert('This car already in your notify lists.'); window.location.href='/'</script>";
     }
 
     $data = [

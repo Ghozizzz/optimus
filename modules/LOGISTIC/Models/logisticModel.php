@@ -38,6 +38,35 @@ class logisticModel {
         $db['port_destination'] = DB::table('port_destination')->orderBy('port_name','asc')->get();
 		return $db;
 	}
+	public static function portChargeNew($limit = 20, $descasc = "asc", $skip, $filter = null){
+		if($limit == 'all') $limit = 9999999;
+		if($limit == 1) $limit = 5;
+		$db = [];
+		$db['total'] = DB::table('port_price')->count();
+		$db['data'] = DB::table('port_price')
+                ->orderBy('port_price.id', $descasc)
+                ->skip($skip)
+                ->take($limit)
+                ->join('port_discharge', 'port_discharge.id', '=', 'port_price.discharge_id')
+                ->join('port_destination', 'port_destination.id', '=', 'port_price.destination_id')
+                ->select('port_price.*', 'port_discharge.country_name as discharge_country', 'port_discharge.port_name as discharge_port_name', 'port_destination.country_name as port_destination_country_name', 'port_destination.port_name as port_destination_port_name')
+                ->get();
+		if ($filter !== null || $filter !== '') {
+			$db['data'] = DB::table('port_price')
+                ->orderBy('port_price.id', $descasc)
+                ->skip($skip)
+                ->take($limit)
+                ->join('port_discharge', 'port_discharge.id', '=', 'port_price.discharge_id')
+                ->join('port_destination', 'port_destination.id', '=', 'port_price.destination_id')
+                ->select('port_price.*', 'port_discharge.country_name as discharge_country', 'port_discharge.port_name as discharge_port_name', 'port_destination.country_name as port_destination_country_name', 'port_destination.port_name as port_destination_port_name')
+                ->where('port_destination.country_name', 'LIKE', '%'.$filter.'%')
+        		->orWhere('port_destination.port_name', 'LIKE', '%'.$filter.'%')
+        		->get();
+        }                
+        $db['port_discharge'] = DB::table('port_discharge')->orderBy('port_name','asc')->get();
+        $db['port_destination'] = DB::table('port_destination')->orderBy('port_name','asc')->get();
+		return $db;
+	}
 	public static function portChargeSave($data = array()){
 			try{
         $params = [

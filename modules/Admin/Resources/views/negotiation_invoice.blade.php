@@ -791,8 +791,8 @@
               </div>    
             </div>
             <div class='col-md-12' align='center'>
-              <a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
-              <a href="{{route('report.invoice')}}" target="_blank"><button class="btn btn-info" id='back-btn'>Please check invoice order details</button></a>
+              <a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a>
+              <a href="{{route('report.invoice')}}" target="_blank" class="btn btn-info">Please check invoice order details</a>
             </div>  
           </div>
           

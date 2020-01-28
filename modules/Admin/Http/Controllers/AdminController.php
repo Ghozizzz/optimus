@@ -2252,6 +2252,7 @@ class AdminController extends Controller {
 		}
 	}
 	public function invoiceUpdate(Request $request){
+		$session = Session::get(null);
 		$validator = Validator::make([
 			'editStatus' => $request->editStatus
 		], [
@@ -2285,6 +2286,7 @@ class AdminController extends Controller {
         //update car status
         $car_id = $negotiation[0]->car_id;
         AdminModel::updateCarStatus($car_id, 2);
+        unset($session['recently_view'][$car_id]);
         
         $message = 'Invoice have been Paid';
         
@@ -2312,6 +2314,7 @@ class AdminController extends Controller {
         //update car status
         $car_id = $negotiation[0]->car_id;
         AdminModel::updateCarStatus($car_id, 2);
+        unset($session['recently_view'][$car_id]);
         
         $message = 'Invoice have been partial Paid';
       

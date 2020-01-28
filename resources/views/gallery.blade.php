@@ -247,7 +247,7 @@
                     <a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#popSelectLogin"><p style="line-height:1.5; font-size: 12px; margin: 2px 0;">NOTIFY ME<br>WHEN AVAILABLE</p></a><br>
                   <?php } ?>
                 <?php } ?>
-                <a href="#" class="btn btn-normal wishlist" onclick="checkAuth('{{route('front.wishlist',['car_id'=>$detail->id])}}');return false;"><i class="fas fa-heart"></i></a>
+                <a href="#" class="btn btn-normal wishlist" onclick="checkAuth(function () {addWishlist('{{$detail->id}}')});return false;"><i class="fas fa-heart"></i></a>
               </td>
             </tr>
             @endforeach

@@ -2263,4 +2263,9 @@ class Front_model {
     {
         return DB::table('notify')->where('id', $id)->update($data);
     }
+
+    public static function getOneCar($id)
+    {
+        return DB::table('car')->where('id', $id)->first();
+    }
 }

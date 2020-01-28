@@ -780,9 +780,9 @@
               </div>    
             </div>
             <div class="row">
-              <div class='col-md-2' align='center'><a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a></div>
+              <div class='col-md-2' align='center'><a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a></div>
               <div class='col-md-8' align='center'>
-                <a href="{{route('report.invoice')}}" target="_blank"><button class="btn btn-info" id='back-btn'>Please check invoice order details</button></a>              
+                <a href="{{route('report.invoice')}}" target="_blank" class="btn btn-info" >Please check invoice order details</a>              
               </div>  
             </div>
           </div>

@@ -163,10 +163,12 @@ if($page_type == 'negotiation_list'){ ?>
 				<a href="{{ URL::to('/') }}/admin/negotiation/view/{{ $d->id }}" class="btn btn-danger mini-act-btn">Message</a>
         <button data-ids="{{ $d->id }}" data-toggle="modal" data-target="#editModal" class="btn btn-danger mini-act-btn pull-right">Sales</button>
         <button data-ids="{{ $d->id }}" data-toggle="modal" data-target="#recommendationModal" class="btn btn-success margin-top10 act-btn">Recommend other car</button>
-        <?php if($d->due_date != null){?>
+        <?php if($d->due_date != null && $d->status < 5){?>
             <button data-ids="{{ $d->invoice_id }}" data-due='{{$d->due_date}}' data-carid='{{ $d->car_id }}' data-toggle="modal" class="btn btn-info margin-top10 extend-button act-btn">Extend due date</button>
         <?php }?>        
-        <button data-ids="{{ $d->id }}" data-carid='{{ $d->car_id }}' data-toggle="modal" class="btn btn-info margin-top10 cancel-btn act-btn">Cancel Negotiation</button>
+        <?php if($d->status < 5) { ?>
+          <button data-ids="{{ $d->id }}" data-carid='{{ $d->car_id }}' data-toggle="modal" class="btn btn-info margin-top10 cancel-btn act-btn">Cancel Negotiation</button>
+        <?php } ?>
 			</td>
 		</tr>
 		<?php $i++ ?>
