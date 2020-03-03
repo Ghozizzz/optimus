@@ -91,8 +91,8 @@
         </div>
         <div class="row">
           <div class='col-md-1 col-xs-1' align='center'>
-            <a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}">
-              <button class="btn btn-danger" id='back-btn'>Back</button>
+            <a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>
+              Back
             </a>
           </div>
         </div>

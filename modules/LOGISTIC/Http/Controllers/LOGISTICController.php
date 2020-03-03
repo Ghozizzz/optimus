@@ -44,7 +44,7 @@ class LOGISTICController extends Controller {
           $page = isset($_GET['page']) ? ($_GET['page'] - 1) * $getMax : 0;
         }
 
-        $db = logisticModel::portCharge($getMax, $descasc, $page);
+        $db = logisticModel::portChargeNew($getMax, $descasc, $page, $filter);
     
       return view('logistic::portcharge', compact('db','getMax','descasc'))->with($this->optimus);
     }	

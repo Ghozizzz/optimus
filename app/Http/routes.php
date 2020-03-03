@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::get('/testemail', ['as' => 'front.testemail', 'uses' => 'HomeController@testemail']);
 Route::get('/', ['as' => 'front.home', 'uses' => 'HomeController@index']);
 Route::get('/about', ['as' => 'front.about', 'uses' => 'HomeController@about']);
 Route::get('/gallery', ['as' => 'front.gallery', 'uses' => 'HomeController@gallery']);
@@ -20,6 +21,8 @@ Route::get('/product-detail/{id?}', ['as' => 'front.productdetail', 'uses' => 'H
 Route::post('/wishlist', ['as' => 'front.wishlist', 'uses' => 'HomeController@wishlist']);
 Route::get('/negotiate/{car_id?}', ['as' => 'front.negotiate', 'uses' => 'HomeController@negotiate']);
 
+Route::post('/negotiation/cancel', ['as' => 'front.cancelNegotiation', 'uses' => 'HomeController@cancelNegotiation']);
+Route::get('/notify/{car_id}', ['as' => 'front.notify', 'uses' => 'HomeController@notify']);
 
 Route::post('/checklogin', ['as' => 'front.checklogin', 'uses' => 'HomeController@checkLogin']);
 Route::post('/signup', ['as' => 'front.signup', 'uses' => 'HomeController@signup']);

@@ -255,4 +255,33 @@ class API {
     
     return $countries;
   }
+
+  public static function newSendEmail($param = array())
+  {
+    $from_email = env('MAIL_USERNAME');
+    $from_name = 'Optimus Car Trade';
+    if (isset($param['from_email'])) {
+      $from_email = $param['from_email'];
+    }
+    if (isset($param['from_name'])) {
+      $from_name = $param['from_name'];
+    }
+
+    $data['car'] = DB::table('car')->where('id', $param['car_id'])->where('status', [1,3])->first();
+    $data['customer'] = DB::table('customer')->where('id', $param['customer_id'])->first();
+    $data['link'] = route('front.productdetail', ['id' => $param['car_id']]);
+
+    $sent = Mail::send('emails.notification', $data, function($message) use ($data){
+      $message->from('optimuscartrade@gmail.com', 'Optimus Car Trade')->subject('Car Notification');
+      $message->to($data['customer']->email, $data['customer']->name);
+    });
+
+    if ($sent) {
+      $response = 1;
+      return json_encode($response);
+    } else {
+      $response = 0;
+      return json_encode($response);
+    }
+  }
 }

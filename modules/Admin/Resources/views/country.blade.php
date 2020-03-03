@@ -183,7 +183,7 @@
 
 @stop
 @section('script')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
 <script src="{{URL::to('/')}}/assets/js/admin.js"></script>
 	<script>
     var web_url = '{{$web_url}}';

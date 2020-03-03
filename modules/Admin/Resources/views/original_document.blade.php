@@ -163,7 +163,7 @@
               </div>
               
               <div class="row">
-                <div class="col-md-4"><a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a></div>
+                <div class="col-md-4"><a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a></div>
                 <div class="col-md-4"><button name="save" class="btn btn-danger" id="upload_btn">Save</button></div>
               </div>
             </form>

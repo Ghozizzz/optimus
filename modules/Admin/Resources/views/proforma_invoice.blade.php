@@ -583,7 +583,7 @@
           
           <div class='row'>
             <div class="col-md-12" align="center">
-              <a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
+              <a href="{{route('admin.negotiation.view',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a>
             @if($session['proforma_invoice']->status > 1)
             
               @if($session['proforma_invoice']->approval != 1)

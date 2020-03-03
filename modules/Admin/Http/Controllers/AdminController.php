@@ -20,31 +20,51 @@ class AdminController extends Controller {
   
 	public function __construct() {
         $this->session = Session::get(null);
-        $checkAuth = adminModel::checkSession(Session::get('email'));
+        if (Session::get('login_type') != 'customer') {
+        	$checkAuth = adminModel::checkSession(Session::get('email'));
         
-        if (empty($checkAuth)) {
-        	$this->middleware('authAdmin', ['except' => 'getLogout']);
-        	session()->forget('email');
-        }
-        if (!session()->has('email')) {
-            $this->middleware('authAdmin', ['except' => 'getLogout']);
-        	session()->forget('email');
+	        if (empty($checkAuth)) {
+	        	$this->middleware('authAdmin', ['except' => 'getLogout']);
+	        	session()->forget('email');
+	        }
+	        if (!session()->has('email')) {
+	            $this->middleware('authAdmin', ['except' => 'getLogout']);
+	        	session()->forget('email');
+	        }
+
+	        $this->optimus['total_unread_message'] = adminModel::getUnreadMessage();
+	        $this->optimus['total_unread_order'] = adminModel::getUnreadMessage(array('3','4','5','6','7','8'));
+	        $this->optimus['active_payment'] = adminModel::getPaymentNotification();
+	        $this->optimus['total_active_payment'] = $this->optimus['active_payment']['total'];
+	        
+	        $review = adminModel::getAllReview('all', '', '', '', 0);
+	        $review_arr = [];
+	        if($review['total']>0){
+	          foreach($review['data'] as $data_detail){
+	            $review_arr[] = $data_detail->invoice_id;
+	          }
+	        }
+	        $this->optimus['moderated_review'] = $review_arr;
+	        $this->optimus['total_moderated_review'] = count($review_arr);
+        } else {
+        	$this->optimus['total_unread_message'] = adminModel::getUnreadMessage();
+	        $this->optimus['total_unread_order'] = adminModel::getUnreadMessage(array('3','4','5','6','7','8'));
+	        $this->optimus['active_payment'] = adminModel::getPaymentNotification();
+	        $this->optimus['total_active_payment'] = $this->optimus['active_payment']['total'];
+	        
+	        $review = adminModel::getAllReview('all', '', '', '', 0);
+	        $review_arr = [];
+	        if($review['total']>0){
+	          foreach($review['data'] as $data_detail){
+	            $review_arr[] = $data_detail->invoice_id;
+	          }
+	        }
+	        $this->optimus['moderated_review'] = $review_arr;
+	        $this->optimus['total_moderated_review'] = count($review_arr);
         }
         
-        $this->optimus['total_unread_message'] = adminModel::getUnreadMessage();
-        $this->optimus['total_unread_order'] = adminModel::getUnreadMessage(array('3','4','5','6','7','8'));
-        $this->optimus['active_payment'] = adminModel::getPaymentNotification();
-        $this->optimus['total_active_payment'] = $this->optimus['active_payment']['total'];
         
-        $review = adminModel::getAllReview('all', '', '', '', 0);
-        $review_arr = [];
-        if($review['total']>0){
-          foreach($review['data'] as $data_detail){
-            $review_arr[] = $data_detail->invoice_id;
-          }
-        }
-        $this->optimus['moderated_review'] = $review_arr;
-        $this->optimus['total_moderated_review'] = count($review_arr);
+        
     }
 
 	public function index()
@@ -1829,7 +1849,18 @@ class AdminController extends Controller {
         }
       }
       $db = adminModel::updateNegotiation($id, $data);
-			if($db === "Duplicate Entry") return response()->json(['error' => "Duplicate Entry"]);
+
+      $data_car = [
+      	'flag_payment' => 0,
+      	'due_date' => null,
+      	'status' => 1,
+      	'id' => $request->car_id,
+      ];
+      adminModel::updateCarStatus($request->car_id, 1);
+      Front_model::updateCarPayment($data_car);
+      Front_model::updateCarDueDate($data_car);
+
+		if($db === "Duplicate Entry") return response()->json(['error' => "Duplicate Entry"]);
 			return response()->json($db);
 		}
 		if ($validator->fails()) {
@@ -1837,6 +1868,10 @@ class AdminController extends Controller {
 		}
 	}
 	public function negotiationView($id){
+	if(Session::get('login_type') == 'customer'){
+      //redirect to front end      
+      return redirect()->route('customer.negotiation', ['id' => $id]);
+    }
 		$negotiations = Front_model::getNegotiation($id); 
     $negotiation = $negotiations[0]; 	
     
@@ -2217,6 +2252,7 @@ class AdminController extends Controller {
 		}
 	}
 	public function invoiceUpdate(Request $request){
+		$session = Session::get(null);
 		$validator = Validator::make([
 			'editStatus' => $request->editStatus
 		], [
@@ -2250,6 +2286,7 @@ class AdminController extends Controller {
         //update car status
         $car_id = $negotiation[0]->car_id;
         AdminModel::updateCarStatus($car_id, 2);
+        unset($session['recently_view'][$car_id]);
         
         $message = 'Invoice have been Paid';
         
@@ -2277,6 +2314,7 @@ class AdminController extends Controller {
         //update car status
         $car_id = $negotiation[0]->car_id;
         AdminModel::updateCarStatus($car_id, 2);
+        unset($session['recently_view'][$car_id]);
         
         $message = 'Invoice have been partial Paid';
       
@@ -2836,6 +2874,12 @@ class AdminController extends Controller {
 
       $result = Front_model::updateInvoice($arr);
 
+      $car = [
+      	'due_date' => $param['due_date'],
+      	'id' => $param['car_id'],
+      ];
+      Front_model::updateCarDueDate($car);
+
       $data_chat = array(
         'negotiation_id' => $invoices[0]->negotiation_id,
         'chat' => 'Due Date have been Update',
@@ -2855,6 +2899,7 @@ class AdminController extends Controller {
   function updateInvoice(Request $request){
     $param = $request->all();
     $negotiation = Session::get('negotiation');
+    $invoice = Session::get('invoice');
     
     $other_data = [];
     $other_data['other_name'] = isset($param['other_name'])?$param['other_name']:'';
@@ -2901,6 +2946,19 @@ class AdminController extends Controller {
         'user_chat_id' => Session::get('user_id'),
       );
       Front_model::insertNegotiationLine($data_chat);
+
+      $data_car = [
+        'flag_payment' => 1,
+        'id' => $negotiation->car_id,
+      ];
+      Front_model::updateCarPayment($data_car);
+
+      $data_car = [
+      	'due_date' => $invoice->due_date,
+      	'id' => $negotiation->car_id,
+      ];
+      Front_model::updateCarDueDate($data_car);
+
     }
     $link = '';
     if($action == 'cancel'){

@@ -582,7 +582,7 @@
           @if($session['proforma_invoice']->status <= 1)
           <div class="row">
             <div class="col-md-12" align="center">
-              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
+              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a>
             </div>
           </div>
           @endif
@@ -590,7 +590,7 @@
           <div class='row'>
             @if($session['proforma_invoice']->status > 1)
             <div class="col-md-12" align="center">
-              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
+              <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a>
               @if($session['proforma_invoice']->customer_approval != 1)
               <input type="submit" value="reject" class="btn btn-info" id='edit-proforma'>
               @endif
@@ -613,7 +613,7 @@
 
 
 @section('script')
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
 <script>  
   $("#country").select2();
   $("#departure_country").select2();

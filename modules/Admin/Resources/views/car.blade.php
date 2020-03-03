@@ -135,7 +135,15 @@
                   <td>{{ $d->model .'/'. $d->make }}</td>
                   <td>{{ $d->plate_number }}</td>
                   <td>{{ $registration_date }}</td>
-                  <td>{{ $d->vin }}</td>                  
+                  <td>
+                  <?php $vin = str_split($d->vin, 7); 
+                  // print_r($vin);
+                    foreach ($vin as $v) {
+                      echo $v.'<br>';
+                    }
+                  ?>
+                  </td>
+                  <!-- <td>{{ $d->vin }}</td>                   -->
                   <td>{{ $d->currency.' '. number_format($d->price,'0','.',',') }}</td>
                   <td>{{ number_format($d->distance,'0','.',',') }}</td>
                   <td>{{ $d->pic_name }}</td>
@@ -287,7 +295,7 @@
                   <div class='col-md-12 col-xs-12 nopadding group-div' width='100%'>  
                     <div class='row row-border'>
                       <div class='col-md-6 col-xs-6 dark-div'>
-                        Registration Date
+                        Registration Date *
                       </div>
 <!--                      <div class='col-md-6 col-xs-6'>
                         <input class='form-control' type='text' name='registrationDate' id="registrationDate" data-date-format="yyyy-mm-dd" data-link-format="yyyy-mm-dd" autocomplete="off">
@@ -329,7 +337,7 @@
 
                     <div class='row row-border'>
                       <div class='col-md-6 col-xs-6 dark-div'>
-                        Manufacture Year/Month
+                        Manufacture Year/Month *
                       </div>
                       <div class='col-md-3 col-xs-3'>
                         <select name="editManufactureYear" class="form-control dropdownSelect2" id="editManufactureYear">
@@ -459,6 +467,7 @@
                       </div>
                       <div class='col-md-6 col-xs-6 '>
                         <select name='editExteriorColor' id='editExteriorColor' class='form-control' required>
+                          <!-- <option value=""></option> -->
                         @foreach($db['car_color'] as $car_color)
                             <option value="{{$car_color->description}}">{{$car_color->description}}</option>
                         @endforeach
@@ -631,7 +640,7 @@
                   <div class='col-md-12 col-xs-12 nopadding group-div' width='100%'>  
                     <div class='row'>
                       <div class='col-md-12 col-xs-12 dark-div'>
-                        Remarks (Car Conditions)
+                        Remarks (Car Conditions) *
                       </div>
                     </div>
 
@@ -903,7 +912,7 @@
   @section('script')
   <script src="{{URL::to('/')}}/assets/js/datetimepicker/bootstrap-datetimepicker.js"></script>
   <script src="{{URL::to('/')}}/assets/js/datetimepicker/locales/bootstrap-datetimepicker.id.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
   <script src="{{URL::to('/')}}/assets/js/admin.js"></script>
   <script src="{{ URL::to('/') }}/assets/js/select2.min.js" type="text/javascript"></script>
   <script src="{{ URL::to('/') }}/assets/js/dropzone.js" type="text/javascript"></script>
@@ -1087,66 +1096,83 @@
     }else{
       var registration_date = '';
     }
-    
-    
-  if ($('#editVin').val() === ''){
-    alert('Chassis Number required');
-    return false;
-  } else if ($('#editMake').val() === ''){
-    alert('Make required');
-    return false;
-  } else if ($('#editModel').val() === ''){
-    alert('Model required');
-    return false;
-  } else if ($('#editType').val() === ''){
-    alert('Product Type required');
-    return false;
-  } else if ($("#editState").val() == '1' && registration_date === ''){
-    alert('Registration date required');
-    return false;
-  } else if ($('#editDistance').val() === ''){
-    alert('Mileage required');
-    return false;
-  } else if ($('#editType').val() === ''){
-    alert('Product Type required');
-    return false;
-  } else if ($('#editEngine').val() === ''){
-    alert('Engine required');
-    return false;
-  } else if ($('#editPrice').val() === ''){
-    alert('Price required');
-    return false;
-  } else if ($('#editSeller').val() === ''){
-    alert('Seller required');
-    return false;
-  } else if ($('#plate_number').val() === ''){
-    alert('Plate number required');
-    return false;
-  } else if ($('#editFuel').val() === ''){
-    alert('Fuel required');
-    return false;
-  } else if ($('#editTransmission').val() === ''){
-    alert('Transmission required');
-    return false;
-  } else if ($('#editExteriorColor').val() === ''){
-    alert('Exterior color required');
-    return false;
-  } else if ($('#editWeight').val() === ''){
-    alert('Weight required');
-    return false;
-  } else if ($('#editSteering').val() === ''){
-    alert('Steering required');
-    return false;
-  } else if ($('#editDoor').val() === ''){
-    alert('Door required');
-    return false;
-  } else if ($('#editWidth').val() === '' && $('#editLength').val() === '' && $('#editHeight').val() === ''){
-    alert('Size required');
-    return false;
-  } else if($('#editManufactureYear').val() > registration_date){
-    alert("registration date can't before than manufacture date");
-    return false;
-  }
+
+    if ($("#editManufactureYear").val() !== '' && $('#editManufactureMonth').val() !== '') {
+      var manufacture_date = $('#editManufactureYear').val()+'-'+$('#editManufactureMonth').val();
+    } else {
+      var manufacture_date = '';
+    }
+
+    if ($('#plate_number').val() === '' || $('#plate_number').val() === null){
+      alert('Plate Number required');
+      return false;
+    } else if ($('#editVin').val() === '' || $('#editVin').val() === null){
+      alert('Chassis Number required');
+      return false;
+    } else if ($('#editMake').val() === '' || $('#editMake').val() === null){
+      alert('Make required');
+      return false;
+    } else if ($('#editModel').val() === '' || $('#editModel').val() === null){
+      alert('Model required');
+      return false;
+    } else if ($('#editType').val() === '' || $('#editType').val() === null){
+      alert('Product Type required');
+      return false;
+    } else if (registration_date === ''){
+      alert('Registration date required');
+      return false;
+    } else if(manufacture_date === ''){
+      alert("Manufacture date required");
+      return false;
+    } else if($('#editManufactureYear').val() > registration_date){
+      alert("registration date can't before than manufacture date");
+      return false;
+    } else if ($('#editDistance').val() === '' || $('#editDistance').val() === null){
+      alert('Mileage required');
+      return false;
+    } else if ($('#editType').val() === '' || $('#editType').val() === null){
+      alert('Product Type required');
+      return false;
+    } else if ($('#editEngine').val() === '' || $('#editEngine').val() === null){
+      alert('Engine Capacity required');
+      return false;
+    } else if ($('#editFuel').val() === '' || $('#editFuel').val() === null){
+      alert('Fuel required');
+      return false;
+    } else if ($('#editSteering').val() === '' || $('#editSteering').val() === null){
+      alert('Steering required');
+      return false;
+    } else if ($('#editTransmission').val() === '' || $('#editTransmission').val() === null){
+      alert('Transmission required');
+      return false;
+    } else if ($('#editExteriorColor').val() === '' || $('#editExteriorColor').val() === null){
+      alert('Exterior Color required');
+      return false;
+    } else if ($('#editDoor').val() === '' || $('#editDoor').val() === null){
+      alert('Door required');
+      return false;
+    } else if ($('#editWeight').val() === '' || $('#editWeight').val() === null){
+      alert('Weight required');
+      return false;
+    } else if ($('#editWidth').val() === '' || $('#editWidth').val() === null){
+      alert('Size required');
+      return false;
+    } else if ($('#editLength').val() === '' || $('#editLength').val() === null){
+      alert('Size required');
+      return false;
+    } else if ($('#editHeight').val() === '' || $('#editHeight').val() === null){
+      alert('Size required');
+      return false;
+    } else if ($('#editPrice').val() === '' || $('#editPrice').val() === null){
+      alert('Price required');
+      return false;
+    } else if ($('#editSeller').val() === '' || $('#editSeller').val() === null){
+      alert('Seller required');
+      return false;
+    } else if ($("#editState").val() == '1') {
+      alert('Car Conditions required');
+      return false;
+    }
 
 
   var data = new FormData();
@@ -1226,70 +1252,87 @@
   }
 
   function updateData(){
-    
     if($("#editRegistrationYear").val() !== '' && $("#editRegistrationMonth").val() !== '' && $("#editRegistrationDay").val() !== ''){
       var registration_date = $("#editRegistrationYear").val() +'-'+ $("#editRegistrationMonth").val() +'-'+ $("#editRegistrationDay").val();
     }else{
       var registration_date = '';
     }
+
+    if ($("#editManufactureYear").val() !== '' && $('#editManufactureMonth').val() !== '') {
+      var manufacture_date = $('#editManufactureYear').val()+'-'+$('#editManufactureMonth').val();
+    } else {
+      var manufacture_date = '';
+    }
     
     var id = $('#idEdit').val();
-    if ($('#editVin').val() === ''){
-    alert('Chassis Number required');
-    return false;
-    } else if ($('#editMake').val() === ''){
-    alert('Make required');
-    return false;
-    } else if ($('#editModel').val() === ''){
-    alert('Model required');
-    return false;
-    } else if ($('#editType').val() === ''){
-    alert('Product Type required');
-    return false;
-    } else if ($("#editState").val() == '1' && registration_date === ''){
-    alert('Registration date required');
-    return false;
-    } else if ($('#editDistance').val() === ''){
-    alert('Mileage required');
-    return false;
-    } else if ($('#editType').val() === ''){
-    alert('Product Type required');
-    return false;
-    } else if ($('#editEngine').val() === ''){
-      alert('Engine required');
-      return false;
-    } else if ($('#editPrice').val() === ''){
-      alert('Price required');
-      return false;
-    } else if ($('#editSeller').val() === ''){
-      alert('Seller required');
-      return false;
-    }else if ($('#plate_number').val() === ''){
+    if ($('#plate_number').val() === '' || $('#plate_number').val() === null){
       alert('Plate Number required');
       return false;
-    }else if ($('#editFuel').val() === ''){
-      alert('Fuel required');
+    } else if ($('#editVin').val() === '' || $('#editVin').val() === null){
+      alert('Chassis Number required');
       return false;
-    }else if ($('#editTransmission').val() === ''){
-      alert('Transmission required');
+    } else if ($('#editMake').val() === '' || $('#editMake').val() === null){
+      alert('Make required');
       return false;
-    }else if ($('#editExteriorColor').val() === ''){
-      alert('Exterior Color required');
+    } else if ($('#editModel').val() === '' || $('#editModel').val() === null){
+      alert('Model required');
       return false;
-    } else if ($('#editWeight').val() === ''){
-      alert('Weight required');
+    } else if ($('#editType').val() === '' || $('#editType').val() === null){
+      alert('Product Type required');
       return false;
-    } else if ($('#editSteering').val() === ''){
-      alert('Steering required');
+    } else if (registration_date === ''){
+      alert('Registration date required');
       return false;
-    } else if ($('#editDoor').val() === ''){
-      alert('Door required');
-      return false;
-    } else if ($('#editWidth').val() === '' && $('#editLength').val() === '' && $('#editHeight').val() === ''){
-      alert('Size required');
+    } else if(manufacture_date === ''){
+      alert("Manufacture date required");
       return false;
     } else if($('#editManufactureYear').val() > registration_date){
       alert("registration date can't before than manufacture date");
+      return false;
+    } else if ($('#editDistance').val() === '' || $('#editDistance').val() === null){
+      alert('Mileage required');
+      return false;
+    } else if ($('#editType').val() === '' || $('#editType').val() === null){
+      alert('Product Type required');
+      return false;
+    } else if ($('#editEngine').val() === '' || $('#editEngine').val() === null){
+      alert('Engine Capacity required');
+      return false;
+    } else if ($('#editFuel').val() === '' || $('#editFuel').val() === null){
+      alert('Fuel required');
+      return false;
+    } else if ($('#editSteering').val() === '' || $('#editSteering').val() === null){
+      alert('Steering required');
+      return false;
+    } else if ($('#editTransmission').val() === '' || $('#editTransmission').val() === null){
+      alert('Transmission required');
+      return false;
+    } else if ($('#editExteriorColor').val() === '' || $('#editExteriorColor').val() === null){
+      alert('Exterior Color required');
+      return false;
+    } else if ($('#editDoor').val() === '' || $('#editDoor').val() === null){
+      alert('Door required');
+      return false;
+    } else if ($('#editWeight').val() === '' || $('#editWeight').val() === null){
+      alert('Weight required');
+      return false;
+    } else if ($('#editWidth').val() === '' || $('#editWidth').val() === null){
+      alert('Size required');
+      return false;
+    } else if ($('#editLength').val() === '' || $('#editLength').val() === null){
+      alert('Size required');
+      return false;
+    } else if ($('#editHeight').val() === '' || $('#editHeight').val() === null){
+      alert('Size required');
+      return false;
+    } else if ($('#editPrice').val() === '' || $('#editPrice').val() === null){
+      alert('Price required');
+      return false;
+    } else if ($('#editSeller').val() === '' || $('#editSeller').val() === null){
+      alert('Seller required');
+      return false;
+    } else if ($("#editState").val() == '1') {
+      alert('Car Conditions required');
       return false;
     }
 

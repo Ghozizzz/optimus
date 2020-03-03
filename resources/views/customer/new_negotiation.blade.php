@@ -173,7 +173,8 @@
                   <input type="hidden" name="shipping_price" value="{{isset($car->shipping_price) ? $car->shipping_price : 0}}">                 
                   <input type="hidden" name="original_price" value="{{isset($car->original_price) ? $car->original_price : 0}}">                 
                   <input type="hidden" name="ocean_freight" value="{{isset($car->ocean_freight) ? $car->ocean_freight : 0}}"> 
-                  <input type="hidden" name="vprice" value="{{ isset($car->vprice) ? $car->vprice : 0 }}">                
+                  <input type="hidden" name="vprice" value="{{ isset($car->vprice) ? $car->vprice : 0 }}">
+                  <input type="hidden" name="checker_price" value="{{ isset($car->price) ? $car->price : 0 }}">
                   <div class="row">
                     <div class="col-md-12">
                       @if($car->insurance == 1)

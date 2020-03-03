@@ -1,0 +1,5 @@
+negotiation status:
+1. open negotiation
+2. negotiation deal, create proforma invoice
+3. proforma invoice created, fill data for invoice
+4. invoice have been paid

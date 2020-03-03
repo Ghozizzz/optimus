@@ -31,7 +31,7 @@ Route::group(['middleware' => 'web', 'prefix' => 'admin', 'namespace' => 'Module
   /*banner*/
   Route::get('/banner', ['as' => 'admin.banner', 'uses' => 'AdminController@bannerIndex']);
 	Route::post('/banner/save',['as' => 'admin.banner.save', 'uses' => 'AdminController@bannerSave']);
-	Route::get('/banner/view/{id}', ['as' => 'admin.banner.view', 'uses' => 'AdminController@bannerView']);  \
+	Route::get('/banner/view/{id}', ['as' => 'admin.banner.view', 'uses' => 'AdminController@bannerView']);  
   Route::post('/banner/update/{id}', 'AdminController@bannerUpdate');
 	Route::get('/banner/delete/{id}', 'AdminController@bannerDelete');
 	/*Sales*/

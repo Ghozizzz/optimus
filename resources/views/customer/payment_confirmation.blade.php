@@ -149,7 +149,7 @@
               </div>  
             </div>
           </form>
-          <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}"><button class="btn btn-danger" id='back-btn'>Back</button></a>
+          <a href="{{route('customer.negotiation',['id'=>$session['negotiation']->id])}}" class="btn btn-danger" id='back-btn'>Back</a>
           <div class="height30"></div>
         </div>
       </div>  

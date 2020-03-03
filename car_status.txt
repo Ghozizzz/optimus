@@ -3,3 +3,9 @@
 2 = SOLD
 3 = ON NEGOTIATION (kayaknya)
 4 = UNAVAILABLE
+
+
+nanti setelah terbuat invoice, buat kolom baru flag_payment:
+0 = belum dibook,
+1 = booked, menunggu pelunasan
+2 = booked, lunas

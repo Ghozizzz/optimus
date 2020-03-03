@@ -75,30 +75,72 @@
       ?>
       @if(count($car)>0)
       @foreach($car as $detail)
+      <?php if($detail->flag_payment == 1) { ?>
+        <font class="countdown_all" style="display: none;" data-countdown="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}" data-carid="{{ $detail->id }}"></font>
+      <?php } ?>
       <?php
       $i++;
-      if($i === 7){
-        $i=0;
+      if($i === 5){
+        $i=1;
         echo '</div><div class="row">';
       }
         $picture_arr = json_decode($detail->picture);              
       ?>
-      <div class="item col-lg-2 col-md-6 mb-4" data-key="1">
+      <div class="item col-lg-3 col-md-6 mb-4" data-key="1">
         <div class="card h-100">
-          <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
-            <div class='picture-container'>
-              <img class="card-img-top" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" style="border-radius:5px;">
-            </div>  
-          </a>
+          <?php if ($detail->flag_payment == 0) { ?>
+            <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
+              <div class='picture-container'>
+                <img class="card-img-top" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" style="border-radius:5px;">
+              </div>
+            </a>
+          <?php } else { ?>
+            <?php if (Session::get('user_id') !== null) { ?>
+              <a href="javascript:;" onclick="notify({{ $detail->id }})">
+                <div class='picture-container'>
+                  <img class="card-img-top" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" style="border-radius:5px;">
+                </div>
+              </a>
+            <?php } else { ?>
+              <a href="javascript:;">
+                <div class='picture-container' data-toggle="modal" data-target="#popSelectLogin">
+                  <img class="card-img-top" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" style="border-radius:5px;">
+                </div>
+              </a>
+            <?php } ?>
+          <?php } ?>
           <div class="card-body">
-            <h4 class="card-title"><a href="{{route('front.productdetail',['id'=>$detail->id])}}">{{$detail->make}} - {{$detail->model}}</a></h4>
+            <?php if ($detail->flag_payment == 0) { ?>
+              <h4 style="margin-bottom: -5px;" class="card-title"><a href="{{route('front.productdetail',['id'=>$detail->id])}}">{{$detail->make}} - {{$detail->model}}</a></h4>
+            <?php } else { ?>
+              <?php if (Session::get('user_id') !== null) { ?>
+                <h4 style="margin-bottom: -5px;" class="card-title"><a href="javascript:;" onclick="notify({{ $detail->id }})">{{$detail->make}} - {{$detail->model}}</a></h4>
+              <?php } else { ?>
+                <h4 style="margin-bottom: -5px;" class="card-title"><a href="javascript:;" data-toggle="modal" data-target="#popSelectLogin">{{$detail->make}} - {{$detail->model}}</a></h4>
+              <?php } ?>
+            <?php } ?>
             <p class="card-text">{{$detail->type_description}}</p>
           </div>
-          <div class="card-price">
-            {{$detail->currency}} {{\App\Http\Controllers\API::currency_format($detail->price)}}
+          <div class="card-price" style="padding-top: 0">
+            <?php if($detail->flag_payment == 0) { ?>
+              {{$detail->currency}} {{\App\Http\Controllers\API::currency_format($detail->price)}}
+            <?php } else { ?>
+              <font size="2px">Available In :</font>
+              <input type="hidden" name="due_date_grid" id="due_date_grid" value="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}">
+              <font class="countdown_grid" data-countdown="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}"></font>
+              <br>
+            <?php } ?>
           </div>
           <div class="card-footer">
-            <a class="btn btn-primary" href="{{route('front.productdetail',['id'=>$detail->id])}}">View</a>
+            <?php if($detail->flag_payment == 0) { ?>
+              <a class="btn btn-primary" style="padding: 8px;" href="{{route('front.productdetail',['id'=>$detail->id])}}">View</a>
+            <?php } else { ?>
+              <?php if(Session::get('user_id') !== null) { ?>
+                <a href="javascript:;" onclick="notify({{ $detail->id }})" class="btn btn-info"><p style="line-height:1.5; font-size: 9px; margin: 2px 0;">NOTIFY ME<br>WHEN AVAILABLE</p></a>
+              <?php } else { ?>
+                <a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#popSelectLogin"><p style="line-height:1.5; font-size: 9px; margin: 2px 0;">NOTIFY ME<br>WHEN AVAILABLE</p></a>
+              <?php } ?>
+            <?php } ?>
             <a href="#" class="wishlist" onclick="checkAuth(function () {addWishlist('{{$detail->id}}')});return false;"> &nbsp;&nbsp;<i class="fas fa-heart"></i></a>
           </div>
         </div>
@@ -131,15 +173,36 @@
             </tr>
 
             @foreach($car as $detail)
+            <?php if($detail->flag_payment == 1) { ?>
+              <font class="countdown_all" style="display: none;" data-countdown="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}" data-carid="{{ $detail->id }}"></font>
+            <?php } ?>
             <?php
             $picture_arr = json_decode($detail->picture);        
             $registration_date_arr = explode('-',$detail->registration_date);        
             ?>
             <tr>
               <td>
-                <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
-                <img class="img-responsive" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" width='120px'>
-                </a>
+                <?php if ($detail->flag_payment == 0) { ?>
+                  <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
+                    <div class='picture-container'>
+                      <img class="img-responsive" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" width='120px'>
+                    </div>
+                  </a>
+                <?php } else { ?>
+                  <?php if (Session::get('user_id') !== null) { ?>
+                    <a href="javascript:;" onclick="notify({{ $detail->id }})">
+                      <div class='picture-container'>
+                        <img class="img-responsive" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" width='120px'>
+                      </div>
+                    </a>
+                  <?php } else { ?>
+                    <a href="javascript:;">
+                      <div class='picture-container' data-toggle="modal" data-target="#popSelectLogin">
+                        <img class="img-responsive" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" width='120px'>
+                      </div>
+                    </a>
+                  <?php } ?>
+                <?php } ?>
               </td>
               <td>
                 {{$detail->vin}}
@@ -165,11 +228,26 @@
                 @endif
               </td>
               <td align='center'>
-                {{$detail->currency != '' ? $detail->currency : 'USD'}} <span id='unit_price'>{{\App\Http\Controllers\API::currency_format($detail->price)}}</span>
+                <?php if($detail->flag_payment == 0) { ?>
+                  {{$detail->currency != '' ? $detail->currency : 'USD'}} <span id='unit_price'>{{\App\Http\Controllers\API::currency_format($detail->price)}}</span>
+                <?php } else { ?>
+                  Available In:
+                  <br>
+                  <input type="hidden" name="due_date_list" id="due_date_list" value="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}">
+                  <font class="countdown_list" data-countdown="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}" data-carid="{{ $detail->id }}"></font>
+                <?php } ?>
               </td>
-              <td align='center'>
-                <a class="btn btn-primary" href="{{route('front.productdetail',['id'=>$detail->id])}}">View</a><br>
-                <a href="#" class="btn btn-normal wishlist" onclick="checkAuth('{{route('front.wishlist',['car_id'=>$detail->id])}}');return false;"><i class="fas fa-heart"></i></a>
+              <td align='center' style="padding: 2px;">
+                <?php if ($detail->flag_payment == 0) { ?>
+                  <a class="btn btn-primary" href="{{route('front.productdetail',['id'=>$detail->id])}}">View</a><br>
+                <?php } else { ?>
+                  <?php if(Session::get('user_id') !== null) { ?>
+                    <a href="javascript:;" onclick="notify({{ $detail->id }})" class="btn btn-info"><p style="line-height:1.5; font-size: 12px; margin: 2px 0;">NOTIFY ME<br>WHEN AVAILABLE</p></a><br>
+                  <?php } else { ?>
+                    <a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#popSelectLogin"><p style="line-height:1.5; font-size: 12px; margin: 2px 0;">NOTIFY ME<br>WHEN AVAILABLE</p></a><br>
+                  <?php } ?>
+                <?php } ?>
+                <a href="#" class="btn btn-normal wishlist" onclick="checkAuth(function () {addWishlist('{{$detail->id}}')});return false;"><i class="fas fa-heart"></i></a>
               </td>
             </tr>
             @endforeach
@@ -387,6 +465,126 @@
   //    });	
   //}
 
+  function cancelNegotiation(car_id, due_date) {
+    $.ajax({
+      type: "POST",
+      dataType: "JSON",
+      headers: {
+        'X-CSRF-TOKEN': '{{csrf_token()}}',
+      },
+      data: {
+        car_id: car_id,
+        due_date: due_date,
+      },
+      url: "{{ route('front.cancelNegotiation') }}",
+      success:function(result){
+        if(result['response'] == 1) {
+          location.reload();
+        } else {
+          alert(result['message']);
+        }
+      }
+    });
+  }
+
+  function notify(car_id) {
+    window.location.href = '{{URL::to("/")}}/notify/'+car_id;
+  }
+
+  // y untuk countdown all
+  var y = setInterval(function() {
+      
+    $('.countdown_all').each(function() {
+      var a = $(this), finalDate = $(this).data('countdown'), car_id = $(this).data('carid');
+      var countDownHot = new Date(finalDate).getTime();
+      var now = new Date().getTime();
+    
+      // Find the distance between now and the count down date
+      var distance = countDownHot - now;
+        
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      a.html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+      // a.html(days + "d " + hours + "h " + minutes + "m ");
+
+      // If the count down is over, write some text 
+      if (distance < 0) {
+        clearInterval(y);
+        a.html("EXPIRED");
+        cancelNegotiation(car_id, finalDate);
+      }
+     });      
+
+  }, 10000);
+
+  // start countdown hot car
+  // Update the count down every 1 second
+  var x = setInterval(function() {
+      
+    // Output the result in an element with id="countdown_list"
+    $('.countdown_list').each(function() {
+      var a = $(this), finalDate = $(this).data('countdown'), car_id = $(this).data('carid');
+      var countDownHot = new Date(finalDate).getTime();
+      var now = new Date().getTime();
+    
+      // Find the distance between now and the count down date
+      var distance = countDownHot - now;
+        
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      // a.html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+      a.html(days + "d " + hours + "h " + minutes + "m ");
+
+      // If the count down is over, write some text 
+      if (distance < 0) {
+        clearInterval(x);
+        a.html("EXPIRED");
+        // cancelNegotiation(car_id, finalDate);
+      }
+     });      
+
+  }, 1000);
+
+  // end countdown
+
+  // start countdown hot car
+  // Update the count down every 1 second
+  var x = setInterval(function() {
+      
+    // Output the result in an element with id="countdown_grid"
+    $('.countdown_grid').each(function() {
+      var a = $(this), finalDate = $(this).data('countdown'), car_id = $(this).data('carid');
+      var countDownHot = new Date(finalDate).getTime();
+      var now = new Date().getTime();
+    
+      // Find the distance between now and the count down date
+      var distance = countDownHot - now;
+        
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      // a.html(days + "d " + hours + "h " + minutes + "m " + seconds + "s ");
+      a.html(days + "d " + hours + "h " + minutes + "m ");
+
+      // If the count down is over, write some text 
+      if (distance < 0) {
+        clearInterval(x);
+        a.html("EXPIRED");
+        // cancelNegotiation(car_id, finalDate);
+      }
+     });      
+
+  }, 1000);
+
+  // end countdown
 
   $(function () {
     $("#slider-range").slider({
