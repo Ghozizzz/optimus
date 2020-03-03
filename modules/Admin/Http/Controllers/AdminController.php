@@ -1064,27 +1064,27 @@ class AdminController extends Controller {
     $img = Image::make($file->getRealPath());
     $width  = $img->width();
 	$height = $img->height();
-	$dimension_w = 800;
-	$dimension_h = 600;
+	$dimension_w = 1280;
+	$dimension_h = 720;
 	$vertical   = (($width < $height) ? true : false);
 	$horizontal = (($width > $height) ? true : false);
 	$square     = (($width = $height) ? true : false);
 	if ($vertical) {
-	    $top = $bottom = 400;
+	    $top = $bottom = 640;
 	    $newHeight = ($dimension_w + $dimension_h) - ($bottom + $top);
 	    $img->resize(null, $newHeight, function ($constraint) {
 	        $constraint->aspectRatio();
 	    });
 
 	} else if ($horizontal) {
-	    $right = $left = 300;
+	    $right = $left = 360;
 	    $newWidth = ($dimension_w + $dimension_h) - ($right + $left);
 	    $img->resize($newWidth, null, function ($constraint) {
 	        $constraint->aspectRatio();
 	    });
 
 	} else if ($square) {
-	    $right = $left = 400;
+	    $right = $left = 640;
 	    $newWidth = ($dimension_w + $dimension_h) - ($left + $right);
 	    $img->resize($newWidth, null, function ($constraint) {
 	        $constraint->aspectRatio();
