@@ -189,8 +189,7 @@
       <div class='recently-view-container'>
       <div class="row">
       <?php
-
-      if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
       $arr = array_reverse($session['recently_view']);
       $i =0;
       $j = 0;
@@ -278,10 +277,8 @@
               break;
             }
           }          
-        }else{
-          $detail = new \stdClass();
-          $detail->flag_payment = 0;
-        }?>
+        }//recently view if
+        ?>
         </div>
       </div>
       
@@ -303,9 +300,13 @@
       <div id="all_car" style="display: none;">
         @if($car_list['all_car']['total'] > 0)
           @foreach($car_list['all_car']['items'] as $detail)
-            <?php if($detail->flag_payment == 1) { ?>
+            <?php 
+
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
+          if($detail->flag_payment == 1) { ?>
               <font class="countdown_all" data-countdown="{{ date('Y-m-d', strtotime($detail->due_date.' + 1 days')) }}" data-carid="{{ $detail->id }}"></font>
-            <?php } ?>
+            <?php } 
+    }?>
           @endforeach
         @endif
       </div>
@@ -327,7 +328,10 @@
             @endphp
             <div class="item col-md-3 col-sm-3 col-xs-3">
               <div class="card h-100">
-                <?php if ($detail->flag_payment == 0) { ?>
+                <?php 
+
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
+                if ($detail->flag_payment == 0) { ?>
                   <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
                     <div class='picture-container'>
                       <img class="card-img-top" src="{{$picture_url}}" alt="{{$detail->description}}" style="border-radius:5px;">
@@ -357,11 +361,14 @@
                     <?php } else { ?>
                       <h4 style="margin-bottom: -5px;" class="card-title"><a href="javascript:;" data-toggle="modal" data-target="#popSelectLogin">{{$detail->make}} - {{$detail->model}}</a></h4>
                     <?php } ?>
-                  <?php } ?>
+                  <?php } 
+                }//recently view end if?>
                   <p class="card-text">{{$detail->type_description}}</p>
                 </div>
                 <div class="card-price" style="padding-top: 0">
-                  <?php if($detail->flag_payment == 0) { ?>
+                  <?php 
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
+      if($detail->flag_payment == 0) { ?>
                     {{$detail->currency}} {{\App\Http\Controllers\API::currency_format($detail->price)}}
                   <?php } else { ?>
                     <!-- UNDER OFFER<br> -->
@@ -372,10 +379,14 @@
                     <!-- <font size="1px">
                       NOTIFY WHEN AVAILABLE
                     </font> -->
-                  <?php } ?>
+                  <?php } 
+                }?>
                 </div>
                 <div class="card-footer">
-                  <?php if($detail->flag_payment == 0) { ?>
+                  <?php 
+
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
+                  if($detail->flag_payment == 0) { ?>
                     <a class="btn btn-primary" style="padding: 8px;" href="{{route('front.productdetail',['id'=>$detail->id])}}">View</a>
                   <?php } else { ?>
                     <?php if(Session::get('user_id') !== null) { ?>
@@ -383,7 +394,8 @@
                     <?php } else { ?>
                       <a href="javascript:;" class="btn btn-info" data-toggle="modal" data-target="#popSelectLogin"><p style="line-height:1.5; font-size: 9px; margin: 2px 0;">NOTIFY ME<br>WHEN AVAILABLE</p></a>
                     <?php } ?>
-                  <?php } ?>
+                  <?php } 
+                }//recenty view end if?>
                   <a href="#" class="wishlist" onclick="checkAuth(function () {addWishlist('{{$detail->id}}')});return false;"> &nbsp;&nbsp;<i class="fas fa-heart"></i></a>
                 </div>
               </div>
@@ -418,7 +430,9 @@
             @endphp
             <div class="item col-md-3 col-sm-3 col-xs-3">
               <div class="card h-100">
-                <?php if ($detail->flag_payment == 0) { ?>
+                <?php 
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ 
+      if ($detail->flag_payment == 0) { ?>
                   <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
                     <div class='picture-container'>
                       <img class="card-img-top" src="{{$picture_url}}" alt="{{$detail->description}}" style="border-radius:5px;">
@@ -438,7 +452,10 @@
                       </div>
                     </a>
                   <?php } ?>
-                <?php } ?>
+                <?php } 
+              }//recently view end if
+
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ ?>
                 <div class="card-body">
                   <?php if ($detail->flag_payment == 0) { ?>
                     <h4 style="margin-bottom: 0px;" class="card-title"><a href="{{route('front.productdetail',['id'=>$detail->id])}}">{{$detail->make}} - {{$detail->model}}</a></h4>
@@ -477,7 +494,9 @@
                   <?php } ?>
                   <a href="#" class="wishlist" onclick="checkAuth(function() {addWishlist('{{$detail->id}}')});return false;"> &nbsp;&nbsp;<i class="fas fa-heart"></i></a>
                 </div>
+            <?php } ?>
               </div>
+            }
             </div>
             @endforeach
             
@@ -492,6 +511,8 @@
             @endif
           </div>
         </div>
+      <?Php 
+    if(isset($session['recently_view']) && count($session['recently_view'])>0){ ?>
         <div class="tab-pane fade" id="cartabs3" role="tabpanel"><!-- html to include -->
           <div class="row" id="best-seller-content">            
             @if($car_list['best_seller']['total']>0)
@@ -501,7 +522,8 @@
             @endphp
             <div class="item col-md-3 col-sm-3 col-xs-3">
               <div class="card h-100">
-                <?php if ($detail->flag_payment == 0) { ?>
+                <?php 
+      if ($detail->flag_payment == 0) { ?>
                   <a href="{{route('front.productdetail',['id'=>$detail->id])}}">
                     <div class='picture-container'>
                       <img class="card-img-top" src="{{URL::to('/')}}/uploads/car/{{$picture_arr[0]->picture}}" alt="{{$detail->description}}" style="border-radius:5px;">
@@ -658,6 +680,7 @@
             @endif
           </div>
         </div>
+      <?php }//recently view end if ?>
       </div>
     </div>
 

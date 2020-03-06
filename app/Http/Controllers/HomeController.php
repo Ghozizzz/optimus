@@ -21,11 +21,15 @@ class HomeController extends Controller {
     // unset($session['recently_view'][7]);
     // Session::forget('recently_view'[7]);
     // dd($session['recently_view']);
-    foreach ($session['recently_view'] as $key => $value) {
-      $car = Front_model::getOneCar($value->id);
-      if($car->status == 2 || $car->status == 4) {
-        unset($session['recently_view'][$value->id]);
+    if(isset($session['recently_view'])){
+      foreach ($session['recently_view'] as $key => $value) {
+        $car = Front_model::getOneCar($value->id);
+        if($car->status == 2 || $car->status == 4) {
+          unset($session['recently_view'][$value->id]);
+        }
       }
+    }else{
+      $session['recently_view'] = Front_model::getOneCar(23);
     }
 
     $make_array = Front_model::getAllMake();
@@ -77,7 +81,7 @@ class HomeController extends Controller {
             'total' => $total_all_car,
         ),
     ];
-
+    // print_r($optimus['car_list']);die();
     $optimus['active_menu'] = 'home';
     
     $car_price = Front_model::getMaxMinCarPrice();
